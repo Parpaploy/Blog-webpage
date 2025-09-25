@@ -1,5 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import { redirect } from "next/navigation";
 
 export async function Login(
   prevState: { message: string },
@@ -19,7 +20,7 @@ export async function Login(
     );
 
     Cookies.set("token", response.data.jwt);
-    return { message: "Login Ok!" };
+    // return { message: "Login Ok!" };
   } catch (error: unknown) {
     console.log(error, ":error");
 
@@ -35,4 +36,6 @@ export async function Login(
 
     return { message: errorMessage };
   }
+
+  redirect("/subscribe-blogs");
 }
