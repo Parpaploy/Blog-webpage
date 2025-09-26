@@ -13,6 +13,30 @@ export const fetchBlogs = async () => {
   }
 };
 
+export const fetchBlogsByID = async (id: string) => {
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/blogs/${id}?populate=*`
+    );
+
+    return response.data.data;
+  } catch (error) {
+    console.log("error:", error);
+  }
+};
+
+export const fetchBlogsUserByID = async (id: string) => {
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/blogs/${id}?populate[author][populate]=profile`
+    );
+
+    return response.data.data;
+  } catch (error) {
+    console.log("error:", error);
+  }
+};
+
 export const fetchSubscribeBlogs = async () => {
   try {
     const cookieStore = await cookies();

@@ -10,7 +10,7 @@ export default function LoginDefaultPage() {
   const [state, formAction] = React.useActionState(Login, initState);
 
   return (
-    <main>
+    <main className="w-full min-h-[93svh] max-w-[1920px] mx-auto">
       <form action={formAction}>
         <div>
           Email

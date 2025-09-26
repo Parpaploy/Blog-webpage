@@ -4,29 +4,31 @@ import React from "react";
 import { IBlog } from "../../../interfaces/strapi.interface";
 import { FormatDate } from "../../../utils/format-date";
 
-export default function BlogCard({ blog }: { blog: IBlog }) {
+export default function SmallBlogCard({ blog }: { blog: IBlog }) {
   return (
     <a
       href={`/blogs/${blog.documentId}`}
       className="rounded-2xl cursor-pointer"
     >
-      <div className="w-80 h-90 rounded-2xl border-1 bg-white overflow-hidden">
-        <div className="w-full h-[50%] rounded-b-2xl overflow-hidden">
+      <div className="flex w-90 h-40 rounded-2xl border-1 bg-white overflow-hidden">
+        <div className="w-[45%] rounded-r-2xl overflow-hidden">
           <img
             className="w-full h-full object-cover"
             src={`${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${blog.thumbnail.formats.medium?.url}`}
             alt=""
           />
         </div>
-        <div className="w-full h-[50%] flex flex-col justify-between items-start text-start px-5 py-3">
-          <div className="w-full h-full">
-            <h2 className="font-bold text-2xl line-clamp-2">{blog.title}</h2>
+        <div className="w-[55%] flex flex-col justify-between items-start px-5 py-3">
+          <div className="w-full text-start">
+            <h2 className="font-bold text-xl line-clamp-2">{blog.title}</h2>
             <p className="font-medium text-md text-black/65 line-clamp-2">
               {blog.description}
             </p>
           </div>
 
-          <p className="text-black/50">{FormatDate(blog.publishedAt)}</p>
+          <p className="text-xs text-black/50">
+            {FormatDate(blog.publishedAt)}
+          </p>
         </div>
       </div>
     </a>

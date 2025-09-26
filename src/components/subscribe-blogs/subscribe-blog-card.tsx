@@ -1,10 +1,12 @@
+"use client";
+
 import React from "react";
-import { ISubscribeBlogs } from "../../../interfaces/strapi.interface";
+import { ISubscribeBlog } from "../../../interfaces/strapi.interface";
 
 export default function SubscribeBlogCard({
   subBlog,
 }: {
-  subBlog: ISubscribeBlogs;
+  subBlog: ISubscribeBlog;
 }) {
   return (
     <div className="border p-4 mb-2">

@@ -1,7 +1,3 @@
-export interface IUser {
-  email: string;
-}
-
 export interface IStrapiImage {
   id: number;
   documentId: string;
@@ -18,20 +14,33 @@ export interface IStrapiImage {
   };
   url: string;
 }
-export interface IBlogs {
+
+export interface IUser {
   id: number;
   documentId: string;
-  title: string;
-  thumbnail: IStrapiImage;
-  description: string;
-  detail: any;
+  username: string;
+  email: string;
+  profile: IStrapiImage;
 }
 
-export interface ISubscribeBlogs {
+export interface IBlog {
   id: number;
   documentId: string;
+  publishedAt: string;
   title: string;
   thumbnail: IStrapiImage;
   description: string;
   detail: any;
+  author: IUser;
+}
+
+export interface ISubscribeBlog {
+  id: number;
+  documentId: string;
+  publishedAt: string;
+  title: string;
+  thumbnail: IStrapiImage;
+  description: string;
+  detail: any;
+  author: IUser;
 }

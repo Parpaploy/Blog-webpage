@@ -1,4 +1,4 @@
-import BlogsDefaultPage from "@/components/blogs/blogs-default-page";
+import BlogsDefaultPage from "@/app/blogs/blogs-default-page";
 import { fetchBlogs } from "../../lib/api";
 
 export default async function Homepage() {

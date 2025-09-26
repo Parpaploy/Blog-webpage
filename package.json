@@ -8,7 +8,9 @@
     "start": "next start"
   },
   "dependencies": {
+    "@strapi/blocks-react-renderer": "^1.0.2",
     "axios": "^1.12.2",
+    "husky": "^9.1.7",
     "js-cookie": "^3.0.5",
     "next": "15.5.4",
     "react": "19.1.0",
