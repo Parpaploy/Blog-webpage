@@ -1,7 +1,7 @@
 import { cookies, headers } from "next/headers";
 import { IUser } from "../../../interfaces/strapi.interface";
 import { Logout } from "../../../lib/auth";
-import LoginButton from "./login-btn";
+import NavbarDefault from "./navbar-default";
 
 export default async function Navbar() {
   const cookieStore = await cookies();
@@ -12,30 +12,5 @@ export default async function Navbar() {
 
   // console.log(user, ":user");
 
-  return (
-    <main className="fixed top-0 left-1/2 -translate-x-1/2 w-full h-[7svh] max-w-[1920px] mx-auto bg-amber-200">
-      <div className="w-full h-full flex justify-between items-center">
-        <p> Hello, {user ? user.username : "Guest"}</p>
-        {user !== null ? (
-          <form action={Logout}>
-            <button type="submit" className="bg-red-400 p-2 cursor-pointer">
-              Logout
-            </button>
-          </form>
-        ) : (
-          <>
-            {isLoggedIn ? (
-              <form action={Logout}>
-                <button type="submit" className="bg-red-400 p-2 cursor-pointer">
-                  Login
-                </button>
-              </form>
-            ) : (
-              <LoginButton isLoggedIn={isLoggedIn} />
-            )}
-          </>
-        )}
-      </div>
-    </main>
-  );
+  return <NavbarDefault isLoggedIn={isLoggedIn} user={user} Logout={Logout} />;
 }

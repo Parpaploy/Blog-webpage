@@ -7,7 +7,7 @@ export async function middleware(request: NextRequest) {
     if (!token) return NextResponse.redirect(new URL("/", request.url));
 
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/users/me`,
+      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/users/me?populate=*`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

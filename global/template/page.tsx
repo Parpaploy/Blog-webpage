@@ -1,9 +1,6 @@
 import React from "react";
+import TemplateDefaultPage from "./template-default-page";
 
 export default function TemplatePage() {
-  return (
-    <main className="w-full min-h-[93svh] max-w-[1920px] mx-auto">
-      <section></section>
-    </main>
-  );
+  return <TemplateDefaultPage />;
 }

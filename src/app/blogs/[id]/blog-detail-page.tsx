@@ -1,10 +1,11 @@
 "use client";
 
 import React from "react";
-import { IBlog, IUser } from "../../../../interfaces/strapi.interface";
+import { IBlog } from "../../../../interfaces/strapi.interface";
 import SmallBlogCard from "@/components/blogs/small-blog-card";
 import { FormatDate } from "../../../../utils/format-date";
 import { FormatRichText } from "../../../../utils/format-rich-text";
+import { useTranslation } from "react-i18next";
 
 export default function BlogDetailPage({
   blog,
@@ -15,8 +16,10 @@ export default function BlogDetailPage({
   blogs: IBlog[];
   blogUser: IBlog;
 }) {
+  const { t } = useTranslation("blogs");
+
   return (
-    <main className="w-full h-[93svh] max-w-[1920px] mx-auto flex py-5">
+    <main className="w-full h-[91svh] max-w-[1920px] mx-auto flex py-5">
       <section className="w-[70%] h-full overflow-y-auto px-10">
         <div className="w-full text-start mb-5">
           <h1 className="text-4xl font-bold">{blog.title}</h1>
