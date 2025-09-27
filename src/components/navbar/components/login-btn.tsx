@@ -1,8 +1,15 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import SignButton from "./sign-btn";
 
-export default function LoginButton({ isLoggedIn }: { isLoggedIn: boolean }) {
+export default function LoginButton({
+  isLoggedIn,
+  title,
+}: {
+  isLoggedIn: boolean;
+  title: string;
+}) {
   const currentPath = usePathname();
 
   return (
@@ -11,9 +18,7 @@ export default function LoginButton({ isLoggedIn }: { isLoggedIn: boolean }) {
         <>
           {currentPath !== "/login" && (
             <a href="/login">
-              <button type="submit" className="bg-green-400 p-2 cursor-pointer">
-                Login
-              </button>
+              <SignButton title={title} />
             </a>
           )}
         </>

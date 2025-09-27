@@ -1,9 +1,11 @@
 "use client";
 
 import React from "react";
-import LoginButton from "./login-btn";
 import { IUser } from "../../../interfaces/strapi.interface";
 import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "./components/language-switcher";
+import LoginButton from "./components/login-btn";
+import LogoutButton from "./components/logout-btn";
 
 export default function NavbarDefault({
   isLoggedIn,
@@ -32,29 +34,21 @@ export default function NavbarDefault({
             />
           </div>
           <p className="font-semibold text-lg">
-            สวัสดี{user ? user.username : "Guest"}
+            {t("hello")} {user ? user.username : "Guest"}
           </p>
         </div>
 
         {user !== null ? (
-          <form action={Logout}>
-            <button type="submit" className="bg-red-400 p-2 cursor-pointer">
-              Logout
-            </button>
-          </form>
+          <LogoutButton
+            isLoggedIn={isLoggedIn}
+            Logout={Logout}
+            title={t("logout")}
+          />
         ) : (
-          <>
-            {isLoggedIn ? (
-              <form action={Logout}>
-                <button type="submit" className="bg-red-400 p-2 cursor-pointer">
-                  Logout
-                </button>
-              </form>
-            ) : (
-              <LoginButton isLoggedIn={isLoggedIn} />
-            )}
-          </>
+          <LoginButton isLoggedIn={isLoggedIn} title={t("login")} />
         )}
+
+        <LanguageSwitcher />
       </div>
     </main>
   );
