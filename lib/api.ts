@@ -42,7 +42,7 @@ export const fetchSubscribeBlogs = async () => {
     const cookieStore = await cookies();
     const token = cookieStore.get("token")?.value;
 
-    console.log("token:", token);
+    // console.log("token:", token);
 
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/subscribe-blogs?populate=*`,
@@ -51,6 +51,30 @@ export const fetchSubscribeBlogs = async () => {
           Authorization: `Bearer ${token}`,
         },
       }
+    );
+
+    return response.data.data;
+  } catch (error) {
+    console.log("error:", error);
+  }
+};
+
+export const fetchSubscribeBlogsByID = async (id: string) => {
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/subscribe-blogs/${id}?populate=*`
+    );
+
+    return response.data.data;
+  } catch (error) {
+    console.log("error:", error);
+  }
+};
+
+export const fetchSubscribeBlogsUserByID = async (id: string) => {
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/subscribe-blogs/${id}?populate[author][populate]=profile`
     );
 
     return response.data.data;

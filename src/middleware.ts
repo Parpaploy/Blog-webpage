@@ -1,41 +1,35 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
-  console.log("✅ Middleware triggered on:", request.nextUrl.pathname);
-
   try {
-    const token = request.cookies.get("token");
-    console.log("token:", token?.value);
+    const token = request.cookies.get("token")?.value;
 
-    let response = await fetch(
+    if (!token) return NextResponse.redirect(new URL("/", request.url));
+
+    const response = await fetch(
       `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/users/me`,
       {
-        method: "GET",
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token?.value}`,
+          Authorization: `Bearer ${token}`,
         },
       }
     );
 
-    if (!response.ok) {
-      throw new Error("Login Fail");
-    }
+    if (!response.ok) return NextResponse.redirect(new URL("/", request.url));
 
-    const responseJSON = await response.json();
+    const user = await response.json();
 
-    const requestHeaders = new Headers(request.headers);
-    requestHeaders.set("users", JSON.stringify({ email: responseJSON.email }));
+    const res = NextResponse.next();
 
-    console.log("responJSON:", responseJSON);
-
-    return NextResponse.next({
-      request: {
-        headers: requestHeaders,
-      },
+    res.cookies.set("user", JSON.stringify(user), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
     });
+
+    return res;
   } catch (error) {
-    console.log("error:", error);
+    console.log("Middleware error:", error);
     return NextResponse.redirect(new URL("/", request.url));
   }
 }

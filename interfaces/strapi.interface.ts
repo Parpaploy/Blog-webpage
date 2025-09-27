@@ -23,6 +23,10 @@ export interface IUser {
   profile: IStrapiImage;
 }
 
+export interface INavbar {
+  user: IUser | null;
+}
+
 export interface IBlog {
   id: number;
   documentId: string;
