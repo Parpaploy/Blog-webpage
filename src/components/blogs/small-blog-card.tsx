@@ -10,7 +10,7 @@ export default function SmallBlogCard({ blog }: { blog: IBlog }) {
       href={`/blogs/${blog.documentId}`}
       className="rounded-2xl cursor-pointer"
     >
-      <div className="flex w-90 h-40 rounded-2xl border-1 bg-white overflow-hidden">
+      <div className="flex w-full h-40 rounded-2xl border-1 bg-white overflow-hidden">
         <div className="w-[45%] rounded-r-2xl overflow-hidden">
           <img
             className="w-full h-full object-cover"

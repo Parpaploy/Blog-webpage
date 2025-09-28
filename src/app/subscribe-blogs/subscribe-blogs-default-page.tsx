@@ -4,6 +4,7 @@ import React from "react";
 import { ISubscribeBlog, IUser } from "../../../interfaces/strapi.interface";
 import SubscribeBlogCard from "../../components/subscribe-blogs/subscribe-blog-card";
 import { useTranslation } from "react-i18next";
+import { useSidebar } from "../../../hooks/sidebar";
 
 export default function SubscribeBlogsDefaultPage({
   subscribeBlogs,
@@ -12,8 +13,14 @@ export default function SubscribeBlogsDefaultPage({
 }) {
   const { t } = useTranslation("subscribeBlogs");
 
+  const { isSidebar } = useSidebar();
+
   return (
-    <main className="w-full min-h-[91svh] max-w-[1920px] mx-auto">
+    <main
+      className={`w-full h-full ${
+        isSidebar ? "pl-65" : "pl-25"
+      } transition-all`}
+    >
       {subscribeBlogs && subscribeBlogs.length > 0 ? (
         <section className="w-full h-full p-10">
           <div className="flex flex-wrap gap-5 items-center justify-center">

@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useSidebar } from "../../../hooks/sidebar";
 
 export default function LoginDefaultPage({
   Login,
@@ -10,8 +11,14 @@ export default function LoginDefaultPage({
 }) {
   const { t } = useTranslation("login");
 
+  const { isSidebar } = useSidebar();
+
   return (
-    <main className="w-full min-h-[91svh] max-w-[1920px] mx-auto">
+    <main
+      className={`w-full h-full ${
+        isSidebar ? "pl-65" : "pl-25"
+      } transition-all`}
+    >
       <form action={Login}>
         <div>
           Email
