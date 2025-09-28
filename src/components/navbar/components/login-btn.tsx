@@ -1,7 +1,6 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import SignButton from "./sign-btn";
 import { ReactNode } from "react";
 
 export default function LoginButton({
@@ -19,7 +18,12 @@ export default function LoginButton({
         <>
           {currentPath !== "/login" && (
             <a href="/login">
-              <SignButton title={title} />
+              <button
+                type="submit"
+                className="rounded-lg bg-red-400 p-2 cursor-pointer transition-all "
+              >
+                {title}
+              </button>
             </a>
           )}
         </>

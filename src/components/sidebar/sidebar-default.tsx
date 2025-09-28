@@ -19,6 +19,7 @@ export default function SidebarDefault({
   Logout: (formData: FormData) => void | Promise<void>;
 }) {
   const { t } = useTranslation("navbar");
+
   const { isSidebar, toggleSidebar } = useSidebar();
 
   return (
@@ -27,15 +28,27 @@ export default function SidebarDefault({
         isSidebar ? "w-60" : "w-20"
       } h-full max-h-[1080px] p-3 transition-all`}
     >
-      <main className="w-full h-full rounded-lg bg-amber-200">
+      <main className="w-full h-full rounded-lg p-3 bg-amber-200">
         <div className="w-full h-full flex flex-col justify-between items-center">
-          <LanguageSwitcher />
+          <a href="/">
+            <div className="text-3xl font-bold">{isSidebar ? "Logo" : "L"}</div>
+          </a>
+          {/* <LanguageSwitcher /> */}
 
           {user !== null ? (
             <LogoutButton
               isLoggedIn={isLoggedIn}
               Logout={Logout}
-              title={<TbLogout />}
+              shortTitle={
+                <p className="flex items-center justify-center">
+                  <TbLogout />
+                </p>
+              }
+              longTitle={
+                <p className="flex items-center justify-start gap-3">
+                  <TbLogout /> Logout
+                </p>
+              }
             />
           ) : (
             <></>

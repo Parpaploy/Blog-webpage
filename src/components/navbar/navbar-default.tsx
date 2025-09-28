@@ -16,6 +16,7 @@ export default function NavbarDefault({
   Logout: (formData: FormData) => void | Promise<void>;
 }) {
   const { t } = useTranslation("navbar");
+
   const { isSidebar } = useSidebar();
 
   return (
@@ -32,7 +33,7 @@ export default function NavbarDefault({
                 {t("hello")} {user ? user.username : "Guest"}
               </p>
 
-              <div className="w-7 h-7">
+              <div className="w-8.5 h-8.5">
                 <img
                   className="w-full h-full rounded-full overflow-hidden object-cover aspect-square"
                   src={

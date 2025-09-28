@@ -23,15 +23,15 @@ export default function BlogDetailPage({
 
   return (
     <main
-      className={`w-full h-full flex pt-3 pr-8 ${
+      className={`w-full h-full flex ${
         isSidebar ? "pl-65" : "pl-25"
       } transition-all`}
     >
       {/* Detail */}
       <section className="w-[70%] h-full overflow-y-auto pr-8">
         <div className="w-full text-start mb-5">
-          <h1 className="text-4xl font-bold">{blog.title}</h1>
-          <p className="text-[#6e6e6e]">{blog.description}</p>
+          <h1 className="text-4xl font-bold">{blog?.title}</h1>
+          <p className="text-[#6e6e6e]">{blog?.description}</p>
         </div>
         <div className="w-full h-130 rounded-2xl overflow-hidden">
           <img
@@ -53,12 +53,12 @@ export default function BlogDetailPage({
 
           <div className="w-full text-end">
             <p className="text-sm text-black/50">
-              {FormatDate(blog.publishedAt)}
+              {FormatDate(blog?.publishedAt)}
             </p>
           </div>
         </div>
 
-        {FormatRichText(blog.detail)}
+        {FormatRichText(blog?.detail)}
       </section>
 
       <div className="w-[1px] bg-black/30" />
