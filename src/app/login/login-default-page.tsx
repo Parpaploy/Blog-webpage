@@ -20,24 +20,22 @@ export default function LoginDefaultPage({
       } transition-all`}
     >
       <form action={Login}>
-        <div>
-          Email
-          <input
-            name="email"
-            type="email"
-            required
-            className="border-1 border-gray-400"
-          />
-        </div>
-        <div>
-          Password
-          <input
-            name="password"
-            type="password"
-            required
-            className="border-1 border-gray-400"
-          />
-        </div>
+        <label htmlFor="email">Email</label>
+        <input
+          name="email"
+          type="email"
+          required
+          className="border-1 border-gray-400"
+        />
+
+        <label htmlFor="password">Password</label>
+        <input
+          name="password"
+          type="password"
+          required
+          className="border-1 border-gray-400"
+        />
+
         {/* Message: {state?.message} */}
         <div>
           <button className="bg-blue-400 p-2 cursor-pointer">Login</button>

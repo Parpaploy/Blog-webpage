@@ -6,8 +6,8 @@ import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "../navbar/components/language-switcher";
 import { useSidebar } from "../../../hooks/sidebar";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import LogoutButton from "../navbar/components/logout-btn";
 import { TbLogout } from "react-icons/tb";
+import LogoutButton from "./components/logout-btn";
 
 export default function SidebarDefault({
   isLoggedIn,
@@ -31,7 +31,9 @@ export default function SidebarDefault({
       <main className="w-full h-full rounded-lg p-3 bg-amber-200">
         <div className="w-full h-full flex flex-col justify-between items-center">
           <a href="/">
-            <div className="text-3xl font-bold">{isSidebar ? "Logo" : "L"}</div>
+            <div className="text-3xl font-bold transition-all">
+              {isSidebar ? "Logo" : "L"}
+            </div>
           </a>
           {/* <LanguageSwitcher /> */}
 

@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import { ReactNode } from "react";
 
-export default function LoginButton({
+export default function SignupButton({
   isLoggedIn,
   title,
 }: {
@@ -16,21 +16,21 @@ export default function LoginButton({
     <>
       {!isLoggedIn && (
         <>
-          {/* {currentPath !== "/login" && (
-            <a href="/login">
+          {/* {currentPath !== "/signup" && (
+            <a href="/signup">
               <button
                 type="submit"
-                className="rounded-lg bg-red-400 p-2 cursor-pointer transition-all"
+                className="rounded-lgp-2 cursor-pointer transition-all underline"
               >
                 {title}
               </button>
             </a>
           )} */}
 
-          <a href="/login">
+          <a href="/signup">
             <button
               type="submit"
-              className="rounded-lg bg-red-400 p-2 cursor-pointer transition-all"
+              className="rounded-lgp-2 cursor-pointer transition-all underline"
             >
               {title}
             </button>

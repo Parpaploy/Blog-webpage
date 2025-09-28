@@ -5,6 +5,7 @@ import { IUser } from "../../../interfaces/strapi.interface";
 import { useTranslation } from "react-i18next";
 import LoginButton from "./components/login-btn";
 import { useSidebar } from "../../../hooks/sidebar";
+import SignupButton from "./components/signup-btn";
 
 export default function NavbarDefault({
   isLoggedIn,
@@ -46,9 +47,10 @@ export default function NavbarDefault({
             </>
           ) : (
             <>
-              <p className="font-semibold text-lg"> Guest</p>
+              {/* <p className="font-semibold text-lg"> Guest</p> */}
 
               <LoginButton isLoggedIn={isLoggedIn} title={t("login")} />
+              <SignupButton isLoggedIn={isLoggedIn} title={t("signup")} />
             </>
           )}
         </div>
