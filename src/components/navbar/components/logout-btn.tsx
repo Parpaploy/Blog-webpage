@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import SignButton from "./sign-btn";
+import { ReactNode } from "react";
 
 export default function LogoutButton({
   isLoggedIn,
@@ -10,7 +11,7 @@ export default function LogoutButton({
 }: {
   isLoggedIn: boolean;
   Logout: (formData: FormData) => void | Promise<void>;
-  title: string;
+  title: ReactNode;
 }) {
   const currentPath = usePathname();
 

@@ -21,14 +21,17 @@ export default function NavbarDefault({
   return (
     <main
       className={`fixed top-0 right-0 ${
-        isSidebar ? "w-[calc(100%-15rem)]" : "w-[calc(100%-5rem)]"
-      } h-[8svh] max-w-[1920px] pt-3 pr-3 transition-all`}
+        isSidebar ? "w-[calc(100%-15.5rem)]" : "w-[calc(100%-5.5rem)]"
+      } h-[8svh] max-w-[1920px] pt-3 pr-5 transition-all`}
     >
-      <nav className="w-full h-full rounded-lg px-5 bg-amber-200">
+      <nav className="w-full h-full rounded-lg px-3 bg-amber-200">
         <div className="w-full h-full flex justify-between items-center">
-          <div className="text-2xl font-bold">Logo</div>
           {user !== null ? (
-            <div className="flex items-center justify-center gap-3">
+            <>
+              <p className="font-semibold text-lg">
+                {t("hello")} {user ? user.username : "Guest"}
+              </p>
+
               <div className="w-7 h-7">
                 <img
                   className="w-full h-full rounded-full overflow-hidden object-cover aspect-square"
@@ -39,12 +42,13 @@ export default function NavbarDefault({
                   alt={user?.username + "profile picture"}
                 />
               </div>
-              <p className="font-semibold text-lg">
-                {t("hello")} {user ? user.username : "Guest"}
-              </p>
-            </div>
+            </>
           ) : (
-            <LoginButton isLoggedIn={isLoggedIn} title={t("login")} />
+            <>
+              <p className="font-semibold text-lg"> Guest</p>
+
+              <LoginButton isLoggedIn={isLoggedIn} title={t("login")} />
+            </>
           )}
         </div>
       </nav>

@@ -2,13 +2,14 @@
 
 import { usePathname } from "next/navigation";
 import SignButton from "./sign-btn";
+import { ReactNode } from "react";
 
 export default function LoginButton({
   isLoggedIn,
   title,
 }: {
   isLoggedIn: boolean;
-  title: string;
+  title: ReactNode;
 }) {
   const currentPath = usePathname();
 
