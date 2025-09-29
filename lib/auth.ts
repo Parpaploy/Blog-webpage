@@ -4,6 +4,33 @@ import axios from "axios";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
+function parseJwtExpiresIn(value: string | undefined): number {
+  if (!value) return 60 * 60 * 24;
+
+  const match = value.match(/^(\d+)([smhd])$/);
+  if (!match) return 60 * 60 * 24;
+
+  const amount = parseInt(match[1], 10);
+  const unit = match[2];
+
+  switch (unit) {
+    case "s":
+      return amount;
+    case "m":
+      return amount * 60;
+    case "h":
+      return amount * 60 * 60;
+    case "d":
+      return amount * 60 * 60 * 24;
+    default:
+      return 60 * 60 * 24;
+  }
+}
+
+const COOKIE_MAX_AGE = parseJwtExpiresIn(
+  process.env.NEXT_PUBLIC_JWT_EXPIRES_IN
+);
+
 export async function Signup(formData: FormData) {
   try {
     const username = formData.get("username") as string | null;
@@ -21,12 +48,13 @@ export async function Signup(formData: FormData) {
     );
 
     const cookieStore = await cookies();
+
     cookieStore.set("token", response.data.jwt, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
       path: "/",
-      maxAge: 60 * 60 * 24,
+      maxAge: COOKIE_MAX_AGE,
     });
 
     cookieStore.set("user", JSON.stringify(response.data.user), {
@@ -34,11 +62,10 @@ export async function Signup(formData: FormData) {
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
       path: "/",
-      maxAge: 60 * 60 * 24,
+      maxAge: COOKIE_MAX_AGE,
     });
   } catch (error: unknown) {
     console.log(error, ":error");
-
     redirect("/signup?error=Signup+failed");
     return;
   }
@@ -62,12 +89,13 @@ export async function Login(formData: FormData) {
     );
 
     const cookieStore = await cookies();
+
     cookieStore.set("token", response.data.jwt, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
       path: "/",
-      maxAge: 60 * 60 * 24,
+      maxAge: COOKIE_MAX_AGE,
     });
 
     cookieStore.set("user", JSON.stringify(response.data.user), {
@@ -75,12 +103,12 @@ export async function Login(formData: FormData) {
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
       path: "/",
-      maxAge: 60 * 60 * 24,
+      maxAge: COOKIE_MAX_AGE,
     });
   } catch (error: unknown) {
     console.log(error, ":error");
-
     redirect("/login?error=Login+failed");
+    return;
   }
 
   redirect("/subscribe-blogs");

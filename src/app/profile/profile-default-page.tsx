@@ -1,20 +1,33 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { uploadProfilePicture } from "../../../lib/apis/profile-uploader";
 import { useRouter } from "next/navigation";
 import { useSidebar } from "../../../hooks/sidebar";
 import { useTranslation } from "react-i18next";
+import { IUser } from "../../../interfaces/strapi.interface";
 
-export default function ProfileDefaultPage() {
+interface Props {
+  user: IUser | null;
+}
+
+export default function ProfileDefaultPage({ user }: Props) {
   const [preview, setPreview] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
 
   const { t } = useTranslation("profile");
-
   const { isSidebar } = useSidebar();
-
   const router = useRouter();
+
+  useEffect(() => {
+    console.log("user object:", user);
+
+    if (user?.profile?.formats?.small?.url) {
+      setPreview(
+        `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${user.profile.formats.small.url}`
+      );
+    }
+  }, [user]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
@@ -30,7 +43,6 @@ export default function ProfileDefaultPage() {
       await uploadProfilePicture(file);
 
       router.refresh();
-
       alert("Upload success");
     } catch (err) {
       console.error(err);
@@ -52,8 +64,11 @@ export default function ProfileDefaultPage() {
         <div className="relative w-28 h-28">
           <img
             src={
-              preview ||
-              "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1906669723.jpg"
+              file
+                ? URL.createObjectURL(file)
+                : user?.profile?.formats?.small?.url
+                ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${user.profile.formats.small.url}`
+                : "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1906669723.jpg"
             }
             alt="profile preview"
             className="w-full h-full object-cover rounded-full border border-gray-300 shadow-sm"

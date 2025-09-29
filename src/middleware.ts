@@ -3,21 +3,30 @@ import { NextRequest, NextResponse } from "next/server";
 export async function middleware(request: NextRequest) {
   try {
     const token = request.cookies.get("token")?.value;
+    console.log("🔑 Middleware token:", token);
 
-    if (!token) return NextResponse.redirect(new URL("/", request.url));
+    if (!token) {
+      console.log("❌ No token found, redirecting...");
+      return NextResponse.redirect(new URL("/", request.url));
+    }
 
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/users/me?populate=*`,
+      `${process.env.STRAPI_INTERNAL_URL}/api/users/me?populate=*`,
       {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       }
     );
 
-    if (!response.ok) return NextResponse.redirect(new URL("/", request.url));
+    console.log("🌐 Strapi response status:", response.status);
 
+    if (!response.ok) {
+      const res = NextResponse.redirect(new URL("/", request.url));
+      res.cookies.delete("token");
+      res.cookies.delete("user");
+      return res;
+    }
     const user = await response.json();
+    console.log("✅ User from Strapi:", user);
 
     const res = NextResponse.next();
 
@@ -29,7 +38,7 @@ export async function middleware(request: NextRequest) {
 
     return res;
   } catch (error) {
-    console.log("Middleware error:", error);
+    console.log("💥 Middleware error:", error);
     return NextResponse.redirect(new URL("/", request.url));
   }
 }

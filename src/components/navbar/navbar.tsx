@@ -14,7 +14,7 @@ export default async function Navbar() {
   const userToShow = fetchedUser || initialUser;
   const isLoggedIn = userToShow !== null;
 
-  // console.log(userToShow, ":user");
+  console.log(userToShow, ":navbar user");
 
   return (
     <NavbarDefault isLoggedIn={isLoggedIn} user={userToShow} Logout={Logout} />

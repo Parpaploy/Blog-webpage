@@ -34,22 +34,23 @@ export default function NavbarDefault({
                 {t("hello")} {user ? user.username : "Guest"}
               </p>
 
-              <div className="w-8.5 h-8.5">
-                <img
-                  className="w-full h-full rounded-full overflow-hidden object-cover aspect-square"
-                  src={
-                    user?.profile?.formats?.small?.url
-                      ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${user.profile.formats.small.url}`
-                      : "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1906669723.jpg"
-                  }
-                  alt={(user?.username || "Guest") + " profile picture"}
-                />
-              </div>
+              <a href="/profile" className="rounded-full bg-amber-400">
+                <div className="w-8.5 h-8.5 rounded-full border-1">
+                  <img
+                    className="w-full h-full rounded-full overflow-hidden object-cover aspect-square"
+                    src={
+                      user?.profile?.formats?.small?.url
+                        ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${user.profile.formats.small.url}`
+                        : "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1906669723.jpg"
+                    }
+                    alt={(user?.username || "Guest") + " profile picture"}
+                  />
+                </div>
+              </a>
             </>
           ) : (
             <>
               {/* <p className="font-semibold text-lg"> Guest</p> */}
-              <div className="w-8.5 h-8.5"></div>
 
               <div className="flex justify-center items-center gap-5">
                 <LoginButton isLoggedIn={isLoggedIn} title={t("login")} />
