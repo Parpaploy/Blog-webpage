@@ -1,5 +1,26 @@
 import axios from "axios";
 import { cookies } from "next/headers";
+import { IUser } from "../interfaces/strapi.interface";
+
+export const fetchUser = async (): Promise<IUser | null> => {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
+  const userCookie = cookieStore.get("user")?.value;
+  const userId = userCookie ? JSON.parse(userCookie).id : null;
+
+  if (!token || !userId) return null;
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/users/me?populate=profile`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+      cache: "no-store",
+    }
+  );
+
+  const data = await res.json();
+  return data.data;
+};
 
 export const fetchBlogs = async () => {
   try {

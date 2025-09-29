@@ -43,7 +43,7 @@ export async function Signup(formData: FormData) {
     return;
   }
 
-  redirect("/subscribe-blogs");
+  redirect("/profile");
 }
 
 export async function Login(formData: FormData) {
