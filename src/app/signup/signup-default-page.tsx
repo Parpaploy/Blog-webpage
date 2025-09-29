@@ -3,16 +3,29 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSidebar } from "../../../hooks/sidebar";
-// import ProfileUpload from "../../../lib/profile-upload";
+import { useRouter } from "next/navigation";
+import { Signup } from "../../../lib/auth";
 
-export default function SignupDefaultPage({
-  Signup,
-}: {
-  Signup: (formData: FormData) => void | Promise<void>;
-}) {
+export default function SignupDefaultPage() {
   const { t } = useTranslation("signup");
 
   const { isSidebar } = useSidebar();
+
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+
+    try {
+      const result = await Signup(formData);
+      if (result?.success) {
+        router.push("/profile");
+      }
+    } catch (err) {
+      router.push("/signup?error=Signup+failed");
+    }
+  };
 
   return (
     <main
@@ -20,54 +33,13 @@ export default function SignupDefaultPage({
         isSidebar ? "pl-65" : "pl-25"
       } transition-all`}
     >
-      <form action={Signup} className="bg-white rounded-2xl w-full space-y-5">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white rounded-2xl w-full space-y-5"
+      >
         <h2 className="text-2xl font-bold text-center text-gray-700">
           {t("title")}
         </h2>
-
-        {/* <ProfileUpload /> */}
-
-        {/* <div className="flex flex-col space-y-2">
-          <label
-            htmlFor="username"
-            className="text-sm font-medium text-gray-600"
-          >
-            Username
-          </label>
-          <input
-            name="username"
-            type="text"
-            required
-            className="px-3 py-2 border rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-          />
-        </div> 
-
-        <div className="flex flex-col space-y-2">
-          <label htmlFor="email" className="text-sm font-medium text-gray-600">
-            Email
-          </label>
-          <input
-            name="email"
-            type="email"
-            required
-            className="px-3 py-2 border rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-          />
-        </div>
-
-         <div className="flex flex-col space-y-2">
-          <label
-            htmlFor="password"
-            className="text-sm font-medium text-gray-600"
-          >
-            Password
-          </label>
-          <input
-            name="password"
-            type="password"
-            required
-            className="px-3 py-2 border rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-          />
-        </div> */}
 
         <div className="flex flex-col gap-5">
           <input
