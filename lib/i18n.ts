@@ -16,6 +16,9 @@ import signupTh from "../public/locales/th/signup.json";
 import loginEn from "../public/locales/en/login.json";
 import loginTh from "../public/locales/th/login.json";
 
+import profileEn from "../public/locales/en/profile.json";
+import profileTh from "../public/locales/th/profile.json";
+
 import blogsEn from "../public/locales/en/blogs.json";
 import blogsTh from "../public/locales/th/blogs.json";
 
@@ -30,6 +33,7 @@ i18n.use(initReactI18next).init({
       navbar: navbarTh,
       signup: signupTh,
       login: loginTh,
+      profile: profileTh,
       blogs: blogsTh,
       subscribeBlogs: subscribeBlogsTh,
     },
@@ -39,6 +43,7 @@ i18n.use(initReactI18next).init({
       navbar: navbarEn,
       signup: signupEn,
       login: loginEn,
+      profile: profileEn,
       blogs: blogsEn,
       subscribeBlogs: subscribeBlogsEn,
     },

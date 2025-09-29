@@ -15,27 +15,14 @@ export default function SignupButton({
   return (
     <>
       {!isLoggedIn && (
-        <>
-          {/* {currentPath !== "/signup" && (
-            <a href="/signup">
-              <button
-                type="submit"
-                className="rounded-lgp-2 cursor-pointer transition-all underline"
-              >
-                {title}
-              </button>
-            </a>
-          )} */}
-
-          <a href="/signup">
-            <button
-              type="submit"
-              className="rounded-lgp-2 cursor-pointer transition-all underline"
-            >
-              {title}
-            </button>
-          </a>
-        </>
+        <a href="/signup">
+          <button
+            type="submit"
+            className="rounded-lg bg-red-400 px-2 py-1 cursor-pointer transition-all"
+          >
+            {title}
+          </button>
+        </a>
       )}
     </>
   );

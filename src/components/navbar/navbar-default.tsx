@@ -39,7 +39,7 @@ export default function NavbarDefault({
                   className="w-full h-full rounded-full overflow-hidden object-cover aspect-square"
                   src={
                     `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${user?.profile?.formats?.small?.url}` ||
-                    ""
+                    "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1906669723.jpg"
                   }
                   alt={user?.username + "profile picture"}
                 />
@@ -48,9 +48,12 @@ export default function NavbarDefault({
           ) : (
             <>
               {/* <p className="font-semibold text-lg"> Guest</p> */}
+              <div></div>
 
-              <LoginButton isLoggedIn={isLoggedIn} title={t("login")} />
-              <SignupButton isLoggedIn={isLoggedIn} title={t("signup")} />
+              <div className="flex justify-center items-center gap-5">
+                <LoginButton isLoggedIn={isLoggedIn} title={t("login")} />
+                <SignupButton isLoggedIn={isLoggedIn} title={t("signup")} />
+              </div>
             </>
           )}
         </div>

@@ -15,27 +15,14 @@ export default function LoginButton({
   return (
     <>
       {!isLoggedIn && (
-        <>
-          {/* {currentPath !== "/login" && (
-            <a href="/login">
-              <button
-                type="submit"
-                className="rounded-lg bg-red-400 p-2 cursor-pointer transition-all"
-              >
-                {title}
-              </button>
-            </a>
-          )} */}
-
-          <a href="/login">
-            <button
-              type="submit"
-              className="rounded-lg bg-red-400 p-2 cursor-pointer transition-all"
-            >
-              {title}
-            </button>
-          </a>
-        </>
+        <a href="/login">
+          <button
+            type="submit"
+            className="rounded-lg cursor-pointer transition-all underline"
+          >
+            {title}
+          </button>
+        </a>
       )}
     </>
   );
