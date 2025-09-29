@@ -3,14 +3,14 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSidebar } from "../../../hooks/sidebar";
-import ProfileUpload from "../../../lib/profile-upload";
+// import ProfileUpload from "../../../lib/profile-upload";
 
 export default function SignupDefaultPage({
   Signup,
 }: {
   Signup: (formData: FormData) => void | Promise<void>;
 }) {
-  const { t } = useTranslation("login");
+  const { t } = useTranslation("signup");
 
   const { isSidebar } = useSidebar();
 
@@ -20,15 +20,12 @@ export default function SignupDefaultPage({
         isSidebar ? "pl-65" : "pl-25"
       } transition-all`}
     >
-      <form
-        action={Signup}
-        className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md space-y-6"
-      >
+      <form action={Signup} className="bg-white rounded-2xl w-full">
         <h2 className="text-2xl font-bold text-center text-gray-700">
-          {t("signup_title") || "Create an Account"}
+          {t("title")}
         </h2>
 
-        <ProfileUpload />
+        {/* <ProfileUpload /> */}
 
         <div className="flex flex-col space-y-2">
           <label
