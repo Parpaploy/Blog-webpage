@@ -29,7 +29,9 @@ export default function BlogCard({ blog }: { blog: IBlog }) {
 
           <div className="flex justify-start items-center gap-1">
             {blog.categories.map((cat: ICategory, index: number) => {
-              return <CategoryTag title={cat.title} />;
+              return (
+                <CategoryTag key={index} title={cat.title} textSize="xl" />
+              );
             })}
           </div>
 

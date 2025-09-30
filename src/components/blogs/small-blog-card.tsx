@@ -1,9 +1,10 @@
 "use client";
 
 import React from "react";
-import { IBlog } from "../../../interfaces/strapi.interface";
+import { IBlog, ICategory } from "../../../interfaces/strapi.interface";
 import { FormatDate } from "../../../utils/format-date";
 import { useSidebar } from "../../../hooks/sidebar";
+import CategoryTag from "./category-tag";
 
 export default function SmallBlogCard({ blog }: { blog: IBlog }) {
   const { isSidebar } = useSidebar();
@@ -32,9 +33,17 @@ export default function SmallBlogCard({ blog }: { blog: IBlog }) {
         >
           <div className="w-full text-start">
             <h2 className="font-bold text-xl line-clamp-2">{blog.title}</h2>
-            <p className="font-medium text-md text-black/65 line-clamp-2">
+            <p className="font-medium text-md text-black/65 line-clamp-1">
               {blog.description}
             </p>
+          </div>
+
+          <div className="flex justify-start items-center gap-1">
+            {blog.categories.map((cat: ICategory, index: number) => {
+              return (
+                <CategoryTag key={index} title={cat.title} textSize="sm" />
+              );
+            })}
           </div>
 
           <p className="text-xs text-black/50">
