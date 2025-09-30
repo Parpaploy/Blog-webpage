@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useSidebar } from "../../hooks/sidebar";
 import BlogCard from "@/components/blogs/blog-card";
 import { IBlog, ISubscribeBlog } from "../../interfaces/strapi.interface";
+import SubscribeBlogCard from "@/components/subscribe-blogs/subscribe-blog-card";
 
 export default function HomepageDefault({
   blogs,
@@ -51,7 +52,7 @@ export default function HomepageDefault({
           <section className="w-full h-auto overflow-y-auto py-3">
             <div className="flex gap-5 items-center justify-start">
               {subscribeBlogs.map((subBlog, index: number) => (
-                <BlogCard key={subBlog.id} blog={subBlog} />
+                <SubscribeBlogCard key={subBlog.id} subBlog={subBlog} />
               ))}
             </div>
           </section>

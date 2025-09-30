@@ -82,8 +82,16 @@ export const fetchSubscribeBlogs = async () => {
 
 export const fetchSubscribeBlogsByID = async (id: string) => {
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
+
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/subscribe-blogs/${id}?populate=*`
+      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/subscribe-blogs/${id}?populate=*`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
 
     return response.data.data;
@@ -94,8 +102,16 @@ export const fetchSubscribeBlogsByID = async (id: string) => {
 
 export const fetchSubscribeBlogsUserByID = async (id: string) => {
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
+
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/subscribe-blogs/${id}?populate[author][populate]=profile`
+      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/subscribe-blogs/${id}?populate[author][populate]=profile`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
 
     return response.data.data;

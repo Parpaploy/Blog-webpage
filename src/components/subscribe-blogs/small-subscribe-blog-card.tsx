@@ -4,14 +4,18 @@ import React from "react";
 import { IBlog, ICategory } from "../../../interfaces/strapi.interface";
 import { FormatDate } from "../../../utils/format-date";
 import { useSidebar } from "../../../hooks/sidebar";
-import CategoryTag from "./category-tag";
+import CategoryTag from "../blogs/category-tag";
 
-export default function SmallBlogCard({ blog }: { blog: IBlog }) {
+export default function SmallSubscribeBlogCard({
+  subBlog,
+}: {
+  subBlog: IBlog;
+}) {
   const { isSidebar } = useSidebar();
 
   return (
     <a
-      href={`/blogs/${blog.documentId}`}
+      href={`/subscribe-blogs/${subBlog.documentId}`}
       className="rounded-2xl cursor-pointer"
     >
       <div
@@ -22,7 +26,7 @@ export default function SmallBlogCard({ blog }: { blog: IBlog }) {
         <div className="w-[45%] rounded-r-2xl overflow-hidden">
           <img
             className="w-full h-full object-cover"
-            src={`${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${blog.thumbnail.formats.medium?.url}`}
+            src={`${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${subBlog.thumbnail.formats.medium?.url}`}
             alt=""
           />
         </div>
@@ -32,16 +36,16 @@ export default function SmallBlogCard({ blog }: { blog: IBlog }) {
           } transition-all`}
         >
           <div className="w-full text-start">
-            <h2 className="font-bold text-xl line-clamp-2">{blog.title}</h2>
+            <h2 className="font-bold text-xl line-clamp-2">{subBlog.title}</h2>
             <p className="font-medium text-md text-black/65 line-clamp-1">
-              {blog.description}
+              {subBlog.description}
             </p>
           </div>
 
           <div className="w-full space-y-1">
-            {blog.categories && blog.categories.length > 0 && (
+            {subBlog.categories && subBlog.categories.length > 0 && (
               <div className="flex justify-start items-center gap-1 overflow-x-auto">
-                {blog.categories.map((cat: ICategory, index: number) => {
+                {subBlog.categories.map((cat: ICategory, index: number) => {
                   return (
                     <CategoryTag key={index} title={cat.title} textSize="sm" />
                   );
@@ -50,7 +54,7 @@ export default function SmallBlogCard({ blog }: { blog: IBlog }) {
             )}
 
             <p className="text-xs text-black/50">
-              {FormatDate(blog.publishedAt)}
+              {FormatDate(subBlog.publishedAt)}
             </p>
           </div>
         </div>
