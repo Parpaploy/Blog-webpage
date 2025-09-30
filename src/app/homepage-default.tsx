@@ -13,7 +13,9 @@ export default function HomepageDefault({
   blogs: IBlog[];
   subscribeBlogs: ISubscribeBlog[];
 }) {
-  //console.log(blogs);
+  // console.log(blogs, ":blogs");
+  // console.log(subscribeBlogs, ":subscribe blogs");
+
   const { t } = useTranslation("home");
 
   const { isSidebar } = useSidebar();
@@ -24,49 +26,41 @@ export default function HomepageDefault({
         isSidebar ? "pl-65" : "pl-25"
       } transition-all`}
     >
-      <h1 className="text-2xl font-bold">Blogs</h1>
+      <div className="mb-5">
+        <h1 className="text-2xl font-bold">{t("blog_title")}</h1>
 
-      {blogs && blogs.length > 0 ? (
-        <section className="w-full h-auto overflow-y-auto py-3">
-          <div className="flex gap-5 items-center justify-start">
-            {blogs.map((blog, index: number) => (
-              <BlogCard key={blog.id} blog={blog} />
-            ))}
-            {blogs.map((blog, index: number) => (
-              <BlogCard key={blog.id} blog={blog} />
-            ))}
-            {blogs.map((blog, index: number) => (
-              <BlogCard key={blog.id} blog={blog} />
-            ))}
-          </div>
-        </section>
-      ) : (
-        <section className="text-center w-full h-80 flex items-center justify-center">
-          No Blogs found
-        </section>
-      )}
+        {blogs && blogs.length > 0 ? (
+          <section className="w-full h-auto overflow-y-auto py-3">
+            <div className="flex gap-5 items-center justify-start">
+              {blogs.map((blog, index: number) => (
+                <BlogCard key={blog.id} blog={blog} />
+              ))}
+            </div>
+          </section>
+        ) : (
+          <section className="text-center w-full h-80 flex items-center justify-center">
+            No Blogs found
+          </section>
+        )}
+      </div>
 
-      <h1 className="text-2xl font-bold">Subscribe Blogs</h1>
+      <div>
+        <h1 className="text-2xl font-bold">{t("subscribe_blog_title")}</h1>
 
-      {blogs && blogs.length > 0 ? (
-        <section className="w-full h-auto overflow-y-auto py-3">
-          <div className="flex gap-5 items-center justify-start">
-            {subscribeBlogs.map((subBlog, index: number) => (
-              <BlogCard key={subBlog.id} blog={subBlog} />
-            ))}
-            {subscribeBlogs.map((subBlog, index: number) => (
-              <BlogCard key={subBlog.id} blog={subBlog} />
-            ))}
-            {subscribeBlogs.map((subBlog, index: number) => (
-              <BlogCard key={subBlog.id} blog={subBlog} />
-            ))}
-          </div>
-        </section>
-      ) : (
-        <section className="text-center w-full h-80 flex items-center justify-center">
-          No Subscribe blogs found
-        </section>
-      )}
+        {subscribeBlogs && subscribeBlogs.length > 0 ? (
+          <section className="w-full h-auto overflow-y-auto py-3">
+            <div className="flex gap-5 items-center justify-start">
+              {subscribeBlogs.map((subBlog, index: number) => (
+                <BlogCard key={subBlog.id} blog={subBlog} />
+              ))}
+            </div>
+          </section>
+        ) : (
+          <section className="text-center w-full h-80 flex items-center justify-center">
+            No Subscribe blogs found
+          </section>
+        )}
+      </div>
     </main>
   );
 }

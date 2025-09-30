@@ -27,6 +27,15 @@ export interface INavbar {
   user: IUser | null;
 }
 
+export interface ICategory {
+  id: number;
+  documentId: string;
+  title: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+}
+
 export interface IBlog {
   id: number;
   documentId: string;
@@ -36,6 +45,7 @@ export interface IBlog {
   description: string;
   detail: any;
   author: IUser;
+  categories: ICategory[];
 }
 
 export interface ISubscribeBlog {
@@ -47,4 +57,5 @@ export interface ISubscribeBlog {
   description: string;
   detail: any;
   author: IUser;
+  categories: ICategory[];
 }

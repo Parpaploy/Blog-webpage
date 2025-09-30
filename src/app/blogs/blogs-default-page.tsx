@@ -14,7 +14,7 @@ export default function BlogsDefaultPage({ blogs }: { blogs: IBlog[] }) {
 
   return (
     <main
-      className={`w-full h-full ${
+      className={`w-full h-full overflow-y-auto ${
         isSidebar ? "pl-65" : "pl-25"
       } transition-all`}
     >

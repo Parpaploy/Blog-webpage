@@ -11,7 +11,7 @@ export default function TemplateDefaultPage() {
 
   return (
     <main
-      className={`w-full h-full ${
+      className={`w-full h-full overflow-y-auto ${
         isSidebar ? "pl-65" : "pl-25"
       } transition-all`}
     >
