@@ -1,7 +1,9 @@
-import BlogsDefaultPage from "@/app/blogs/blogs-default-page";
-import { fetchBlogs } from "../../lib/api";
+import { fetchBlogs, fetchSubscribeBlogs } from "../../lib/api";
+import HomepageDefault from "./homepage-default";
 
 export default async function Homepage() {
   const blogs = await fetchBlogs();
-  return <BlogsDefaultPage blogs={blogs} />;
+  const subscribeBlogs = await fetchSubscribeBlogs();
+
+  return <HomepageDefault blogs={blogs} subscribeBlogs={subscribeBlogs} />;
 }

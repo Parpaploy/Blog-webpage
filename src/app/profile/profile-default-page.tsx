@@ -20,7 +20,7 @@ export default function ProfileDefaultPage({ user }: Props) {
   const router = useRouter();
 
   useEffect(() => {
-    console.log("user object:", user);
+    // console.log("profile user:", user);
 
     if (user?.profile?.formats?.small?.url) {
       setPreview(
