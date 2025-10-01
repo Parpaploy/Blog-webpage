@@ -44,7 +44,7 @@ export default function SmallSubscribeBlogCard({
 
           <div className="w-full space-y-1">
             {subBlog.categories && subBlog.categories.length > 0 && (
-              <div className="flex justify-start items-center gap-1 overflow-x-auto">
+              <div className="flex justify-start items-center gap-1">
                 {subBlog.categories.map((cat: ICategory, index: number) => {
                   return (
                     <CategoryTag key={index} title={cat.title} textSize="sm" />
@@ -54,7 +54,7 @@ export default function SmallSubscribeBlogCard({
             )}
 
             <p className="text-xs text-black/50">
-              {FormatDate(subBlog.publishedAt)}
+              {FormatDate(subBlog.createdAt)}
             </p>
           </div>
         </div>

@@ -11,7 +11,7 @@ export default function CategoryTag({
 }) {
   return (
     <div
-      className={`text-white px-1 rounded-md bg-gray-400 ${getTextSizeClass(
+      className={`text-white px-1.5 rounded-md bg-gray-400 ${getTextSizeClass(
         textSize
       )}`}
     >

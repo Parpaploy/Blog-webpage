@@ -3,7 +3,6 @@
 import React from "react";
 import { IUser } from "../../../interfaces/strapi.interface";
 import { useTranslation } from "react-i18next";
-import LanguageSwitcher from "../navbar/components/language-switcher";
 import { useSidebar } from "../../../hooks/sidebar";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { TbLogout } from "react-icons/tb";
@@ -23,7 +22,7 @@ export default function SidebarDefault({
   user: IUser | null;
   Logout: (formData: FormData) => void | Promise<void>;
 }) {
-  const { t } = useTranslation("navbar");
+  const { t } = useTranslation("sidebar");
 
   const { isSidebar, toggleSidebar } = useSidebar();
 
@@ -31,7 +30,7 @@ export default function SidebarDefault({
     <aside
       className={`fixed top-0 left-0 ${
         isSidebar ? "w-60" : "w-20"
-      } h-full max-h-[1080px] p-3 transition-all`}
+      } h-full p-3 transition-all`}
     >
       <main className="w-full h-full rounded-lg p-3 bg-amber-200">
         <div className="w-full h-full flex flex-col justify-between items-center">
@@ -41,9 +40,20 @@ export default function SidebarDefault({
               isSidebar ? "items-start w-full" : "items-center"
             }`}
           >
-            <a href="/">
-              <div className="flex text-3xl font-bold transition-all">
-                {isSidebar ? "Logo" : "L"}
+            <a href="/" className="w-full">
+              <div
+                className={`rounded-lg cursor-pointer transition-all overflow-hidden ${
+                  isSidebar ? "w-full text-start" : "text-center w-10"
+                }`}
+              >
+                <img
+                  src={
+                    isSidebar
+                      ? "/assets/placeholders/logoipsum-large.svg"
+                      : "/assets/placeholders/logoipsum-small.svg"
+                  }
+                  className="w-full h-full object-contain"
+                />
               </div>
             </a>
 
@@ -55,9 +65,12 @@ export default function SidebarDefault({
                 </p>
               }
               longTitle={
-                <p className="flex items-center justify-start gap-3 ">
-                  <GrHomeRounded size={18} /> Home
-                </p>
+                <div className="flex items-stretch justify-start gap-3 ">
+                  <div className="w-[10%]">
+                    <GrHomeRounded size={18} />
+                  </div>
+                  <div className="w-[90%]">{t("home")}</div>
+                </div>
               }
             />
 
@@ -69,13 +82,34 @@ export default function SidebarDefault({
                 </p>
               }
               longTitle={
-                <p className="flex items-center justify-start gap-3">
-                  <TbBrandBlogger size={20} /> Blogs
-                </p>
+                <div className="flex items-stretch justify-start gap-3">
+                  <div className="w-[10%]">
+                    <TbBrandBlogger size={20} />
+                  </div>
+                  <div className="w-[90%]">{t("blogs")}</div>
+                </div>
               }
             />
+
+            {user !== null && (
+              <SidebarMenu
+                path="/subscribe-blogs"
+                shortTitle={
+                  <p className="flex items-center justify-center">
+                    <TbBrandBlogger size={20} />
+                  </p>
+                }
+                longTitle={
+                  <div className="flex items-stretch justify-start gap-3">
+                    <div className="w-[10%]">
+                      <TbBrandBlogger size={20} />
+                    </div>
+                    <div className="w-[90%]">{t("subscribe-blogs")}</div>
+                  </div>
+                }
+              />
+            )}
           </div>
-          {/* <LanguageSwitcher /> */}
 
           {/* Bottom */}
           <div
@@ -96,7 +130,7 @@ export default function SidebarDefault({
                   }
                   longTitle={
                     <p className="flex items-center justify-start gap-3">
-                      <TbLogout size={20} /> Logout
+                      <TbLogout size={20} /> {t("logout")}
                     </p>
                   }
                 />
@@ -111,7 +145,7 @@ export default function SidebarDefault({
                   }
                   longTitle={
                     <p className="flex items-center justify-start gap-3">
-                      <IoPersonOutline size={20} /> Login
+                      <IoPersonOutline size={20} /> {t("login")}
                     </p>
                   }
                 />

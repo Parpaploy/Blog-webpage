@@ -10,6 +10,9 @@ import homeTh from "../public/locales/th/home.json";
 import navbarEn from "../public/locales/en/navbar.json";
 import navbarTh from "../public/locales/th/navbar.json";
 
+import sidebarEn from "../public/locales/en/sidebar.json";
+import sidebarTh from "../public/locales/th/sidebar.json";
+
 import signupEn from "../public/locales/en/signup.json";
 import signupTh from "../public/locales/th/signup.json";
 
@@ -31,6 +34,7 @@ i18n.use(initReactI18next).init({
       template: templateTh,
       home: homeTh,
       navbar: navbarTh,
+      sidebar: sidebarTh,
       signup: signupTh,
       login: loginTh,
       profile: profileTh,
@@ -41,6 +45,7 @@ i18n.use(initReactI18next).init({
       template: templateEn,
       home: homeEn,
       navbar: navbarEn,
+      sidebar: sidebarEn,
       signup: signupEn,
       login: loginEn,
       profile: profileEn,

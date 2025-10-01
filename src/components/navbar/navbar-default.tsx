@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import LoginButton from "./components/login-btn";
 import { useSidebar } from "../../../hooks/sidebar";
 import SignupButton from "./components/signup-btn";
+import LanguageSwitcher from "./components/language-switcher";
 
 export default function NavbarDefault({
   isLoggedIn,
@@ -31,26 +32,29 @@ export default function NavbarDefault({
           {user !== null ? (
             <>
               <p className="font-semibold text-lg">
-                {t("hello")} {user ? user.username : "Guest"}
+                {t("hello")} {user.username}
               </p>
 
-              <a href="/profile" className="rounded-full bg-amber-400">
-                <div className="w-8.5 h-8.5 rounded-full border-1">
-                  <img
-                    className="w-full h-full rounded-full overflow-hidden object-cover aspect-square"
-                    src={
-                      user?.profile?.formats?.small?.url
-                        ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${user.profile.formats.small.url}`
-                        : "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1906669723.jpg"
-                    }
-                    alt={(user?.username || "Guest") + " profile picture"}
-                  />
-                </div>
-              </a>
+              <div className="flex gap-3 items-center justify-center">
+                <LanguageSwitcher />
+                <a href="/profile" className="rounded-full bg-amber-400">
+                  <div className="w-8.5 h-8.5 rounded-full border-1">
+                    <img
+                      className="w-full h-full rounded-full overflow-hidden object-cover aspect-square"
+                      src={
+                        user?.profile?.formats?.small?.url
+                          ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${user.profile.formats.small.url}`
+                          : "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1906669723.jpg"
+                      }
+                      alt={(user?.username || "Guest") + " profile picture"}
+                    />
+                  </div>
+                </a>
+              </div>
             </>
           ) : (
             <>
-              {/* <p className="font-semibold text-lg"> Guest</p> */}
+              <p className="font-semibold text-lg">{t("guest")}</p>
 
               <div className="flex justify-center items-center gap-5">
                 <LoginButton isLoggedIn={isLoggedIn} title={t("login")} />

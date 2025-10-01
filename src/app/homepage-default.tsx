@@ -4,13 +4,19 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSidebar } from "../../hooks/sidebar";
 import BlogCard from "@/components/blogs/blog-card";
-import { IBlog, ISubscribeBlog } from "../../interfaces/strapi.interface";
+import {
+  IBlog,
+  ISubscribeBlog,
+  IUser,
+} from "../../interfaces/strapi.interface";
 import SubscribeBlogCard from "@/components/subscribe-blogs/subscribe-blog-card";
 
 export default function HomepageDefault({
+  user,
   blogs,
   subscribeBlogs,
 }: {
+  user: IUser | null;
   blogs: IBlog[];
   subscribeBlogs: ISubscribeBlog[];
 }) {
@@ -45,23 +51,43 @@ export default function HomepageDefault({
         )}
       </div>
 
-      <div>
-        <h1 className="text-2xl font-bold">{t("subscribe_blog_title")}</h1>
+      <div className="mb-5">
+        <h1 className="text-2xl font-bold">{t("blog_title")}</h1>
 
-        {subscribeBlogs && subscribeBlogs.length > 0 ? (
+        {blogs && blogs.length > 0 ? (
           <section className="w-full h-auto overflow-y-auto py-3">
             <div className="flex gap-5 items-center justify-start">
-              {subscribeBlogs.map((subBlog, index: number) => (
-                <SubscribeBlogCard key={subBlog.id} subBlog={subBlog} />
+              {blogs.map((blog, index: number) => (
+                <BlogCard key={blog.id} blog={blog} />
               ))}
             </div>
           </section>
         ) : (
           <section className="text-center w-full h-80 flex items-center justify-center">
-            No Subscribe blogs found
+            No Blogs found
           </section>
         )}
       </div>
+
+      {user !== null && (
+        <div>
+          <h1 className="text-2xl font-bold">{t("subscribe_blog_title")}</h1>
+
+          {subscribeBlogs && subscribeBlogs.length > 0 ? (
+            <section className="w-full h-auto overflow-y-auto py-3">
+              <div className="flex gap-5 items-center justify-start">
+                {subscribeBlogs.map((subBlog, index: number) => (
+                  <SubscribeBlogCard key={subBlog.id} subBlog={subBlog} />
+                ))}
+              </div>
+            </section>
+          ) : (
+            <section className="text-center w-full h-80 flex items-center justify-center">
+              No Subscribe blogs found
+            </section>
+          )}
+        </div>
+      )}
     </main>
   );
 }

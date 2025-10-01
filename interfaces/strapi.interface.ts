@@ -39,6 +39,8 @@ export interface ICategory {
 export interface IBlog {
   id: number;
   documentId: string;
+  createdAt: string;
+  updatedAt: string;
   publishedAt: string;
   title: string;
   thumbnail: IStrapiImage;
@@ -51,6 +53,8 @@ export interface IBlog {
 export interface ISubscribeBlog {
   id: number;
   documentId: string;
+  createdAt: string;
+  updatedAt: string;
   publishedAt: string;
   title: string;
   thumbnail: IStrapiImage;

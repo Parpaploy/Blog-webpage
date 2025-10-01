@@ -2,5 +2,6 @@
   "hello": "Hello",
   "login": "Login",
   "logout": "Logout",
-  "signup": "Sign Up"
+  "signup": "Sign Up",
+  "guest": "Guest"
 }

@@ -25,7 +25,7 @@ export default function LanguageSwitcher() {
     <button
       onClick={toggleLang}
       style={{ boxShadow: "1px 1px 5px white inset" }}
-      className="w-[80px] h-[35px] rounded-full border-t border border-black md:border-[#838488] relative bg-transparent overflow-hidden flex items-center justify-center backdrop-blur-md cursor-pointer"
+      className="w-20 h-8.5 rounded-full border-t border border-black bg-white relativeoverflow-hidden flex items-center justify-center backdrop-blur-md cursor-pointer"
     >
       {/* Slide icon */}
       <div
@@ -34,14 +34,16 @@ export default function LanguageSwitcher() {
           transform: isThai ? "translateX(0)" : "translateX(40px)",
         }}
       >
-        <img
-          src={
-            isThai ? "/assets/icons/th-icon.svg" : "/assets/icons/en-icon.svg"
-          }
-          alt="lang-icon"
-          className="w-[22px] h-[22px]"
-          draggable="false"
-        />
+        <div className="w-6 h-6 border-1 rounded-full overflow-hidden">
+          <img
+            src={
+              isThai ? "/assets/icons/th-icon.svg" : "/assets/icons/en-icon.svg"
+            }
+            alt="lang-icon"
+            className="w-full h-full object-cover"
+            draggable="false"
+          />
+        </div>
       </div>
 
       {/* Fade text */}

@@ -29,22 +29,28 @@ export default function SubscribeBlogCard({
         <div className="w-full h-[50%] flex flex-col justify-between items-start text-start px-5 py-3">
           <div className="w-full h-full">
             <h2 className="font-bold text-2xl line-clamp-2">{subBlog.title}</h2>
-            <p className="font-medium text-md text-black/65 line-clamp-2">
+            <p className="font-medium text-md text-black/65 line-clamp-1">
               {subBlog.description}
             </p>
           </div>
 
-          {subBlog.categories && subBlog.categories.length > 0 && (
-            <div className="flex justify-start items-center gap-1 overflow-x-auto">
-              {subBlog.categories.map((cat: ICategory, index: number) => {
-                return (
-                  <CategoryTag key={index} title={cat.title} textSize="base" />
-                );
-              })}
-            </div>
-          )}
+          <div className="w-full flex flex-col gap-0.5">
+            {subBlog.categories && subBlog.categories.length > 0 && (
+              <div className="flex justify-start items-center gap-1">
+                {subBlog.categories.map((cat: ICategory, index: number) => {
+                  return (
+                    <CategoryTag
+                      key={index}
+                      title={cat.title}
+                      textSize="base"
+                    />
+                  );
+                })}
+              </div>
+            )}
 
-          <p className="text-black/50">{FormatDate(subBlog.publishedAt)}</p>
+            <p className="text-black/50">{FormatDate(subBlog.createdAt)}</p>
+          </div>
         </div>
       </div>
     </a>

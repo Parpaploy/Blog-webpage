@@ -32,7 +32,7 @@ export default function SmallBlogCard({ blog }: { blog: IBlog }) {
           } transition-all`}
         >
           <div className="w-full text-start">
-            <h2 className="font-bold text-xl line-clamp-2">{blog.title}</h2>
+            <h2 className="font-bold text-xl line-clamp-1">{blog.title}</h2>
             <p className="font-medium text-md text-black/65 line-clamp-1">
               {blog.description}
             </p>
@@ -40,7 +40,7 @@ export default function SmallBlogCard({ blog }: { blog: IBlog }) {
 
           <div className="w-full space-y-1">
             {blog.categories && blog.categories.length > 0 && (
-              <div className="flex justify-start items-center gap-1 overflow-x-auto">
+              <div className="flex justify-start items-center gap-1">
                 {blog.categories.map((cat: ICategory, index: number) => {
                   return (
                     <CategoryTag key={index} title={cat.title} textSize="sm" />
@@ -50,7 +50,7 @@ export default function SmallBlogCard({ blog }: { blog: IBlog }) {
             )}
 
             <p className="text-xs text-black/50">
-              {FormatDate(blog.publishedAt)}
+              {FormatDate(blog.createdAt)}
             </p>
           </div>
         </div>

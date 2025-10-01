@@ -27,17 +27,23 @@ export default function BlogCard({ blog }: { blog: IBlog }) {
             </p>
           </div>
 
-          {blog.categories && blog.categories.length > 0 && (
-            <div className="flex justify-start items-center gap-1 overflow-x-auto">
-              {blog.categories.map((cat: ICategory, index: number) => {
-                return (
-                  <CategoryTag key={index} title={cat.title} textSize="base" />
-                );
-              })}
-            </div>
-          )}
+          <div className="w-full flex flex-col gap-0.5">
+            {blog.categories && blog.categories.length > 0 && (
+              <div className="flex justify-start items-center gap-1">
+                {blog.categories.map((cat: ICategory, index: number) => {
+                  return (
+                    <CategoryTag
+                      key={index}
+                      title={cat.title}
+                      textSize="base"
+                    />
+                  );
+                })}
+              </div>
+            )}
 
-          <p className="text-black/50">{FormatDate(blog.publishedAt)}</p>
+            <p className="text-black/50">{FormatDate(blog.createdAt)}</p>
+          </div>
         </div>
       </div>
     </a>
