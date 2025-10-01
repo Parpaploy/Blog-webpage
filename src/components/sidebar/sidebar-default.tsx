@@ -161,10 +161,15 @@ export default function SidebarDefault({
         </div>
       </main>
 
+      {/* <button
+        className={`absolute top-6 right-0 p-1 text-center bg-red-200 rounded-full z-[10] cursor-pointer transition-all`}
+        onClick={toggleSidebar}
+      >
+        {isSidebar ? <IoIosArrowBack /> : <IoIosArrowForward />}
+      </button> */}
+
       <button
-        className={`absolute top-6  p-1 text-center bg-red-200 rounded-full z-[10] cursor-pointer ${
-          isSidebar ? "left-54" : "left-14"
-        } transition-all`}
+        className={`absolute top-1/2 -translate-y-1/2 -right-[8px] h-10 px-0.5 text-center bg-red-200 rounded-r-lg z-[10] cursor-pointer transition-all`}
         onClick={toggleSidebar}
       >
         {isSidebar ? <IoIosArrowBack /> : <IoIosArrowForward />}
