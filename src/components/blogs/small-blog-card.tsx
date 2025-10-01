@@ -4,7 +4,7 @@ import React from "react";
 import { IBlog, ICategory } from "../../../interfaces/strapi.interface";
 import { FormatDate } from "../../../utils/format-date";
 import { useSidebar } from "../../../hooks/sidebar";
-import CategoryTag from "./category-tag";
+import CategoryTag from "../category-tag";
 
 export default function SmallBlogCard({ blog }: { blog: IBlog }) {
   const { isSidebar } = useSidebar();
@@ -23,7 +23,7 @@ export default function SmallBlogCard({ blog }: { blog: IBlog }) {
           <img
             className="w-full h-full object-cover"
             src={`${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${blog.thumbnail.formats.medium?.url}`}
-            alt=""
+            alt={blog.title + "'s tumbnail picture"}
           />
         </div>
         <div

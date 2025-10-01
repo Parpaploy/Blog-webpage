@@ -1,6 +1,8 @@
+"use client";
+
 import React from "react";
-import { TextSize } from "../../../types/ui.type";
-import { getTextSizeClass } from "../../../utils/text-size";
+import { TextSize } from "../../types/ui.type";
+import { getTextSizeClass } from "../../utils/text-size";
 
 export default function CategoryTag({
   title,

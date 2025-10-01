@@ -4,14 +4,16 @@ import React from "react";
 import { IUser } from "../../../interfaces/strapi.interface";
 import { useTranslation } from "react-i18next";
 import { useSidebar } from "../../../hooks/sidebar";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { TbLogout } from "react-icons/tb";
 import SidebarButton from "./components/sidebar-btn";
 import LogoutButton from "./components/logout-btn";
-import { IoPersonOutline } from "react-icons/io5";
 import SidebarMenu from "./components/sidebar-menu";
-import { GrHomeRounded } from "react-icons/gr";
+
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { TbLogout } from "react-icons/tb";
+import { IoPersonOutline } from "react-icons/io5";
+import { RiHomeLine } from "react-icons/ri";
 import { TbBrandBlogger } from "react-icons/tb";
+import { FaRegStar } from "react-icons/fa";
 
 export default function SidebarDefault({
   isLoggedIn,
@@ -32,7 +34,11 @@ export default function SidebarDefault({
         isSidebar ? "w-60" : "w-20"
       } h-full p-3 transition-all`}
     >
-      <main className="w-full h-full rounded-lg p-3 bg-amber-200">
+      <main
+        className={`w-full h-full ${
+          isSidebar ? "rounded-lg" : "rounded-full"
+        } p-3 bg-amber-200`}
+      >
         <div className="w-full h-full flex flex-col justify-between items-center">
           {/* Top */}
           <div
@@ -61,13 +67,13 @@ export default function SidebarDefault({
               path="/"
               shortTitle={
                 <p className="flex items-center justify-center">
-                  <GrHomeRounded size={18} />
+                  <RiHomeLine size={20} />
                 </p>
               }
               longTitle={
                 <div className="flex items-stretch justify-start gap-3 ">
                   <div className="w-[10%]">
-                    <GrHomeRounded size={18} />
+                    <RiHomeLine size={20} />
                   </div>
                   <div className="w-[90%]">{t("home")}</div>
                 </div>
@@ -95,14 +101,14 @@ export default function SidebarDefault({
               <SidebarMenu
                 path="/subscribe-blogs"
                 shortTitle={
-                  <p className="flex items-center justify-center">
-                    <TbBrandBlogger size={20} />
-                  </p>
+                  <div className="flex items-center justify-center">
+                    <FaRegStar size={20} />
+                  </div>
                 }
                 longTitle={
                   <div className="flex items-stretch justify-start gap-3">
                     <div className="w-[10%]">
-                      <TbBrandBlogger size={20} />
+                      <FaRegStar size={20} />
                     </div>
                     <div className="w-[90%]">{t("subscribe-blogs")}</div>
                   </div>

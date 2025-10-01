@@ -21,7 +21,9 @@ export default function SidebarMenu({
     >
       <button
         type="submit"
-        className={`rounded-lg bg-red-400 p-2 cursor-pointer transition-all ${
+        className={`${
+          isSidebar ? "rounded-lg" : "rounded-full"
+        } bg-red-400 p-2 cursor-pointer transition-all ${
           isSidebar ? "w-full px-3 text-start" : "text-center w-10"
         }`}
       >

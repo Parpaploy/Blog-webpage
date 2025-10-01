@@ -4,7 +4,7 @@ import React from "react";
 import { IBlog, ICategory } from "../../../interfaces/strapi.interface";
 import { FormatDate } from "../../../utils/format-date";
 import { useSidebar } from "../../../hooks/sidebar";
-import CategoryTag from "../blogs/category-tag";
+import CategoryTag from "../category-tag";
 
 export default function SmallSubscribeBlogCard({
   subBlog,
@@ -27,7 +27,7 @@ export default function SmallSubscribeBlogCard({
           <img
             className="w-full h-full object-cover"
             src={`${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${subBlog.thumbnail.formats.medium?.url}`}
-            alt=""
+            alt={subBlog.title + "'s tumbnail picture"}
           />
         </div>
         <div

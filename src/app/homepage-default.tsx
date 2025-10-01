@@ -10,6 +10,7 @@ import {
   IUser,
 } from "../../interfaces/strapi.interface";
 import SubscribeBlogCard from "@/components/subscribe-blogs/subscribe-blog-card";
+import ContinueButton from "@/components/continue-btn";
 
 export default function HomepageDefault({
   user,
@@ -34,7 +35,9 @@ export default function HomepageDefault({
       } transition-all`}
     >
       <div className="mb-5">
-        <h1 className="text-2xl font-bold">{t("blog_title")}</h1>
+        <a href="/blogs" className="inline-block">
+          <div className="text-2xl font-bold">{t("blog_title")}</div>
+        </a>
 
         {blogs && blogs.length > 0 ? (
           <section className="w-full h-auto overflow-y-auto py-3">
@@ -42,24 +45,8 @@ export default function HomepageDefault({
               {blogs.map((blog, index: number) => (
                 <BlogCard key={blog.id} blog={blog} />
               ))}
-            </div>
-          </section>
-        ) : (
-          <section className="text-center w-full h-80 flex items-center justify-center">
-            No Blogs found
-          </section>
-        )}
-      </div>
 
-      <div className="mb-5">
-        <h1 className="text-2xl font-bold">{t("blog_title")}</h1>
-
-        {blogs && blogs.length > 0 ? (
-          <section className="w-full h-auto overflow-y-auto py-3">
-            <div className="flex gap-5 items-center justify-start">
-              {blogs.map((blog, index: number) => (
-                <BlogCard key={blog.id} blog={blog} />
-              ))}
+              <ContinueButton path="/blogs" />
             </div>
           </section>
         ) : (
@@ -71,7 +58,11 @@ export default function HomepageDefault({
 
       {user !== null && (
         <div>
-          <h1 className="text-2xl font-bold">{t("subscribe_blog_title")}</h1>
+          <a href="/subscribe-blogs" className="inline-block">
+            <h1 className="text-2xl font-bold w-fit">
+              {t("subscribe_blog_title")}
+            </h1>
+          </a>
 
           {subscribeBlogs && subscribeBlogs.length > 0 ? (
             <section className="w-full h-auto overflow-y-auto py-3">
@@ -79,6 +70,8 @@ export default function HomepageDefault({
                 {subscribeBlogs.map((subBlog, index: number) => (
                   <SubscribeBlogCard key={subBlog.id} subBlog={subBlog} />
                 ))}
+
+                <ContinueButton path="/subscribe-blogs" />
               </div>
             </section>
           ) : (

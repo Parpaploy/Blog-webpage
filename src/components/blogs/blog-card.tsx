@@ -3,7 +3,7 @@
 import React from "react";
 import { IBlog, ICategory } from "../../../interfaces/strapi.interface";
 import { FormatDate } from "../../../utils/format-date";
-import CategoryTag from "./category-tag";
+import CategoryTag from "../category-tag";
 
 export default function BlogCard({ blog }: { blog: IBlog }) {
   return (
@@ -27,7 +27,7 @@ export default function BlogCard({ blog }: { blog: IBlog }) {
             </p>
           </div>
 
-          <div className="w-full flex flex-col gap-0.5">
+          <div className="w-full flex flex-col gap-1">
             {blog.categories && blog.categories.length > 0 && (
               <div className="flex justify-start items-center gap-1">
                 {blog.categories.map((cat: ICategory, index: number) => {

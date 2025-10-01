@@ -28,7 +28,9 @@ export default function LogoutButton({
         >
           <button
             type="submit"
-            className={`rounded-lg bg-red-400 p-2 cursor-pointer transition-all h-10 ${
+            className={`${
+              isSidebar ? "rounded-lg" : "rounded-full"
+            } bg-red-400 p-2 cursor-pointer transition-all h-10 ${
               isSidebar ? "w-full px-3" : "w-10"
             }`}
           >
