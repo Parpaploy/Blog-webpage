@@ -13,9 +13,7 @@ export function FormatRichText(content: any) {
       content={content}
       blocks={{
         paragraph: ({ children }: any) => (
-          <p className="text-start indent-3 text-black text-lg mb-4">
-            {children}
-          </p>
+          <p className="text-start indent-3 text-lg mb-4">{children}</p>
         ),
         heading: ({ children, level }: any) => {
           switch (level) {

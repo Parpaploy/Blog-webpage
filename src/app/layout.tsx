@@ -39,7 +39,7 @@ export default function RootLayout({
                 <Navbar />
 
                 {/* Page */}
-                <div className="w-full h-screen max-w-[1920px] pt-[calc(8svh+0.75rem)] pr-8 mx-auto">
+                <div className="w-full h-screen max-w-[1920px] pr-8 mx-auto">
                   {children}
                 </div>
               </div>

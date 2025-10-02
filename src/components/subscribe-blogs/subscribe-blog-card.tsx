@@ -19,7 +19,7 @@ export default function SubscribeBlogCard({
       href={`/subscribe-blogs/${subBlog.documentId}`}
       className="relative rounded-2xl cursor-pointer"
     >
-      <div className="w-80 h-90 rounded-2xl border-1 bg-white overflow-hidden">
+      <div className="w-80 h-90 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg overflow-hidden">
         <div className="w-full h-[50%] rounded-b-2xl overflow-hidden">
           <img
             className="w-full h-full object-cover"
@@ -30,7 +30,7 @@ export default function SubscribeBlogCard({
         <div className="w-full h-[50%] flex flex-col justify-between items-start text-start px-5 py-3">
           <div className="w-full h-full">
             <h2 className="font-bold text-2xl line-clamp-2">{subBlog.title}</h2>
-            <p className="font-medium text-md text-black/65 line-clamp-1">
+            <p className="font-medium text-md text-[#bdbdbd]/70 line-clamp-1">
               {subBlog.description}
             </p>
           </div>
@@ -54,7 +54,7 @@ export default function SubscribeBlogCard({
               <FaStar className="w-5 h-5" />
             </div>
 
-            <p className="text-black/50">{FormatDate(subBlog.createdAt)}</p>
+            <p className="text-[#bdbdbd]/70">{FormatDate(subBlog.createdAt)}</p>
           </div>
         </div>
       </div>

@@ -5,6 +5,7 @@ import { IBlog, ICategory } from "../../../interfaces/strapi.interface";
 import { FormatDate } from "../../../utils/format-date";
 import { useSidebar } from "../../../hooks/sidebar";
 import CategoryTag from "../category-tag";
+import { FaStar } from "react-icons/fa";
 
 export default function SmallSubscribeBlogCard({
   subBlog,
@@ -16,14 +17,16 @@ export default function SmallSubscribeBlogCard({
   return (
     <a
       href={`/subscribe-blogs/${subBlog.documentId}`}
-      className="rounded-2xl cursor-pointer"
+      className="relative rounded-2xl cursor-pointer"
     >
       <div
-        className={`flex w-full rounded-2xl border-1 bg-white overflow-hidden ${
-          isSidebar ? "h-35" : "h-40"
+        className={`flex lg:flex-row flex-col lg:w-full w-60 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg overflow-hidden transition-all ${
+          isSidebar
+            ? "2xl:h-45 xl:h-35 lg:h-30 h-full"
+            : "2xl:h-50 xl:h-40 lg:h-35 h-full"
         } transition-all`}
       >
-        <div className="w-[45%] rounded-r-2xl overflow-hidden">
+        <div className="lg:w-[45%] lg:h-full w-full h-[50%] rounded-r-2xl overflow-hidden">
           <img
             className="w-full h-full object-cover"
             src={`${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${subBlog.thumbnail.formats.medium?.url}`}
@@ -31,20 +34,28 @@ export default function SmallSubscribeBlogCard({
           />
         </div>
         <div
-          className={`w-[55%] flex flex-col justify-between items-start ${
-            isSidebar ? "px-3 py-2" : "px-5 py-3"
+          className={`lg:w-[55%] lg:h-full w-full h-[50%] flex flex-col justify-between items-start ${
+            isSidebar
+              ? "xl:px-3 xl:py-2 px-2 py-1"
+              : "xl:px-5 xl:py-3 px-3 py-2"
           } transition-all`}
         >
           <div className="w-full text-start">
-            <h2 className="font-bold text-xl line-clamp-2">{subBlog.title}</h2>
-            <p className="font-medium text-md text-black/65 line-clamp-1">
+            <h2 className="font-bold text-xl line-clamp-1">{subBlog.title}</h2>
+            <p className="font-medium text-md text-[#bdbdbd]/70 line-clamp-1">
               {subBlog.description}
             </p>
           </div>
 
           <div className="w-full space-y-1">
             {subBlog.categories && subBlog.categories.length > 0 && (
-              <div className="flex justify-start items-center gap-1">
+              <div
+                className={`${
+                  isSidebar
+                    ? "2xl:h-23 xl:h-13 lg:h-10 md:h-11.5"
+                    : "2xl:h-23 xl:h-15 lg:h-13 md:h-9.5"
+                } flex flex-wrap justify-start items-end gap-1 overflow-y-auto`}
+              >
                 {subBlog.categories.map((cat: ICategory, index: number) => {
                   return (
                     <CategoryTag key={index} title={cat.title} textSize="sm" />
@@ -53,11 +64,15 @@ export default function SmallSubscribeBlogCard({
               </div>
             )}
 
-            <p className="text-xs text-black/50">
+            <p className="xl:text-xs lg:text-[10px] md:text-[14px] text-[#bdbdbd]/70">
               {FormatDate(subBlog.createdAt)}
             </p>
           </div>
         </div>
+      </div>
+
+      <div className="absolute top-2 left-2 text-[#424EDD] rounded-full bg-amber-300 z-20 p-1">
+        <FaStar className="w-5 h-5" />
       </div>
     </a>
   );

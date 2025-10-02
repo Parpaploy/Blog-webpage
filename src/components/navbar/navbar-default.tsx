@@ -33,17 +33,17 @@ export default function NavbarDefault({
     <main
       className={`fixed top-0 right-0 ${
         isSidebar ? "w-[calc(100%-15.5rem)]" : "w-[calc(100%-5.5rem)]"
-      } h-[8svh] max-w-[1920px] pt-3 pr-5 transition-all`}
+      } h-fit max-w-[1920px] mt-3 pr-5 transition-all`}
     >
       <nav className="w-full h-full rounded-4xl">
-        <div className="w-full h-full flex justify-between items-center text-white/70">
+        <div className="w-full h-full flex justify-between items-start text-white/70">
           {user !== null ? (
             <>
               <p className="font-semibold text-lg bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl px-2 py-1">
                 {t("hello")} {user.username}
               </p>
 
-              <div className="flex gap-3 h-full">
+              <div className="w-[35%] flex gap-3 h-10">
                 <div className="h-full flex-1">
                   <input
                     type="text"

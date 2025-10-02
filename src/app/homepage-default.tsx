@@ -30,7 +30,7 @@ export default function HomepageDefault({
 
   return (
     <main
-      className={`w-full h-full overflow-y-auto text-white/80 ${
+      className={`w-full h-full overflow-y-auto text-white/80 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[5svh] ${
         isSidebar ? "pl-65" : "pl-25"
       } transition-all`}
     >

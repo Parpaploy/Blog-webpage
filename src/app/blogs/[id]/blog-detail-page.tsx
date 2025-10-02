@@ -23,15 +23,17 @@ export default function BlogDetailPage({
 
   return (
     <main
-      className={`w-full h-full flex ${
+      className={`w-full h-full flex lg:flex-row flex-col text-white ${
         isSidebar ? "pl-65" : "pl-25"
       } transition-all`}
     >
       {/* Detail */}
-      <section className="w-[70%] h-full overflow-y-auto pr-8">
+      <section className="lg:w-[70%] w-full lg:h-full h-[70%] overflow-y-auto pr-8 lg:mb-0 mb-3">
+        <div className="before:block 2xl:before:h-[7svh] xl:before:h-[9svh] lg:before:h-[8svh] md:before:h-[5svh] before:content-['']" />
+
         <div className="w-full text-start mb-5">
           <h1 className="text-4xl font-bold">{blog?.title}</h1>
-          <p className="text-[#6e6e6e]">{blog?.description}</p>
+          <p className="text-[#cfcfcf]">{blog?.description}</p>
         </div>
         <div className="w-full h-130 rounded-2xl overflow-hidden">
           <img
@@ -64,9 +66,9 @@ export default function BlogDetailPage({
       <div className="w-[1px] bg-black/30" />
 
       {/* Other blogs */}
-      <section className="w-[30%] h-full flex flex-col pl-8">
+      <section className="lg:w-[30%] w-full lg:h-full h-[30%] flex flex-col lg:pl-8 pl-0 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] pt-0">
         <h1 className="text-3xl font-bold text-start mb-3">Other blogs</h1>
-        <div className="w-full h-full flex flex-col items-start justify-start gap-5 overflow-y-auto">
+        <div className="w-full h-full flex lg:flex-col flex-row items-start justify-start gap-5 lg:overflow-x-hidden lg:overflow-y-auto overflow-y-hidden overflow-x-auto">
           {blogs.map((blog, index: number) => {
             return <SmallBlogCard key={blog.id} blog={blog} />;
           })}
