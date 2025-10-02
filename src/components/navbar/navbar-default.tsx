@@ -35,7 +35,7 @@ export default function NavbarDefault({
         isSidebar ? "w-[calc(100%-15.5rem)]" : "w-[calc(100%-5.5rem)]"
       } h-[8svh] max-w-[1920px] pt-3 pr-5 transition-all`}
     >
-      <nav className="w-full h-full rounded-4xl px-3">
+      <nav className="w-full h-full rounded-4xl">
         <div className="w-full h-full flex justify-between items-center text-white/70">
           {user !== null ? (
             <>
