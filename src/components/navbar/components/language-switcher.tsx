@@ -24,8 +24,7 @@ export default function LanguageSwitcher() {
   return (
     <button
       onClick={toggleLang}
-      style={{ boxShadow: "1px 1px 5px white inset" }}
-      className="w-20 h-8.5 rounded-full border-t border border-black bg-white relativeoverflow-hidden flex items-center justify-center backdrop-blur-md cursor-pointer"
+      className="w-20 h-8.5 rounded-full relative overflow-hidden flex items-center justify-center bg-white/10 backdrop-blur-xs border border-white/30 shadow-lg cursor-pointer"
     >
       {/* Slide icon */}
       <div
@@ -34,13 +33,13 @@ export default function LanguageSwitcher() {
           transform: isThai ? "translateX(0)" : "translateX(40px)",
         }}
       >
-        <div className="w-6 h-6 border-1 rounded-full overflow-hidden">
+        <div className="w-6 h-6 bg-white/20 border border-white/30 shadow-lg rounded-full overflow-hidden">
           <img
             src={
               isThai ? "/assets/icons/th-icon.svg" : "/assets/icons/en-icon.svg"
             }
             alt="lang-icon"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover opacity-80"
             draggable="false"
           />
         </div>

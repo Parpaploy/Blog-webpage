@@ -28,7 +28,7 @@ export default function SidebarButton({
         >
           <button
             type="submit"
-            className={`rounded-lg bg-red-400 p-2 cursor-pointer transition-all h-10 ${
+            className={`rounded-lg p-2 cursor-pointer transition-all h-10 ${
               isSidebar ? "w-full px-3" : "w-10"
             }`}
           >

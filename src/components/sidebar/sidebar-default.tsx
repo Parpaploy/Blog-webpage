@@ -4,7 +4,7 @@ import React from "react";
 import { IUser } from "../../../interfaces/strapi.interface";
 import { useTranslation } from "react-i18next";
 import { useSidebar } from "../../../hooks/sidebar";
-import SidebarButton from "./components/sidebar-btn";
+import SidebarButton from "./components/login-btn";
 import LogoutButton from "./components/logout-btn";
 import SidebarMenu from "./components/sidebar-menu";
 
@@ -14,6 +14,8 @@ import { IoPersonOutline } from "react-icons/io5";
 import { RiHomeLine } from "react-icons/ri";
 import { TbBrandBlogger } from "react-icons/tb";
 import { FaRegStar } from "react-icons/fa";
+import { usePathname } from "next/navigation";
+import LoginButton from "./components/login-btn";
 
 export default function SidebarDefault({
   isLoggedIn,
@@ -28,6 +30,8 @@ export default function SidebarDefault({
 
   const { isSidebar, toggleSidebar } = useSidebar();
 
+  const currentPath = usePathname();
+
   return (
     <aside
       className={`fixed top-0 left-0 ${
@@ -35,20 +39,24 @@ export default function SidebarDefault({
       } h-full p-3 transition-all`}
     >
       <main
-        className={`w-full h-full ${
-          isSidebar ? "rounded-lg" : "rounded-full"
-        } p-3 bg-amber-200`}
+        className={`relative w-full h-full ${
+          isSidebar
+            ? "rounded-l-[30px] rounded-r-lg p-1 pt-3 pb-2"
+            : "rounded-full p-3"
+        } 
+    bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg`}
       >
-        <div className="w-full h-full flex flex-col justify-between items-center">
+        <div className="relative z-10 w-full h-full flex flex-col justify-between items-center">
           {/* Top */}
           <div
             className={`flex flex-col h-full justify-start gap-3 ${
               isSidebar ? "items-start w-full" : "items-center"
             }`}
           >
+            {/* Logo */}
             <a href="/" className="w-full">
               <div
-                className={`rounded-lg cursor-pointer transition-all overflow-hidden ${
+                className={`cursor-pointer transition-all overflow-hidden mb-3 ${
                   isSidebar ? "w-full text-start" : "text-center w-10"
                 }`}
               >
@@ -58,7 +66,9 @@ export default function SidebarDefault({
                       ? "/assets/placeholders/logoipsum-large.svg"
                       : "/assets/placeholders/logoipsum-small.svg"
                   }
-                  className="w-full h-full object-contain"
+                  className={`${
+                    isSidebar ? "px-1.5" : "p-0"
+                  } w-full h-full object-contain`}
                 />
               </div>
             </a>
@@ -67,13 +77,13 @@ export default function SidebarDefault({
               path="/"
               shortTitle={
                 <p className="flex items-center justify-center">
-                  <RiHomeLine size={20} />
+                  <RiHomeLine size={24} />
                 </p>
               }
               longTitle={
-                <div className="flex items-stretch justify-start gap-3 ">
+                <div className="flex items-stretch justify-start gap-10">
                   <div className="w-[10%]">
-                    <RiHomeLine size={20} />
+                    <RiHomeLine size={24} />
                   </div>
                   <div className="w-[90%]">{t("home")}</div>
                 </div>
@@ -84,13 +94,13 @@ export default function SidebarDefault({
               path="/blogs"
               shortTitle={
                 <p className="flex items-center justify-center">
-                  <TbBrandBlogger size={20} />
+                  <TbBrandBlogger size={24} />
                 </p>
               }
               longTitle={
-                <div className="flex items-stretch justify-start gap-3">
+                <div className="flex items-stretch justify-start gap-10">
                   <div className="w-[10%]">
-                    <TbBrandBlogger size={20} />
+                    <TbBrandBlogger size={24} />
                   </div>
                   <div className="w-[90%]">{t("blogs")}</div>
                 </div>
@@ -102,13 +112,13 @@ export default function SidebarDefault({
                 path="/subscribe-blogs"
                 shortTitle={
                   <div className="flex items-center justify-center">
-                    <FaRegStar size={20} />
+                    <FaRegStar size={24} />
                   </div>
                 }
                 longTitle={
-                  <div className="flex items-stretch justify-start gap-3">
+                  <div className="flex items-stretch justify-start gap-10">
                     <div className="w-[10%]">
-                      <FaRegStar size={20} />
+                      <FaRegStar size={24} />
                     </div>
                     <div className="w-[90%]">{t("subscribe-blogs")}</div>
                   </div>
@@ -119,11 +129,12 @@ export default function SidebarDefault({
 
           {/* Bottom */}
           <div
-            className={`flex flex-col justify-start gap-3 ${
-              isSidebar ? "items-start w-full" : "items-center"
+            className={`flex flex-col justify-start gap-x-3 ${
+              isSidebar ? "items-start w-full px-1" : "items-center"
             }`}
           >
-            <div className="w-full border-t-1 border-black/30" />
+            <div className="w-full border-t-1 border-black/30 mb-1" />
+
             <div className="w-full">
               {user !== null ? (
                 <LogoutButton
@@ -135,13 +146,13 @@ export default function SidebarDefault({
                     </p>
                   }
                   longTitle={
-                    <p className="flex items-center justify-start gap-3">
+                    <p className="flex items-center justify-start gap-9">
                       <TbLogout size={20} /> {t("logout")}
                     </p>
                   }
                 />
               ) : (
-                <SidebarButton
+                <LoginButton
                   path="/login"
                   isLoggedIn={isLoggedIn}
                   shortTitle={
@@ -161,15 +172,8 @@ export default function SidebarDefault({
         </div>
       </main>
 
-      {/* <button
-        className={`absolute top-6 right-0 p-1 text-center bg-red-200 rounded-full z-[10] cursor-pointer transition-all`}
-        onClick={toggleSidebar}
-      >
-        {isSidebar ? <IoIosArrowBack /> : <IoIosArrowForward />}
-      </button> */}
-
       <button
-        className={`absolute top-1/2 -translate-y-1/2 -right-[8px] h-10 px-0.5 text-center bg-red-200 rounded-r-lg z-[10] cursor-pointer transition-all`}
+        className={`absolute top-1/2 -translate-y-1/2 -right-[8px] h-10 px-0.5 text-center bg-white/40 backdrop-blur-sm border border-white/30 border-l-0 shadow-lg text-white rounded-r-lg z-[10] cursor-pointer transition-all`}
         onClick={toggleSidebar}
       >
         {isSidebar ? <IoIosArrowBack /> : <IoIosArrowForward />}

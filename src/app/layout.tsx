@@ -24,7 +24,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${ibm.className}  antialiased`}>
+      <body
+        className={`${ibm.className}  antialiased`}
+        style={{
+          backgroundImage: "url('/assets/placeholders/Image 4064x2704.jpg')",
+        }}
+      >
         <I18nProvider>
           <SidebarProvider>
             <div className="w-full h-full flex">

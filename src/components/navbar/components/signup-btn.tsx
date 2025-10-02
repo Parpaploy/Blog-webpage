@@ -18,7 +18,11 @@ export default function SignupButton({
         <a href="/signup">
           <button
             type="submit"
-            className="rounded-lg bg-red-400 px-2 py-1 cursor-pointer transition-all"
+            className={`border border-white/30 border-l-0 backdrop-blur-sm shadow-lg rounded-full px-2 py-1 cursor-pointer transition-all ${
+              currentPath === "/signup"
+                ? "text-white bg-white/40"
+                : "bg-white/10 hover:bg-white/20 hover:text-white/50"
+            }`}
           >
             {title}
           </button>

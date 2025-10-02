@@ -21,13 +21,27 @@ export function FormatDate(dateStr: string) {
     if (diffMinutes < 1) {
       return currentLang === "th" ? "เมื่อสักครู่" : "Just now";
     } else if (diffHours < 1) {
-      return currentLang === "th"
-        ? `${diffMinutes} นาทีที่ผ่านมา`
-        : `${diffMinutes} minutes ago`;
+      return currentLang === "th" ? `${diffMinutes} นาที` : `${diffMinutes}m`;
     } else {
-      return currentLang === "th"
-        ? `${diffHours} ชั่วโมงที่ผ่านมา`
-        : `${diffHours} hours ago`;
+      return currentLang === "th" ? `${diffHours} ชั่วโมง` : `${diffHours}h`;
+    }
+  }
+
+  if (currentLang === "th") {
+    if (diffDays < 7) {
+      return `${diffDays} วัน`;
+    }
+  }
+
+  if (currentLang === "en") {
+    if (diffDays === 1) {
+      const timeOptions: Intl.DateTimeFormatOptions = {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      };
+      const timeStr = date.toLocaleTimeString("en-US", timeOptions);
+      return `Yesterday at ${timeStr}`;
     }
   }
 

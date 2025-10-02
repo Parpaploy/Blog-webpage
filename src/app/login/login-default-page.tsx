@@ -31,15 +31,12 @@ export default function LoginDefaultPage() {
         isSidebar ? "pl-65" : "pl-25"
       } transition-all`}
     >
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white rounded-2xl w-full space-y-5"
-      >
-        <h2 className="text-2xl font-bold text-center text-gray-700">
+      <form onSubmit={handleSubmit} className="w-full space-y-5">
+        <h2 className="text-2xl font-bold text-center text-white/80">
           {t("title")}
         </h2>
 
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-5 text-white">
           {/* <input
             name="username"
             type="text"
@@ -53,7 +50,7 @@ export default function LoginDefaultPage() {
             type="email"
             required
             placeholder="Email"
-            className="px-3 py-2 border rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
           />
 
           <input
@@ -61,7 +58,7 @@ export default function LoginDefaultPage() {
             type="password"
             required
             placeholder="Password"
-            className="px-3 py-2 border rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
           />
         </div>
 
@@ -69,15 +66,14 @@ export default function LoginDefaultPage() {
 
         <button
           type="submit"
-          className="w-full py-2 px-4 bg-blue-500 text-white rounded-lg font-medium 
-                     hover:bg-blue-600 transition duration-200 shadow cursor-pointer"
+          className="cursor-pointer text-white w-full px-3 py-2 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl"
         >
           Login
         </button>
 
-        <div className="flex gap-1 items-center justify-center text-gray-400">
+        <div className="flex gap-1 items-center justify-center text-white/80">
           Don't have an account?
-          <a href="/signup" className="underline cursor-pointer text-blue-600">
+          <a href="/signup" className="underline cursor-pointer text-blue-400">
             Sing Up
           </a>
         </div>
