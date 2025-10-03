@@ -22,6 +22,7 @@ export default function ProfileDefaultPage({ user }: Props) {
   const [username, setUsername] = useState(user?.username || "");
   const [email, setEmail] = useState(user?.email || "");
   const [password, setPassword] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
 
   const [isSaving, setIsSaving] = useState(false);
 
@@ -53,6 +54,7 @@ export default function ProfileDefaultPage({ user }: Props) {
       username?: string;
       email?: string;
       password?: string;
+      currentPassword?: string;
     } = {};
 
     if (username !== user?.username) {
@@ -64,7 +66,13 @@ export default function ProfileDefaultPage({ user }: Props) {
     }
 
     if (password) {
+      if (!currentPassword) {
+        alert("Please enter your current password to set a new password.");
+        setIsSaving(false);
+        return;
+      }
       dataToUpdate.password = password;
+      dataToUpdate.currentPassword = currentPassword;
     }
 
     const hasProfileDetailsUpdate = Object.keys(dataToUpdate).length > 0;
@@ -74,7 +82,10 @@ export default function ProfileDefaultPage({ user }: Props) {
       let isSuccess = false;
 
       if (hasProfileDetailsUpdate) {
-        await updateUserProfile(dataToUpdate);
+        const updateResult = await updateUserProfile(dataToUpdate);
+        if (updateResult && updateResult.error) {
+          throw new Error(updateResult.error);
+        }
         isSuccess = true;
         successMessage += "Profile details updated. ";
       }
@@ -87,16 +98,30 @@ export default function ProfileDefaultPage({ user }: Props) {
 
       if (isSuccess) {
         router.refresh();
-        alert(successMessage.trim() + "Changes saved successfully!");
+        alert(successMessage.trim() + "Changes saved successfully! 🎉");
         setPassword("");
+        setCurrentPassword("");
       } else {
         alert("No changes detected to save.");
       }
     } catch (err) {
-      console.error(err);
-      alert(
-        "Failed to save all changes. Please check the console for details."
-      );
+      const errorObject = err as Error;
+      let userFriendlyMessage = errorObject.message;
+
+      if (userFriendlyMessage.includes("identifier or password")) {
+        userFriendlyMessage =
+          "Password Error: The current password you entered is incorrect. Please try again.";
+      } else if (userFriendlyMessage.includes("Validation error")) {
+        userFriendlyMessage =
+          "Validation Error: Your Username or Email may already be in use, or the data format is invalid. Please check your inputs.";
+      } else if (userFriendlyMessage.includes("Token missing")) {
+        userFriendlyMessage =
+          "Session Expired: Please log out and log back in to save your changes.";
+      }
+
+      console.error(errorObject);
+
+      alert(`Oops! Failed to save changes: \n\n${userFriendlyMessage}`);
     } finally {
       setIsSaving(false);
     }
@@ -163,6 +188,15 @@ export default function ProfileDefaultPage({ user }: Props) {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
+            className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
+            disabled={isSaving}
+          />
+
+          <input
+            type="password"
+            value={currentPassword}
+            onChange={(e) => setCurrentPassword(e.target.value)}
+            placeholder="Current password (required for password change)"
             className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
             disabled={isSaving}
           />

@@ -13,7 +13,7 @@ export async function uploadProfilePicture(file: File) {
   const userCookie = cookieStore.get("user")?.value;
   const user = userCookie ? JSON.parse(userCookie) : null;
 
-  if (!token || !user) throw new Error("User not logged in");
+  if (!token || !user) throw new Error("Please log in again");
 
   try {
     const formData = new FormData();
@@ -76,31 +76,66 @@ interface UpdateData {
   username?: string;
   email?: string;
   password?: string;
+  currentPassword?: string;
 }
 
 /**
  * @param data
  */
-export const updateUserProfile = async (data: UpdateData) => {
+export const updateUserProfile = async (
+  data: UpdateData
+): Promise<any | { error: string }> => {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
   const userCookie = cookieStore.get("user")?.value;
 
   if (!token) {
-    throw new Error("Authentication token is missing. User not logged in.");
+    return {
+      error: "Authentication Error: Please log in again (Token missing).",
+    };
   }
 
-  if (!userCookie) {
-    throw new Error("User data cookie is missing.");
+  const user = userCookie ? JSON.parse(decodeURIComponent(userCookie)) : null;
+  if (!user || !user.id || !user.email) {
+    return {
+      error: "Session Error: User data is incomplete. Please log in again.",
+    };
   }
-
-  const user = JSON.parse(decodeURIComponent(userCookie));
-
-  if (!user || !user.id) {
-    throw new Error("User ID is missing in cookie.");
-  }
-
   const userId = user.id;
+
+  if (data.password && data.currentPassword) {
+    const loginResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/auth/local`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          identifier: user.email,
+          password: data.currentPassword,
+        }),
+      }
+    );
+
+    if (!loginResponse.ok) {
+      let errorMessage = "Current password is incorrect. Please try again.";
+      try {
+        const errorData = await loginResponse.json();
+
+        if (
+          errorData.error?.message &&
+          errorData.error.message.includes("Invalid identifier or password")
+        ) {
+          errorMessage = "Current password is incorrect. Please try again.";
+        } else {
+          errorMessage = errorData.error?.message || errorMessage;
+        }
+      } catch (e) {}
+
+      return { error: errorMessage };
+    }
+
+    delete data.currentPassword;
+  }
 
   const headers = {
     "Content-Type": "application/json",
@@ -118,26 +153,28 @@ export const updateUserProfile = async (data: UpdateData) => {
     );
 
     if (!response.ok) {
-      const errorData = await response.json();
-      const errorMessage =
-        errorData.error?.message ||
-        `Profile update failed with status: ${response.status}`;
-      throw new Error(errorMessage);
+      let errorMessage = `Profile update failed with status: ${response.status}.`;
+      try {
+        const errorData = await response.json();
+
+        errorMessage = errorData.error?.message || errorMessage;
+      } catch (e) {}
+
+      return { error: errorMessage };
     }
 
     const userRes = await fetch(
       `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/users/me?populate=profile`,
       {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       }
     );
 
     if (!userRes.ok) {
-      throw new Error("Failed to refetch user profile after update.");
+      throw new Error(
+        "Successfully updated details, but failed to refresh user data."
+      );
     }
-
     const updatedUser = await userRes.json();
 
     cookieStore.set("user", JSON.stringify(updatedUser), {
@@ -150,7 +187,10 @@ export const updateUserProfile = async (data: UpdateData) => {
 
     return updatedUser;
   } catch (error) {
-    console.error("Update profile error:", error);
-    throw error;
+    const finalErrorMessage = (error as Error).message.includes("fetch failed")
+      ? "Network connection error or API is unavailable. Please try again."
+      : (error as Error).message;
+
+    return { error: finalErrorMessage };
   }
 };
