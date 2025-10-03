@@ -1,7 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { uploadProfilePicture } from "../../../lib/apis/profile-uploader";
+import {
+  updateUserProfile,
+  uploadProfilePicture,
+} from "../../../lib/apis/profile-uploader";
 import { useRouter } from "next/navigation";
 import { useSidebar } from "../../../hooks/sidebar";
 import { useTranslation } from "react-i18next";
@@ -19,6 +22,8 @@ export default function ProfileDefaultPage({ user }: Props) {
   const [username, setUsername] = useState(user?.username || "");
   const [email, setEmail] = useState(user?.email || "");
   const [password, setPassword] = useState("");
+
+  const [isSaving, setIsSaving] = useState(false);
 
   const { t } = useTranslation("profile");
   const { isSidebar } = useSidebar();
@@ -40,15 +45,60 @@ export default function ProfileDefaultPage({ user }: Props) {
     }
   };
 
-  const handleUpload = async () => {
-    if (!file) return;
+  const handleSave = async () => {
+    setIsSaving(true);
+    let successMessage = "";
+
+    const dataToUpdate: {
+      username?: string;
+      email?: string;
+      password?: string;
+    } = {};
+
+    if (username !== user?.username) {
+      dataToUpdate.username = username;
+    }
+
+    if (email !== user?.email) {
+      dataToUpdate.email = email;
+    }
+
+    if (password) {
+      dataToUpdate.password = password;
+    }
+
+    const hasProfileDetailsUpdate = Object.keys(dataToUpdate).length > 0;
+    const hasPictureUpdate = !!file;
+
     try {
-      await uploadProfilePicture(file);
-      router.refresh();
-      alert("Upload success");
+      let isSuccess = false;
+
+      if (hasProfileDetailsUpdate) {
+        await updateUserProfile(dataToUpdate);
+        isSuccess = true;
+        successMessage += "Profile details updated. ";
+      }
+
+      if (hasPictureUpdate) {
+        await uploadProfilePicture(file as File);
+        isSuccess = true;
+        successMessage += "Profile picture updated. ";
+      }
+
+      if (isSuccess) {
+        router.refresh();
+        alert(successMessage.trim() + "Changes saved successfully!");
+        setPassword("");
+      } else {
+        alert("No changes detected to save.");
+      }
     } catch (err) {
       console.error(err);
-      alert("Upload failed");
+      alert(
+        "Failed to save all changes. Please check the console for details."
+      );
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -95,7 +145,7 @@ export default function ProfileDefaultPage({ user }: Props) {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            handleUpload();
+            handleSave();
           }}
           className="flex flex-col space-y-3 w-full max-w-sm mt-6"
         >
@@ -105,6 +155,7 @@ export default function ProfileDefaultPage({ user }: Props) {
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Username"
             className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
+            disabled={isSaving}
           />
 
           <input
@@ -113,6 +164,7 @@ export default function ProfileDefaultPage({ user }: Props) {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
             className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
+            disabled={isSaving}
           />
 
           <input
@@ -121,13 +173,15 @@ export default function ProfileDefaultPage({ user }: Props) {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="New password (optional)"
             className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
+            disabled={isSaving}
           />
 
           <button
             type="submit"
-            className="cursor-pointer text-white/80 w-full px-3 py-2 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl transition-all"
+            className="cursor-pointer text-white/80 w-full px-3 py-2 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl transition-all disabled:opacity-50"
+            disabled={isSaving}
           >
-            Save Changes
+            {isSaving ? "Saving..." : "Save Changes"}
           </button>
         </form>
       </div>
