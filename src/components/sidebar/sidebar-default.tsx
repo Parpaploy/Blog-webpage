@@ -34,7 +34,7 @@ export default function SidebarDefault({
 
   return (
     <aside
-      className={`fixed top-0 left-0 ${
+      className={`fixed top-0 left-0 z-50 ${
         isSidebar ? "w-60" : "w-20"
       } h-full p-3 transition-all`}
     >
@@ -173,7 +173,7 @@ export default function SidebarDefault({
       </main>
 
       <button
-        className={`absolute top-1/2 -translate-y-1/2 -right-[8px] h-10 px-0.5 text-center bg-white/40 backdrop-blur-sm border border-white/30 border-l-0 shadow-lg text-white rounded-r-lg z-[10] cursor-pointer transition-all`}
+        className={`absolute top-1/2 -translate-y-1/2 -right-[8px] h-10 px-0.5 text-center bg-white/40 hover:bg-white/50 backdrop-blur-sm border border-white/30 border-l-0 shadow-lg text-white rounded-r-lg z-[10] cursor-pointer transition-all duration-150`}
         onClick={toggleSidebar}
       >
         {isSidebar ? <IoIosArrowBack /> : <IoIosArrowForward />}

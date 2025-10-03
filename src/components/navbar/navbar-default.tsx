@@ -31,7 +31,7 @@ export default function NavbarDefault({
 
   return (
     <main
-      className={`fixed top-0 right-0 ${
+      className={`fixed top-0 right-0 z-50 ${
         isSidebar ? "w-[calc(100%-15.5rem)]" : "w-[calc(100%-5.5rem)]"
       } h-fit max-w-[1920px] mt-3 pr-5 transition-all`}
     >
@@ -39,9 +39,9 @@ export default function NavbarDefault({
         <div className="w-full h-full flex justify-between items-start text-white/70">
           {user !== null ? (
             <>
-              <p className="font-semibold text-lg bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl px-2 py-1">
+              <div className="font-semibold text-lg bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl px-2 py-1 cursor-default">
                 {t("hello")} {user.username}
-              </p>
+              </div>
 
               <div className="w-[35%] flex gap-3 h-10">
                 <div className="h-full flex-1">
@@ -54,7 +54,7 @@ export default function NavbarDefault({
                   />
                 </div>
                 <div
-                  className="flex w-12 items-center justify-center h-full bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl px-2 py-1 cursor-pointer"
+                  className="flex w-12 items-center justify-center h-full transition-all bg-white/10 hover:bg-white/30 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl px-2 py-1 cursor-pointer"
                   onClick={handleSearch}
                 >
                   <GoSearch size={20} />

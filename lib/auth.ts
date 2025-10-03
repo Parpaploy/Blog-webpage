@@ -87,18 +87,17 @@ export async function Signup(formData: FormData) {
 
 export async function Login(formData: FormData) {
   try {
-    const email = formData.get("email") as string | null;
+    const identifier = formData.get("identifier") as string | null;
     const password = formData.get("password") as string | null;
 
-    if (!email || !password) {
-      redirect("/login?error=Email+and+password+are+required");
+    if (!identifier || !password) {
+      redirect("/login?error=Email+or+Username+and+password+are+required");
       return;
     }
 
-    // Login
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/auth/local`,
-      { identifier: email, password }
+      { identifier, password }
     );
 
     const jwt = response.data.jwt;
@@ -120,13 +119,10 @@ export async function Login(formData: FormData) {
       maxAge: COOKIE_MAX_AGE,
     });
 
-    // redirect("/subscribe-blogs");
-
     return { success: true };
   } catch (error: unknown) {
     console.log(error, ":error");
     return { success: false };
-    // redirect("/login?error=Login+failed");
   }
 }
 

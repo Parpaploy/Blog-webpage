@@ -36,20 +36,12 @@ export default function LoginDefaultPage() {
           {t("title")}
         </h2>
 
-        <div className="flex flex-col gap-5 text-white">
-          {/* <input
-            name="username"
+        <div className="flex flex-col gap-5 text-white/70">
+          <input
+            name="identifier"
             type="text"
             required
-            placeholder="Username"
-            className="px-3 py-2 border rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-          /> */}
-
-          <input
-            name="email"
-            type="email"
-            required
-            placeholder="Email"
+            placeholder="Email or username"
             className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
           />
 
@@ -66,14 +58,17 @@ export default function LoginDefaultPage() {
 
         <button
           type="submit"
-          className="cursor-pointer text-white w-full px-3 py-2 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl"
+          className="cursor-pointer text-white/80 w-full px-3 py-2 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl transition-all"
         >
           Login
         </button>
 
         <div className="flex gap-1 items-center justify-center text-white/80">
           Don't have an account?
-          <a href="/signup" className="underline cursor-pointer text-blue-400">
+          <a
+            href="/signup"
+            className="underline cursor-pointer text-blue-400 transition-all"
+          >
             Sing Up
           </a>
         </div>

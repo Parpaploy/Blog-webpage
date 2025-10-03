@@ -35,7 +35,7 @@ export default function LoginButton({
             } ${
               currentPath === "/login"
                 ? "text-white bg-white/40"
-                : "hover:bg-white/20 hover:text-white/50"
+                : "hover:bg-white/20 text-white/50 hover:text-white/70"
             }`}
           >
             {isSidebar ? longTitle : shortTitle}

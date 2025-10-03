@@ -32,7 +32,7 @@ export default function SidebarMenu({
                     ${
                       thisPath === path
                         ? "bg-white/40 text-white"
-                        : "text-black hover:text-white/50 hover:bg-white/10"
+                        : "text-white/50 hover:text-white/70 hover:bg-white/20"
                     }
                       ${thisPath === path && isSidebar && "rounded-r-sm"}
                       ${

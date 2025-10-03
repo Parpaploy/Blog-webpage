@@ -38,7 +38,7 @@ export default function SignupDefaultPage() {
           {t("title")}
         </h2>
 
-        <div className="flex flex-col gap-5 text-white">
+        <div className="flex flex-col gap-5 text-white/70">
           <input
             name="username"
             type="text"
@@ -66,14 +66,17 @@ export default function SignupDefaultPage() {
 
         <button
           type="submit"
-          className="cursor-pointer text-white w-full px-3 py-2 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl"
+          className="cursor-pointer text-white/80 w-full px-3 py-2 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl transition-all"
         >
           Sign Up
         </button>
 
         <div className="flex gap-1 items-center justify-center text-white/80">
           Already have an account?
-          <a href="/login" className="underline cursor-pointer text-blue-400">
+          <a
+            href="/login"
+            className="underline cursor-pointer text-blue-400 transition-all"
+          >
             Login
           </a>
         </div>
