@@ -67,7 +67,7 @@ export default function ProfileDefaultPage({ user }: Props) {
 
     if (password) {
       if (!currentPassword) {
-        alert("Please enter your current password to set a new password.");
+        alert(t("enterCurrentPassword"));
         setIsSaving(false);
         return;
       }
@@ -87,41 +87,38 @@ export default function ProfileDefaultPage({ user }: Props) {
           throw new Error(updateResult.error);
         }
         isSuccess = true;
-        successMessage += "Profile details updated. ";
+        successMessage += t("profileDetailsUpdated");
       }
 
       if (hasPictureUpdate) {
         await uploadProfilePicture(file as File);
         isSuccess = true;
-        successMessage += "Profile picture updated. ";
+        successMessage += t("profilePictureUpdated");
       }
 
       if (isSuccess) {
         router.refresh();
-        alert(successMessage.trim() + "Changes saved successfully! 🎉");
+        alert(successMessage.trim() + t("changesSaved"));
         setPassword("");
         setCurrentPassword("");
       } else {
-        alert("No changes detected to save.");
+        alert(t("noChanges"));
       }
     } catch (err) {
       const errorObject = err as Error;
       let userFriendlyMessage = errorObject.message;
 
       if (userFriendlyMessage.includes("identifier or password")) {
-        userFriendlyMessage =
-          "Password Error: The current password you entered is incorrect. Please try again.";
+        userFriendlyMessage = t("passwordError");
       } else if (userFriendlyMessage.includes("Validation error")) {
-        userFriendlyMessage =
-          "Validation Error: Your Username or Email may already be in use, or the data format is invalid. Please check your inputs.";
+        userFriendlyMessage = t("validationError");
       } else if (userFriendlyMessage.includes("Token missing")) {
-        userFriendlyMessage =
-          "Session Expired: Please log out and log back in to save your changes.";
+        userFriendlyMessage = t("sessionExpired");
       }
 
       console.error(errorObject);
 
-      alert(`Oops! Failed to save changes: \n\n${userFriendlyMessage}`);
+      alert(`${t("saveFailed")}\n\n${userFriendlyMessage}`);
     } finally {
       setIsSaving(false);
     }
@@ -178,7 +175,7 @@ export default function ProfileDefaultPage({ user }: Props) {
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            placeholder="Username"
+            placeholder={t("username")}
             className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
             disabled={isSaving}
           />
@@ -187,7 +184,7 @@ export default function ProfileDefaultPage({ user }: Props) {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
+            placeholder={t("email")}
             className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
             disabled={isSaving}
           />
@@ -196,16 +193,25 @@ export default function ProfileDefaultPage({ user }: Props) {
             type="password"
             value={currentPassword}
             onChange={(e) => setCurrentPassword(e.target.value)}
-            placeholder="Current password (required for password change)"
+            placeholder={t("currentPassword")}
             className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
             disabled={isSaving}
           />
+
+          <div className="w-full flex justify-end items-center -mt-2.5 -mb-0 pr-3">
+            <a
+              href="/forgot-password"
+              className="text-blue-400/80 underline hover:text-white/80 transition-all text-end"
+            >
+              {t("forgotPassword")}
+            </a>
+          </div>
 
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="New password (optional)"
+            placeholder={t("newPassword")}
             className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
             disabled={isSaving}
           />
@@ -215,7 +221,7 @@ export default function ProfileDefaultPage({ user }: Props) {
             className="cursor-pointer text-white/80 w-full px-3 py-2 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl transition-all disabled:opacity-50"
             disabled={isSaving}
           >
-            {isSaving ? "Saving..." : "Save Changes"}
+            {isSaving ? t("saving") : t("saveChanges")}
           </button>
         </form>
       </div>

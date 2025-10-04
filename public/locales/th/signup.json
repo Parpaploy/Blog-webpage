@@ -1,1 +1,22 @@
-{ "title": "สร้างบัญชีผู้ใช้" }
+{
+  "title": "สมัครสมาชิก",
+  "requiredFields": "กรุณากรอกทุกช่องให้ครบ",
+  "signupSuccess": "สมัครเรียบร้อย! กรุณายืนยันอีเมลของคุณ",
+  "signupFailed": "สมัครไม่สำเร็จ",
+  "resendSuccess": "ส่งลิงก์ยืนยันอีเมลเรียบร้อยแล้ว!",
+  "resendFailed": "ส่งลิงก์ยืนยันไม่สำเร็จ",
+  "usernamePlaceholder": "ชื่อผู้ใช้",
+  "emailPlaceholder": "อีเมล",
+  "passwordPlaceholder": "รหัสผ่าน",
+  "verifyTitle": "กรุณายืนยันอีเมลของคุณ",
+  "verifySubtitle": "คุณใกล้เสร็จแล้ว! เราได้ส่งอีเมลไปที่",
+  "verifyInstruction": "คลิกที่ลิงก์ในอีเมลเพื่อยืนยันการสมัคร หากไม่เจอ กรุณาตรวจสอบในโฟลเดอร์สแปม",
+  "verifyClose": "คุณสามารถปิดหน้านี้ได้",
+  "verifyResendPrompt": "ยังไม่เจออีเมล? ไม่เป็นไร",
+  "resendButton": "ส่งลิงก์ยืนยันอีกครั้ง",
+  "resendLoading": "กำลังส่ง...",
+  "errorTitle": "เกิดข้อผิดพลาด",
+  "errorSubtitle": "ไม่สามารถยืนยันอีเมลของคุณได้",
+  "alreadyHaveAccount": "มีบัญชีแล้ว?",
+  "login": "เข้าสู่ระบบ"
+}

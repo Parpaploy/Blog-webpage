@@ -1,1 +1,18 @@
-{}
+{
+  "username": "Username",
+  "email": "Email",
+  "currentPassword": "Current password (required)",
+  "newPassword": "New password (optional)",
+  "saveChanges": "Save Changes",
+  "saving": "Saving...",
+  "profileDetailsUpdated": "Profile details updated.",
+  "profilePictureUpdated": "Profile picture updated.",
+  "changesSaved": "Changes saved successfully!",
+  "noChanges": "No changes detected to save.",
+  "enterCurrentPassword": "Please enter your current password to set a new password.",
+  "passwordError": "Password Error: The current password you entered is incorrect. Please try again.",
+  "validationError": "Validation Error: Your Username or Email may already be in use, or the data format is invalid. Please check your inputs.",
+  "sessionExpired": "Session Expired: Please log out and log back in to save your changes.",
+  "saveFailed": "Oops! Failed to save changes:",
+  "forgotPassword": "Forgot your password?"
+}

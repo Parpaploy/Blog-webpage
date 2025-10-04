@@ -86,6 +86,7 @@ export default function NavbarDefault({
               </p>
 
               <div className="flex justify-center items-center gap-2">
+                <LanguageSwitcher />
                 <LoginButton isLoggedIn={isLoggedIn} title={t("login")} />
                 <SignupButton isLoggedIn={isLoggedIn} title={t("signup")} />
               </div>

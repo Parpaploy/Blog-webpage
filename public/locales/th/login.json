@@ -1,1 +1,12 @@
-{ "title": "เข้าสู่ระบบ" }
+{
+  "title": "เข้าสู่ระบบ",
+  "identifierPlaceholder": "อีเมลหรือชื่อผู้ใช้",
+  "passwordPlaceholder": "รหัสผ่าน",
+  "forgotPassword": "ลืมรหัสผ่าน?",
+  "loginButton": "เข้าสู่ระบบ",
+  "loading": "กำลังโหลด...",
+  "noAccount": "ยังไม่มีบัญชี?",
+  "signUp": "สมัครสมาชิก",
+  "loginFailed": "เข้าสู่ระบบไม่สำเร็จ โปรดลองอีกครั้ง",
+  "unexpectedError": "เกิดข้อผิดพลาดในการเข้าสู่ระบบ"
+}

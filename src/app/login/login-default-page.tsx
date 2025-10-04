@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSidebar } from "../../../hooks/sidebar";
 import { useRouter } from "next/navigation";
@@ -30,11 +30,11 @@ export default function LoginDefaultPage() {
       if (result?.success) {
         router.push("/subscribe-blogs");
       } else {
-        setMessage("❌ Login failed. โปรดลองอีกครั้ง");
+        setMessage(t("loginFailed"));
         setMessageType("error");
       }
     } catch (err) {
-      setMessage("❌ เกิดข้อผิดพลาดในการเข้าสู่ระบบ");
+      setMessage(t("unexpectedError"));
       setMessageType("error");
     } finally {
       setLoading(false);
@@ -47,7 +47,10 @@ export default function LoginDefaultPage() {
         isSidebar ? "pl-65" : "pl-25"
       } transition-all`}
     >
-      <form onSubmit={handleSubmit} className="w-full space-y-5">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full space-y-5 max-w-sm mx-auto"
+      >
         <h2 className="text-2xl font-bold text-center text-white/80">
           {t("title")}
         </h2>
@@ -67,7 +70,7 @@ export default function LoginDefaultPage() {
             name="identifier"
             type="text"
             required
-            placeholder="Email or username"
+            placeholder={t("identifierPlaceholder")}
             className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
             disabled={loading}
           />
@@ -76,29 +79,36 @@ export default function LoginDefaultPage() {
             name="password"
             type="password"
             required
-            placeholder="Password"
+            placeholder={t("passwordPlaceholder")}
             className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
             disabled={loading}
           />
         </div>
 
-        <a href="/forgot-password">Forgot your password?</a>
+        <div className="w-full flex justify-end items-center -mt-4 -mb-0 pr-3">
+          <a
+            href="/forgot-password"
+            className="text-blue-400/80 underline hover:text-white/80 transition-all text-end"
+          >
+            {t("forgotPassword")}
+          </a>
+        </div>
 
         <button
           type="submit"
           className="cursor-pointer text-white/80 w-full px-3 py-2 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl transition-all"
           disabled={loading}
         >
-          {loading ? "กำลังโหลด..." : "Login"}
+          {loading ? t("loading") : t("loginButton")}
         </button>
 
         <div className="flex gap-1 items-center justify-center text-white/80">
-          Don't have an account?
+          {t("noAccount")}
           <a
             href="/signup"
-            className="underline cursor-pointer text-blue-400 transition-all"
+            className="underline cursor-pointer text-blue-400/80 hover:text-white/80 transition-all"
           >
-            Sing Up
+            {t("signUp")}
           </a>
         </div>
       </form>

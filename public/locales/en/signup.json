@@ -1,3 +1,22 @@
 {
-  "title": "Sign Up"
+  "title": "Sign Up",
+  "requiredFields": "Please fill all fields",
+  "signupSuccess": "Signup successful! Please verify your email",
+  "signupFailed": "Signup failed",
+  "resendSuccess": "Verification email sent successfully!",
+  "resendFailed": "Failed to send verification email",
+  "usernamePlaceholder": "Username",
+  "emailPlaceholder": "Email",
+  "passwordPlaceholder": "Password",
+  "verifyTitle": "Please verify your email",
+  "verifySubtitle": "You're almost there! We sent email to",
+  "verifyInstruction": "Just click on the link in that email to complete your signup. If you don't see it, check your spam folder.",
+  "verifyClose": "You can close this page",
+  "verifyResendPrompt": "Still can't find the email? No problem.",
+  "resendButton": "Resend Verification Email",
+  "resendLoading": "Sending...",
+  "errorTitle": "Error",
+  "errorSubtitle": "Your email address could not be verified",
+  "alreadyHaveAccount": "Already have an account?",
+  "login": "Login"
 }

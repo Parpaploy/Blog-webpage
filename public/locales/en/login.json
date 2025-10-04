@@ -1,1 +1,12 @@
-{ "title": "Login" }
+{
+  "title": "Login",
+  "identifierPlaceholder": "Email or username",
+  "passwordPlaceholder": "Password",
+  "forgotPassword": "Forgot your password?",
+  "loginButton": "Login",
+  "loading": "Loading...",
+  "noAccount": "Don't have an account?",
+  "signUp": "Sign Up",
+  "loginFailed": "Login failed. Please try again",
+  "unexpectedError": "An unexpected error occurred during login"
+}

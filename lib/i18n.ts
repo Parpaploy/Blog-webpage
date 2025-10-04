@@ -19,8 +19,14 @@ import signupTh from "../public/locales/th/signup.json";
 import loginEn from "../public/locales/en/login.json";
 import loginTh from "../public/locales/th/login.json";
 
+import forgotPasswordEn from "../public/locales/en/forgotPassword.json";
+import forgotPasswordTh from "../public/locales/th/forgotPassword.json";
+
 import resetPasswordEn from "../public/locales/en/resetPassword.json";
 import resetPasswordTh from "../public/locales/th/resetPassword.json";
+
+import verificationEn from "../public/locales/en/verification.json";
+import verificationTh from "../public/locales/th/verification.json";
 
 import profileEn from "../public/locales/en/profile.json";
 import profileTh from "../public/locales/th/profile.json";
@@ -40,7 +46,9 @@ i18n.use(initReactI18next).init({
       sidebar: sidebarTh,
       signup: signupTh,
       login: loginTh,
+      forgotPassword: forgotPasswordTh,
       resetPassword: resetPasswordTh,
+      verification: verificationTh,
       profile: profileTh,
       blogs: blogsTh,
       subscribeBlogs: subscribeBlogsTh,
@@ -52,7 +60,9 @@ i18n.use(initReactI18next).init({
       sidebar: sidebarEn,
       signup: signupEn,
       login: loginEn,
+      forgotPassword: forgotPasswordEn,
       resetPassword: resetPasswordEn,
+      verification: verificationEn,
       profile: profileEn,
       blogs: blogsEn,
       subscribeBlogs: subscribeBlogsEn,
