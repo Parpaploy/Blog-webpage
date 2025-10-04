@@ -1,13 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { IUser } from "../../../interfaces/strapi.interface";
 import { useTranslation } from "react-i18next";
 import { useSidebar } from "../../../hooks/sidebar";
-import SidebarButton from "./components/login-btn";
 import LogoutButton from "./components/logout-btn";
 import SidebarMenu from "./components/sidebar-menu";
-
+import { Logout } from "../../../lib/auth";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { TbLogout } from "react-icons/tb";
 import { IoPersonOutline } from "react-icons/io5";
@@ -16,6 +15,7 @@ import { TbBrandBlogger } from "react-icons/tb";
 import { FaRegStar } from "react-icons/fa";
 import { usePathname } from "next/navigation";
 import LoginButton from "./components/login-btn";
+import { useRouter } from "next/navigation";
 
 export default function SidebarDefault({
   isLoggedIn,
@@ -31,6 +31,10 @@ export default function SidebarDefault({
   const { isSidebar, toggleSidebar } = useSidebar();
 
   const currentPath = usePathname();
+
+  const router = useRouter();
+
+  const [isLogout, setIsLogout] = useState(false);
 
   return (
     <aside
@@ -139,14 +143,9 @@ export default function SidebarDefault({
               {user !== null ? (
                 <LogoutButton
                   isLoggedIn={isLoggedIn}
-                  Logout={Logout}
-                  shortTitle={
-                    <p className="flex items-center justify-center">
-                      <TbLogout size={20} />
-                    </p>
-                  }
+                  Logout={() => Logout(new FormData())}
                   longTitle={
-                    <p className="flex items-center justify-start gap-9">
+                    <p className="flex items-center justify-start gap-3">
                       <TbLogout size={20} /> {t("logout")}
                     </p>
                   }

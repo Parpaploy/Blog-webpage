@@ -2,6 +2,7 @@
   "home": "Home",
   "login": "Login",
   "logout": "Logout",
+  "loggingOut": "Logging out…",
   "blogs": "All blogs",
   "subscribe-blogs": "All subcribe blogs"
 }

@@ -14,6 +14,7 @@ export default function SignupDefaultPage() {
     null
   );
   const [loading, setLoading] = useState(false);
+  const [resendLoading, setResendLoading] = useState(false);
 
   const backendMessageMap: Record<string, string> = {
     "username already taken": "usernameTaken",
@@ -64,17 +65,53 @@ export default function SignupDefaultPage() {
       }
     } catch (err: any) {
       console.error(err);
-
       const backendMsg = err.response?.data?.error?.message;
       const key = backendMsg
         ? backendMessageMap[backendMsg] || "signupFailed"
         : "signupFailed";
-
       setMessageKeys([key]);
       setMessageType("error");
     }
 
     setLoading(false);
+  };
+
+  const handleResendLink = async () => {
+    setResendLoading(true);
+    setMessageKeys([]);
+    setMessageType(null);
+
+    const emailInput = (
+      document.querySelector('input[name="email"]') as HTMLInputElement
+    )?.value;
+
+    if (!emailInput) {
+      setMessageKeys(["emailRequired"]);
+      setMessageType("error");
+      setResendLoading(false);
+      return;
+    }
+
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/auth/forgot-password`,
+        { email: emailInput }
+      );
+
+      if (res.status === 200) {
+        setMessageKeys(["resendSuccess"]);
+        setMessageType("success");
+      } else {
+        setMessageKeys(["resendFailed"]);
+        setMessageType("error");
+      }
+    } catch (err) {
+      console.error(err);
+      setMessageKeys(["resendFailed"]);
+      setMessageType("error");
+    } finally {
+      setResendLoading(false);
+    }
   };
 
   return (
@@ -110,7 +147,7 @@ export default function SignupDefaultPage() {
             required
             placeholder={t("usernamePlaceholder")}
             className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
-            disabled={loading}
+            disabled={loading || resendLoading}
           />
           <input
             name="email"
@@ -118,7 +155,7 @@ export default function SignupDefaultPage() {
             required
             placeholder={t("emailPlaceholder")}
             className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
-            disabled={loading}
+            disabled={loading || resendLoading}
           />
           <input
             name="password"
@@ -126,7 +163,7 @@ export default function SignupDefaultPage() {
             required
             placeholder={t("passwordPlaceholder")}
             className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
-            disabled={loading}
+            disabled={loading || resendLoading}
           />
           <input
             name="confirmPassword"
@@ -134,17 +171,28 @@ export default function SignupDefaultPage() {
             required
             placeholder={t("confirmPasswordPlaceholder")}
             className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
-            disabled={loading}
+            disabled={loading || resendLoading}
           />
         </div>
 
         <button
           type="submit"
           className="cursor-pointer text-white/80 w-full px-3 py-2 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl transition-all"
-          disabled={loading}
+          disabled={loading || resendLoading}
         >
           {loading ? t("loading") : t("title")}
         </button>
+
+        {messageType === "success" && (
+          <button
+            type="button"
+            onClick={handleResendLink}
+            className="cursor-pointer w-full px-3 py-2 mt-2 text-white/80 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl transition-all"
+            disabled={loading || resendLoading}
+          >
+            {resendLoading ? t("resendLoading") : t("resendLink")}
+          </button>
+        )}
 
         <div className="flex gap-1 items-center justify-center text-white/80">
           {t("alreadyHaveAccount")}

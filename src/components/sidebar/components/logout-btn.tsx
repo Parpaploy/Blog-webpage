@@ -1,43 +1,56 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import { ReactNode } from "react";
+import { useRouter } from "next/navigation";
+import { ReactNode, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSidebar } from "../../../../hooks/sidebar";
+import { TbLogout } from "react-icons/tb";
 
 export default function LogoutButton({
   isLoggedIn,
   Logout,
-  shortTitle,
   longTitle,
 }: {
   isLoggedIn: boolean;
   Logout: (formData: FormData) => void | Promise<void>;
-  shortTitle: ReactNode;
   longTitle: ReactNode;
 }) {
   const { isSidebar } = useSidebar();
+  const router = useRouter();
+  const { t } = useTranslation("sidebar");
+  const [isLogout, setIsLogout] = useState(false);
+
+  const handleLogout = async () => {
+    setIsLogout(true);
+
+    const formData = new FormData();
+    await Logout(formData);
+
+    router.push("/login");
+  };
+
+  if (!isLoggedIn) return null;
 
   return (
-    <>
-      {isLoggedIn && (
-        <form
-          className={`${
-            isSidebar ? "w-full" : "w-auto"
-          } transition-all relative`}
-          action={Logout}
-        >
-          <button
-            type="submit"
-            className={`  ${
-              isSidebar ? "rounded-2xl" : "rounded-full"
-            }  p-2 cursor-pointer hover:bg-white/20 text-white/50 hover:text-white/70 bg-white/10 border border-white/30 border-l-0 shadow-lg transition-all h-10 ${
-              isSidebar ? "w-full px-3" : "w-10"
-            }`}
-          >
-            {isSidebar ? longTitle : shortTitle}
-          </button>
-        </form>
+    <button
+      type="button"
+      onClick={handleLogout}
+      disabled={isLogout}
+      className={`${
+        isSidebar ? "rounded-2xl w-full px-3" : "rounded-full w-10"
+      } p-2 cursor-pointer hover:bg-white/20 text-white/50 hover:text-white/70 bg-white/10 border border-white/30 border-l-0 shadow-lg transition-all h-10`}
+    >
+      {isLogout ? (
+        <span className="flex items-center gap-2">
+          <TbLogout size={20} /> {t("loggingOut")}
+        </span>
+      ) : isSidebar ? (
+        longTitle
+      ) : (
+        <span className="flex justify-center">
+          <TbLogout size={20} className="transition-transform duration-300" />
+        </span>
       )}
-    </>
+    </button>
   );
 }

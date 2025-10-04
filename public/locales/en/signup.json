@@ -20,5 +20,6 @@
   "errorTitle": "Error",
   "errorSubtitle": "Your email address could not be verified",
   "alreadyHaveAccount": "Already have an account?",
-  "login": "Login"
+  "login": "Login",
+  "loading": "Signing up…"
 }

@@ -4,7 +4,7 @@
   "passwordPlaceholder": "รหัสผ่าน",
   "forgotPassword": "ลืมรหัสผ่าน?",
   "loginButton": "เข้าสู่ระบบ",
-  "loading": "กำลังโหลด...",
+  "loading": "กำลังเข้าสู่ระบบ...",
   "noAccount": "ยังไม่มีบัญชี?",
   "signUp": "สมัครสมาชิก",
   "loginFailed": "เข้าสู่ระบบไม่สำเร็จ โปรดลองอีกครั้ง",

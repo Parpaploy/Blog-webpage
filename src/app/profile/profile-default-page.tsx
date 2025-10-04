@@ -10,6 +10,7 @@ import { useSidebar } from "../../../hooks/sidebar";
 import { useTranslation } from "react-i18next";
 import { IUser } from "../../../interfaces/strapi.interface";
 import { FiEdit3 } from "react-icons/fi";
+import { Logout } from "../../../lib/auth";
 
 interface Props {
   user: IUser | null;
@@ -25,6 +26,7 @@ export default function ProfileDefaultPage({ user }: Props) {
   const [currentPassword, setCurrentPassword] = useState("");
 
   const [isSaving, setIsSaving] = useState(false);
+  const [isLogout, setIsLogout] = useState(false);
   const [messageKeys, setMessageKeys] = useState<string[]>([]);
   const [messageType, setMessageType] = useState<"success" | "error" | null>(
     null
@@ -248,6 +250,18 @@ export default function ProfileDefaultPage({ user }: Props) {
             {isSaving ? t("saving") : t("saveChanges")}
           </button>
         </form>
+
+        <button
+          className="cursor-pointer max-w-sm text-white/80 w-full px-3 py-2 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl transition-all disabled:opacity-50"
+          disabled={isLogout}
+          onClick={async () => {
+            setIsLogout(true);
+            await Logout();
+            router.push("/");
+          }}
+        >
+          {isLogout ? t("isLogout") : t("logout")}
+        </button>
       </div>
     </main>
   );
