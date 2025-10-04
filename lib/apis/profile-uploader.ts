@@ -1,6 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
+import { ResetRequestResult, UpdateData } from "../../interfaces/cms";
 
 /**
  * @param file
@@ -70,13 +71,6 @@ export async function uploadProfilePicture(file: File) {
     console.error("Upload error:", err);
     throw err;
   }
-}
-
-interface UpdateData {
-  username?: string;
-  email?: string;
-  password?: string;
-  currentPassword?: string;
 }
 
 /**
@@ -192,5 +186,49 @@ export const updateUserProfile = async (
       : (error as Error).message;
 
     return { error: finalErrorMessage };
+  }
+};
+
+export const requestResetPassword = async (
+  email: string
+): Promise<ResetRequestResult> => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/auth/forgot-password`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      let errorMessage =
+        "Failed to request password reset due to server error.";
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.error?.message || errorMessage;
+      } catch (e) {}
+
+      return { success: false, error: errorMessage };
+    }
+
+    return {
+      success: true,
+      message:
+        "If a user with this email exists, a password reset link has been sent.",
+    };
+  } catch (error) {
+    console.error("Forgot password request error:", error);
+
+    const finalErrorMessage = (error as Error).message.includes("fetch failed")
+      ? "Network connection error or API is unavailable. Please try again."
+      : (error as Error).message;
+
+    return { success: false, error: finalErrorMessage };
   }
 };

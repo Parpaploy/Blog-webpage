@@ -42,46 +42,67 @@ async function fetchUserWithProfile(jwt: string) {
 
 export async function Signup(formData: FormData) {
   try {
-    const username = formData.get("username") as string | null;
-    const email = formData.get("email") as string | null;
-    const password = formData.get("password") as string | null;
+    const username = formData.get("username") as string;
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
     if (!username || !email || !password) {
-      redirect("/signup?error=Username,+email+and+password+are+required");
-      return;
+      return { success: false, error: "กรอกข้อมูลให้ครบ" };
     }
 
-    // Register user
-    const response = await axios.post(
+    await axios.post(
       `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/auth/local/register`,
       { username, email, password }
     );
 
-    const jwt = response.data.jwt;
-    const updatedUser = await fetchUserWithProfile(jwt);
+    return { success: true, email };
+  } catch (err: any) {
+    console.error(err.response?.data || err);
+    return {
+      success: false,
+      error:
+        err.response?.data?.error?.message ||
+        "สมัครสมาชิกไม่สำเร็จ โปรดลองใหม่",
+    };
+  }
+}
 
-    const cookieStore = await cookies();
-    cookieStore.set("token", jwt, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      path: "/",
-      maxAge: COOKIE_MAX_AGE,
-    });
-    cookieStore.set("user", JSON.stringify(updatedUser), {
-      httpOnly: false,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      path: "/",
-      maxAge: COOKIE_MAX_AGE,
-    });
-
+export async function ResendConfirmation(email: string) {
+  try {
+    await axios.post(
+      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/auth/resend-email-confirmation`,
+      { email }
+    );
     return { success: true };
-    // redirect("/profile");
-  } catch (error: unknown) {
-    console.log(error, ":error");
-    // redirect("/signup?error=Signup+failed");
-    return { success: false };
+  } catch (err: any) {
+    console.error(err.response?.data || err);
+    return { success: false, error: "ส่งลิงก์ยืนยันไม่สำเร็จ" };
+  }
+}
+
+/**
+ * @param email
+ */
+export async function resendConfirmationEmail(email: string) {
+  try {
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/auth/resend-email-confirmation`,
+      { email }
+    );
+
+    if (response.status === 200) {
+      return { success: true };
+    } else {
+      return { success: false, error: "Failed to resend confirmation email" };
+    }
+  } catch (error: any) {
+    console.error(error);
+    return {
+      success: false,
+      error:
+        error.response?.data?.error?.message ||
+        "Failed to resend confirmation email",
+    };
   }
 }
 
@@ -131,4 +152,25 @@ export async function Logout() {
   cookieStore.set("token", "", { maxAge: -1, path: "/" });
   cookieStore.set("user", "", { maxAge: -1, path: "/" });
   redirect("/");
+}
+
+export async function requestResetPassword(email: string) {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/auth/forgot-password`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      }
+    );
+    const data = await res.json();
+    return {
+      success: res.ok,
+      message: data?.data?.message,
+      error: data?.error?.message,
+    };
+  } catch (err) {
+    return { success: false, error: "Failed to send request" };
+  }
 }

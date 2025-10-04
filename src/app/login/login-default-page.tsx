@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSidebar } from "../../../hooks/sidebar";
 import { useRouter } from "next/navigation";
@@ -8,20 +8,36 @@ import { Login } from "../../../lib/auth";
 
 export default function LoginDefaultPage() {
   const { t } = useTranslation("login");
-
   const { isSidebar } = useSidebar();
-
   const router = useRouter();
+
+  const [message, setMessage] = useState<string | null>(null);
+  const [messageType, setMessageType] = useState<"success" | "error" | null>(
+    null
+  );
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
+    if (loading) return;
+    setLoading(true);
+    setMessage(null);
 
     try {
+      const formData = new FormData(e.currentTarget);
       const result = await Login(formData);
-      if (result?.success) router.push("/subscribe-blogs");
+
+      if (result?.success) {
+        router.push("/subscribe-blogs");
+      } else {
+        setMessage("❌ Login failed. โปรดลองอีกครั้ง");
+        setMessageType("error");
+      }
     } catch (err) {
-      router.push("/login?error=Login+failed");
+      setMessage("❌ เกิดข้อผิดพลาดในการเข้าสู่ระบบ");
+      setMessageType("error");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -36,6 +52,16 @@ export default function LoginDefaultPage() {
           {t("title")}
         </h2>
 
+        {message && (
+          <div
+            className={`text-center p-2 rounded ${
+              messageType === "success" ? "text-green-400" : "text-red-400"
+            }`}
+          >
+            {message}
+          </div>
+        )}
+
         <div className="flex flex-col gap-5 text-white/70">
           <input
             name="identifier"
@@ -43,6 +69,7 @@ export default function LoginDefaultPage() {
             required
             placeholder="Email or username"
             className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
+            disabled={loading}
           />
 
           <input
@@ -51,16 +78,18 @@ export default function LoginDefaultPage() {
             required
             placeholder="Password"
             className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
+            disabled={loading}
           />
         </div>
 
-        {/* Message: {state?.message} */}
+        <a href="/forgot-password">Forgot your password?</a>
 
         <button
           type="submit"
           className="cursor-pointer text-white/80 w-full px-3 py-2 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl transition-all"
+          disabled={loading}
         >
-          Login
+          {loading ? "กำลังโหลด..." : "Login"}
         </button>
 
         <div className="flex gap-1 items-center justify-center text-white/80">
