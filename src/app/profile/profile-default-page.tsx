@@ -25,6 +25,10 @@ export default function ProfileDefaultPage({ user }: Props) {
   const [currentPassword, setCurrentPassword] = useState("");
 
   const [isSaving, setIsSaving] = useState(false);
+  const [messageKeys, setMessageKeys] = useState<string[]>([]);
+  const [messageType, setMessageType] = useState<"success" | "error" | null>(
+    null
+  );
 
   const { t } = useTranslation("profile");
   const { isSidebar } = useSidebar();
@@ -48,7 +52,8 @@ export default function ProfileDefaultPage({ user }: Props) {
 
   const handleSave = async () => {
     setIsSaving(true);
-    let successMessage = "";
+    setMessageKeys([]);
+    setMessageType(null);
 
     const dataToUpdate: {
       username?: string;
@@ -57,17 +62,12 @@ export default function ProfileDefaultPage({ user }: Props) {
       currentPassword?: string;
     } = {};
 
-    if (username !== user?.username) {
-      dataToUpdate.username = username;
-    }
-
-    if (email !== user?.email) {
-      dataToUpdate.email = email;
-    }
-
+    if (username !== user?.username) dataToUpdate.username = username;
+    if (email !== user?.email) dataToUpdate.email = email;
     if (password) {
       if (!currentPassword) {
-        alert(t("enterCurrentPassword"));
+        setMessageKeys(["enterCurrentPassword"]);
+        setMessageType("error");
         setIsSaving(false);
         return;
       }
@@ -78,47 +78,60 @@ export default function ProfileDefaultPage({ user }: Props) {
     const hasProfileDetailsUpdate = Object.keys(dataToUpdate).length > 0;
     const hasPictureUpdate = !!file;
 
+    const backendMessageMap: Record<string, string> = {
+      "Current password is incorrect. Please try again.": "passwordError",
+      "identifier or password invalid": "passwordError",
+      "Validation error": "validationError",
+      "Token missing": "sessionExpired",
+    };
+
     try {
       let isSuccess = false;
+      const successKeys: string[] = [];
 
       if (hasProfileDetailsUpdate) {
         const updateResult = await updateUserProfile(dataToUpdate);
-        if (updateResult && updateResult.error) {
-          throw new Error(updateResult.error);
+        if (updateResult?.error) {
+          const i18nKey = backendMessageMap[updateResult.error];
+          setMessageKeys([i18nKey || updateResult.error]);
+          setMessageType("error");
+          setIsSaving(false);
+          return;
         }
         isSuccess = true;
-        successMessage += t("profileDetailsUpdated");
+        successKeys.push("profileDetailsUpdated");
       }
 
       if (hasPictureUpdate) {
         await uploadProfilePicture(file as File);
         isSuccess = true;
-        successMessage += t("profilePictureUpdated");
+        successKeys.push("profilePictureUpdated");
       }
 
       if (isSuccess) {
-        router.refresh();
-        alert(successMessage.trim() + t("changesSaved"));
+        successKeys.push("changesSaved");
+        setMessageKeys(successKeys);
+        setMessageType("success");
         setPassword("");
         setCurrentPassword("");
+        router.refresh();
       } else {
-        alert(t("noChanges"));
+        setMessageKeys(["noChanges"]);
+        setMessageType("error");
       }
     } catch (err) {
       const errorObject = err as Error;
       let userFriendlyMessage = errorObject.message;
 
-      if (userFriendlyMessage.includes("identifier or password")) {
-        userFriendlyMessage = t("passwordError");
-      } else if (userFriendlyMessage.includes("Validation error")) {
-        userFriendlyMessage = t("validationError");
-      } else if (userFriendlyMessage.includes("Token missing")) {
-        userFriendlyMessage = t("sessionExpired");
+      for (const key in backendMessageMap) {
+        if (userFriendlyMessage.includes(key)) {
+          userFriendlyMessage = backendMessageMap[key];
+          break;
+        }
       }
 
-      console.error(errorObject);
-
-      alert(`${t("saveFailed")}\n\n${userFriendlyMessage}`);
+      setMessageKeys(["saveFailed", userFriendlyMessage]);
+      setMessageType("error");
     } finally {
       setIsSaving(false);
     }
@@ -147,7 +160,6 @@ export default function ProfileDefaultPage({ user }: Props) {
             alt="profile preview"
             className="w-full h-full object-cover rounded-full bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg transition-all duration-200 group-hover:brightness-70 opacity-85"
           />
-
           <input
             id="profile"
             type="file"
@@ -171,6 +183,18 @@ export default function ProfileDefaultPage({ user }: Props) {
           }}
           className="flex flex-col space-y-3 w-full max-w-sm mt-6"
         >
+          {messageKeys.length > 0 && (
+            <div
+              className={`text-center p-2 rounded ${
+                messageType === "success"
+                  ? "bg-green-500/20 text-green-300"
+                  : "bg-red-500/20 text-red-300"
+              }`}
+            >
+              {messageKeys.map((k) => t(k)).join(" ")}
+            </div>
+          )}
+
           <input
             type="text"
             value={username}

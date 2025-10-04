@@ -11,7 +11,7 @@ export default function LoginDefaultPage() {
   const { isSidebar } = useSidebar();
   const router = useRouter();
 
-  const [message, setMessage] = useState<string | null>(null);
+  const [messageKeys, setMessageKeys] = useState<string[]>([]);
   const [messageType, setMessageType] = useState<"success" | "error" | null>(
     null
   );
@@ -21,7 +21,8 @@ export default function LoginDefaultPage() {
     e.preventDefault();
     if (loading) return;
     setLoading(true);
-    setMessage(null);
+    setMessageKeys([]);
+    setMessageType(null);
 
     try {
       const formData = new FormData(e.currentTarget);
@@ -30,11 +31,11 @@ export default function LoginDefaultPage() {
       if (result?.success) {
         router.push("/subscribe-blogs");
       } else {
-        setMessage(t("loginFailed"));
+        setMessageKeys(["loginFailed"]);
         setMessageType("error");
       }
     } catch (err) {
-      setMessage(t("unexpectedError"));
+      setMessageKeys(["unexpectedError"]);
       setMessageType("error");
     } finally {
       setLoading(false);
@@ -55,13 +56,15 @@ export default function LoginDefaultPage() {
           {t("title")}
         </h2>
 
-        {message && (
+        {messageKeys.length > 0 && (
           <div
             className={`text-center p-2 rounded ${
-              messageType === "success" ? "text-green-400" : "text-red-400"
+              messageType === "success"
+                ? "bg-green-500/20 text-green-300"
+                : "bg-red-500/20 text-red-300"
             }`}
           >
-            {message}
+            {messageKeys.map((k) => t(k)).join(" ")}
           </div>
         )}
 

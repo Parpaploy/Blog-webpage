@@ -8,6 +8,8 @@
   "usernamePlaceholder": "Username",
   "emailPlaceholder": "Email",
   "passwordPlaceholder": "Password",
+  "confirmPasswordPlaceholder": "Confirm your password",
+  "passwordMismatch": "Passwords do not match",
   "verifyTitle": "Please verify your email",
   "verifySubtitle": "You're almost there! We sent email to",
   "verifyInstruction": "Just click on the link in that email to complete your signup. If you don't see it, check your spam folder.",

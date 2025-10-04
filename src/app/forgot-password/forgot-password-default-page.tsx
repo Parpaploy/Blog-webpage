@@ -8,32 +8,43 @@ import { ResetRequestResult } from "../../../interfaces/cms";
 
 export default function ForgotPasswordDefaultPage() {
   const { t } = useTranslation("forgotPassword");
+  const { isSidebar } = useSidebar();
 
   const [userEmail, setUserEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
-
-  const { isSidebar } = useSidebar();
+  const [messageKey, setMessageKey] = useState<string | null>(null);
+  const [messageType, setMessageType] = useState<"success" | "error" | null>(
+    null
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userEmail) return;
 
     setLoading(true);
-    setMessage(null);
+    setMessageKey(null);
+    setMessageType(null);
 
     try {
       const result: ResetRequestResult = await requestResetPassword(userEmail);
 
-      if (result.success) {
-        setMessage(result.message || t("success"));
-        setUserEmail("");
-      } else {
-        const errorMessage = result.error || t("unexpectedError");
-        setMessage(`${t("errorPrefix")}${errorMessage}`);
-      }
+      const apiMessageKeyMap: Record<string, string> = {
+        "If a user with this email exists, a password reset link has been sent.":
+          "success",
+        "Email not found": "emailNotFound",
+        "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง": "unexpectedError",
+      };
+
+      const key =
+        apiMessageKeyMap[result.message || result.error || ""] ||
+        "unexpectedError";
+
+      setMessageKey(key);
+      setMessageType(result.success ? "success" : "error");
+      if (result.success) setUserEmail("");
     } catch (error) {
-      setMessage(t("unexpectedError"));
+      setMessageKey("unexpectedError");
+      setMessageType("error");
     } finally {
       setLoading(false);
     }
@@ -52,18 +63,17 @@ export default function ForgotPasswordDefaultPage() {
         <h2 className="text-2xl font-bold text-center text-white/80">
           {t("title")}
         </h2>
-
         <p className="text-center text-white/70">{t("subtitle")}</p>
 
-        {message && (
+        {messageKey && (
           <div
-            className={`p-3 rounded-lg text-center ${
-              message.startsWith(t("errorPrefix").trim())
-                ? "bg-red-500/20 text-red-300"
-                : "bg-green-500/20 text-green-300"
+            className={`text-center p-2 rounded ${
+              messageType === "success"
+                ? "bg-green-500/20 text-green-300"
+                : "bg-red-500/20 text-red-300"
             }`}
           >
-            {message}
+            {t(messageKey)}
           </div>
         )}
 

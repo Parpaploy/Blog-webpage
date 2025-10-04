@@ -8,6 +8,8 @@
   "usernamePlaceholder": "ชื่อผู้ใช้",
   "emailPlaceholder": "อีเมล",
   "passwordPlaceholder": "รหัสผ่าน",
+  "confirmPasswordPlaceholder": "ยืนยันรหัสผ่าน",
+  "passwordMismatch": "รหัสผ่านไม่ตรงกัน",
   "verifyTitle": "กรุณายืนยันอีเมลของคุณ",
   "verifySubtitle": "คุณใกล้เสร็จแล้ว! เราได้ส่งอีเมลไปที่",
   "verifyInstruction": "คลิกที่ลิงก์ในอีเมลเพื่อยืนยันการสมัคร หากไม่เจอ กรุณาตรวจสอบในโฟลเดอร์สแปม",
