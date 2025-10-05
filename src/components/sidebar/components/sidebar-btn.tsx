@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ReactNode } from "react";
 import { useSidebar } from "../../../../hooks/sidebar";
 
@@ -19,22 +19,22 @@ export default function SidebarButton({
 
   const { isSidebar } = useSidebar();
 
+  const router = useRouter();
+
   return (
     <>
       {!isLoggedIn && (
-        <a
-          href={path}
-          className={`${isSidebar ? "w-full" : "w-auto"} transition-all`}
+        <button
+          onClick={() => {
+            router.push(path);
+          }}
+          type="submit"
+          className={`rounded-lg p-2 cursor-pointer ${
+            isSidebar ? "w-full" : "w-auto"
+          } transition-all h-10 ${isSidebar ? "w-full px-3" : "w-10"}`}
         >
-          <button
-            type="submit"
-            className={`rounded-lg p-2 cursor-pointer transition-all h-10 ${
-              isSidebar ? "w-full px-3" : "w-10"
-            }`}
-          >
-            {isSidebar ? longTitle : shortTitle}
-          </button>
-        </a>
+          {isSidebar ? longTitle : shortTitle}
+        </button>
       )}
     </>
   );

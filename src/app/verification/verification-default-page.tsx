@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSidebar } from "../../../hooks/sidebar";
 
 export default function VerificationDefaultPage() {
   const router = useRouter();
@@ -16,6 +17,8 @@ export default function VerificationDefaultPage() {
     null
   );
   const [loading, setLoading] = useState(false);
+
+  const { isSidebar } = useSidebar();
 
   useEffect(() => {
     const confirmEmail = async () => {
@@ -69,7 +72,11 @@ export default function VerificationDefaultPage() {
   }, [token, t, fromTab, router]);
 
   return (
-    <main className="w-full h-full flex items-center justify-center p-5">
+    <main
+      className={`flex items-center justify-center w-full h-full overflow-y-auto 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[5svh] ${
+        isSidebar ? "pl-65" : "pl-25"
+      } transition-all`}
+    >
       <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl shadow-lg text-center text-white/80">
         {loading && <p>{t("loading")}</p>}
         {message && (

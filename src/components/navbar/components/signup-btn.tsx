@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ReactNode } from "react";
 
 export default function SignupButton({
@@ -12,21 +12,24 @@ export default function SignupButton({
 }) {
   const currentPath = usePathname();
 
+  const router = useRouter();
+
   return (
     <>
       {!isLoggedIn && (
-        <a href="/signup">
-          <button
-            type="submit"
-            className={`w-30 border border-white/30 border-l-0 backdrop-blur-sm shadow-lg rounded-full px-2 py-1 cursor-pointer transition-all ${
-              currentPath === "/signup"
-                ? "text-white bg-white/40"
-                : "bg-white/10 hover:bg-white/20 text-white/50 hover:text-white/70"
-            }`}
-          >
-            {title}
-          </button>
-        </a>
+        <button
+          onClick={() => {
+            router.push("/signup");
+          }}
+          type="submit"
+          className={`w-30 border border-white/30 border-l-0 backdrop-blur-sm shadow-lg rounded-full px-2 py-1 transition-all ${
+            currentPath === "/signup"
+              ? "text-white bg-white/40 cursor-default"
+              : "bg-white/10 hover:bg-white/20 text-white/50 hover:text-white/70 cursor-pointer"
+          }`}
+        >
+          {title}
+        </button>
       )}
     </>
   );

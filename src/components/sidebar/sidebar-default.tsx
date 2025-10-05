@@ -58,24 +58,25 @@ export default function SidebarDefault({
             }`}
           >
             {/* Logo */}
-            <a href="/" className="w-full">
-              <div
-                className={`cursor-pointer transition-all overflow-hidden mb-3 ${
-                  isSidebar ? "w-full text-start" : "text-center w-10"
-                }`}
-              >
-                <img
-                  src={
-                    isSidebar
-                      ? "/assets/placeholders/logoipsum-large.svg"
-                      : "/assets/placeholders/logoipsum-small.svg"
-                  }
-                  className={`${
-                    isSidebar ? "px-1.5" : "p-0"
-                  } w-full h-full object-contain`}
-                />
-              </div>
-            </a>
+            <div
+              onClick={() => {
+                router.push("/");
+              }}
+              className={`w-full cursor-pointer transition-all overflow-hidden mb-3 ${
+                isSidebar ? "w-full text-start" : "text-center w-10"
+              }`}
+            >
+              <img
+                src={
+                  isSidebar
+                    ? "/assets/placeholders/logoipsum-large.svg"
+                    : "/assets/placeholders/logoipsum-small.svg"
+                }
+                className={`${
+                  isSidebar ? "px-1.5" : "p-0"
+                } w-full h-full object-contain`}
+              />
+            </div>
 
             <SidebarMenu
               path="/"

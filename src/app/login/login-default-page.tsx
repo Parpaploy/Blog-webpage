@@ -89,12 +89,14 @@ export default function LoginDefaultPage() {
         </div>
 
         <div className="w-full flex justify-end items-center -mt-4 -mb-0 pr-3">
-          <a
-            href="/forgot-password"
-            className="text-blue-400/80 underline hover:text-white/80 transition-all text-end"
+          <div
+            onClick={() => {
+              router.push("/forgot-password");
+            }}
+            className="cursor-pointer text-blue-400/80 underline hover:text-white/80 transition-all text-end"
           >
             {t("forgotPassword")}
-          </a>
+          </div>
         </div>
 
         <button
@@ -107,12 +109,14 @@ export default function LoginDefaultPage() {
 
         <div className="flex gap-1 items-center justify-center text-white/80">
           {t("noAccount")}
-          <a
-            href="/signup"
+          <div
+            onClick={() => {
+              router.push("/signup");
+            }}
             className="underline cursor-pointer text-blue-400/80 hover:text-white/80 transition-all"
           >
             {t("signUp")}
-          </a>
+          </div>
         </div>
       </form>
     </main>

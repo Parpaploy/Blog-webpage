@@ -46,11 +46,11 @@ export default function SubscribeBlogDetailPage({
             <div className="w-10 h-10 rounded-full overflow-hidden">
               <img
                 className="w-full h-full"
-                src={`${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${subBlogUser.author.profile.formats.small?.url}`}
+                src={`${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${subBlogUser.author?.profile.formats.small?.url}`}
               />
             </div>
 
-            <p className="text-xl font-semibold">{subBlog.author.username}</p>
+            <p className="text-xl font-semibold">{subBlog.author?.username}</p>
           </div>
 
           <div className="w-full text-end">

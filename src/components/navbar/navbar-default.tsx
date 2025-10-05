@@ -8,6 +8,7 @@ import { useSidebar } from "../../../hooks/sidebar";
 import SignupButton from "./components/signup-btn";
 import LanguageSwitcher from "./components/language-switcher";
 import { GoSearch } from "react-icons/go";
+import { useRouter } from "next/navigation";
 
 export default function NavbarDefault({
   isLoggedIn,
@@ -24,9 +25,10 @@ export default function NavbarDefault({
 
   const [query, setQuery] = useState("");
 
+  const router = useRouter();
+
   const handleSearch = () => {
     alert("Searching for: " + query);
-    // other...
   };
 
   return (
@@ -64,19 +66,22 @@ export default function NavbarDefault({
               <div className="flex gap-3 items-center justify-center">
                 <LanguageSwitcher />
 
-                <a href="/profile" className="rounded-full">
-                  <div className="w-8.5 h-8.5 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg">
-                    <img
-                      className="w-full h-full rounded-full overflow-hidden object-cover aspect-square opacity-80"
-                      src={
-                        user?.profile?.formats?.small?.url
-                          ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${user.profile.formats.small.url}`
-                          : "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1906669723.jpg"
-                      }
-                      alt={(user?.username || "Guest") + " profile picture"}
-                    />
-                  </div>
-                </a>
+                <div
+                  onClick={() => {
+                    router.push("/profile");
+                  }}
+                  className="cursor-pointer w-8.5 h-8.5 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg"
+                >
+                  <img
+                    className="w-full h-full rounded-full overflow-hidden object-cover aspect-square opacity-80"
+                    src={
+                      user?.profile?.formats?.small?.url
+                        ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${user.profile.formats.small.url}`
+                        : "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1906669723.jpg"
+                    }
+                    alt={(user?.username || "Guest") + " profile picture"}
+                  />
+                </div>
               </div>
             </>
           ) : (

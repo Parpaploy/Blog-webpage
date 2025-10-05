@@ -6,6 +6,7 @@ import { FormatDate } from "../../../utils/format-date";
 import { useSidebar } from "../../../hooks/sidebar";
 import CategoryTag from "../category-tag";
 import { FaStar } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 export default function SmallSubscribeBlogCard({
   subBlog,
@@ -14,10 +15,14 @@ export default function SmallSubscribeBlogCard({
 }) {
   const { isSidebar } = useSidebar();
 
+  const router = useRouter();
+
   return (
-    <a
-      href={`/subscribe-blogs/${subBlog.documentId}`}
-      className="relative rounded-2xl cursor-pointer"
+    <div
+      className="relative cursor-pointer"
+      onClick={() => {
+        router.push(`/subscribe-blogs/${subBlog.documentId}`);
+      }}
     >
       <div
         className={`flex lg:flex-row flex-col lg:w-full w-60 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg overflow-hidden transition-all ${
@@ -52,8 +57,8 @@ export default function SmallSubscribeBlogCard({
               <div
                 className={`${
                   isSidebar
-                    ? "2xl:h-23 xl:h-13 lg:h-10 md:h-11.5"
-                    : "2xl:h-23 xl:h-15 lg:h-13 md:h-9.5"
+                    ? "2xl:h-23 xl:h-11 lg:h-10 md:h-11.5"
+                    : "2xl:h-23 xl:h-10 lg:h-13 md:h-9.5"
                 } flex flex-wrap justify-start items-end gap-1 overflow-y-auto`}
               >
                 {subBlog.categories.map((cat: ICategory, index: number) => {
@@ -74,6 +79,6 @@ export default function SmallSubscribeBlogCard({
       <div className="absolute top-2 left-2 text-[#424EDD] rounded-full bg-amber-300 z-20 p-1">
         <FaStar className="w-5 h-5" />
       </div>
-    </a>
+    </div>
   );
 }

@@ -11,6 +11,8 @@ import {
 } from "../../interfaces/strapi.interface";
 import SubscribeBlogCard from "@/components/subscribe-blogs/subscribe-blog-card";
 import ContinueButton from "@/components/continue-btn";
+import AddButton from "@/components/add-btn";
+import { useRouter } from "next/navigation";
 
 export default function HomepageDefault({
   user,
@@ -28,16 +30,23 @@ export default function HomepageDefault({
 
   const { isSidebar } = useSidebar();
 
+  const router = useRouter();
+
   return (
     <main
       className={`w-full h-full overflow-y-auto text-white/80 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[5svh] ${
         isSidebar ? "pl-65" : "pl-25"
-      } transition-all`}
+      } transition-all relative`}
     >
       <div className="mb-5">
-        <a href="/blogs" className="inline-block">
-          <div className="text-2xl font-bold">{t("blog_title")}</div>
-        </a>
+        <div
+          onClick={() => {
+            router.push("/blogs");
+          }}
+          className="cursor-pointer text-2xl font-bold"
+        >
+          {t("blog_title")}
+        </div>
 
         {blogs && blogs.length > 0 ? (
           <section className="w-full h-auto overflow-y-auto py-3">
@@ -58,11 +67,14 @@ export default function HomepageDefault({
 
       {user !== null && (
         <div>
-          <a href="/subscribe-blogs" className="inline-block">
-            <h1 className="text-2xl font-bold w-fit">
-              {t("subscribe_blog_title")}
-            </h1>
-          </a>
+          <div
+            onClick={() => {
+              router.push("/subscribe-blogs");
+            }}
+            className="cursor-pointer text-2xl font-bold w-fit"
+          >
+            {t("subscribe_blog_title")}
+          </div>
 
           {subscribeBlogs && subscribeBlogs.length > 0 ? (
             <section className="w-full h-auto overflow-y-auto py-3">
@@ -81,6 +93,8 @@ export default function HomepageDefault({
           )}
         </div>
       )}
+
+      <AddButton />
     </main>
   );
 }

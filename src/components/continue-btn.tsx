@@ -1,18 +1,23 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import React from "react";
 import { IoIosArrowForward } from "react-icons/io";
 
 function ContinueButton({ path }: { path: string }) {
+  const router = useRouter();
+
   return (
-    // <a href={path} className="p-3 border-2 border-black/70 rounded-full">
-    //   <IoIosArrowForward size={32} />
-    // </a>
-    <a href={path} className="hover:translate-x-1 transition-all">
+    <div
+      onClick={() => {
+        router.push(path);
+      }}
+      className="cursor-pointer hover:translate-x-1 transition-all"
+    >
       <div className="hover:translate-x-1 transition-all w-fit h-fit">
         <IoIosArrowForward size={48} />
       </div>
-    </a>
+    </div>
   );
 }
 

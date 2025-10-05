@@ -1,9 +1,9 @@
 "use client";
 
-import { useSidebar } from "../../hooks/sidebar";
-import "./globals.css";
+import { useSidebar } from "../../../../hooks/sidebar";
+import "../../globals.css";
 
-export default function GlobalLoading() {
+export default function Loading() {
   const { isSidebar } = useSidebar();
 
   return (

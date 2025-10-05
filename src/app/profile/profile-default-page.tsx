@@ -17,6 +17,8 @@ interface Props {
 }
 
 export default function ProfileDefaultPage({ user }: Props) {
+  const router = useRouter();
+
   const [preview, setPreview] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
 
@@ -34,7 +36,6 @@ export default function ProfileDefaultPage({ user }: Props) {
 
   const { t } = useTranslation("profile");
   const { isSidebar } = useSidebar();
-  const router = useRouter();
 
   useEffect(() => {
     if (user?.profile?.formats?.small?.url) {
@@ -146,7 +147,6 @@ export default function ProfileDefaultPage({ user }: Props) {
       } transition-all`}
     >
       <div className="flex flex-col items-center space-y-4 text-white/70">
-        {/* Avatar Upload */}
         <label
           htmlFor="profile"
           className="relative w-28 h-28 cursor-pointer group"
@@ -225,12 +225,14 @@ export default function ProfileDefaultPage({ user }: Props) {
           />
 
           <div className="w-full flex justify-end items-center -mt-2.5 -mb-0 pr-3">
-            <a
-              href="/forgot-password"
-              className="text-blue-400/80 underline hover:text-white/80 transition-all text-end"
+            <div
+              onClick={() => {
+                router.push("/forgot-password");
+              }}
+              className="text-blue-400/80 underline cursor-pointer hover:text-white/80 transition-all text-end"
             >
               {t("forgotPassword")}
-            </a>
+            </div>
           </div>
 
           <input

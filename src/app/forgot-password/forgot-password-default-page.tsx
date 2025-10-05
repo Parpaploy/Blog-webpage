@@ -5,10 +5,13 @@ import { useTranslation } from "react-i18next";
 import { useSidebar } from "../../../hooks/sidebar";
 import { requestResetPassword } from "../../../lib/apis/profile-uploader";
 import { ResetRequestResult } from "../../../interfaces/cms";
+import { useRouter } from "next/navigation";
 
 export default function ForgotPasswordDefaultPage() {
   const { t } = useTranslation("forgotPassword");
   const { isSidebar } = useSidebar();
+
+  const router = useRouter();
 
   const [userEmail, setUserEmail] = useState("");
   const [loading, setLoading] = useState(false);
@@ -100,12 +103,14 @@ export default function ForgotPasswordDefaultPage() {
 
         <div className="flex gap-1 items-center justify-center text-white/80">
           {t("rememberPassword")}
-          <a
-            href="/login"
+          <div
+            onClick={() => {
+              router.push("/login");
+            }}
             className="underline cursor-pointer text-blue-400/80 hover:text-white/80 transition-all"
           >
             {t("login")}
-          </a>
+          </div>
         </div>
       </form>
     </main>
