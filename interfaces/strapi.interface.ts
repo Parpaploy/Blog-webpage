@@ -21,6 +21,7 @@ export interface IUser {
   username: string;
   email: string;
   profile: IStrapiImage;
+  jwt?: string;
 }
 
 export interface INavbar {

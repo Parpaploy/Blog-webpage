@@ -39,10 +39,10 @@ export async function middleware(request: NextRequest) {
     return res;
   } catch (error) {
     console.log("💥 Middleware error:", error);
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL("/login", request.url));
   }
 }
 
 export const config = {
-  matcher: "/subscribe-blogs/:path*",
+  matcher: ["/subscribe-blogs/:path*", "/add-blog/:path*"],
 };

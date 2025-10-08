@@ -6,15 +6,12 @@ import React from "react";
 import MenuBar from "./menu-bar";
 import TextAlign from "@tiptap/extension-text-align";
 import Highlight from "@tiptap/extension-highlight";
+import { IRichTextEditorProps } from "../../../interfaces/props.interface";
 
-interface RichTextEditorProps {
-  content: string;
-  onChange: (content: string) => void;
-}
 export default function RichTextEditor({
   content,
   onChange,
-}: RichTextEditorProps) {
+}: IRichTextEditorProps) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({

@@ -8,15 +8,11 @@ import {
 import { useRouter } from "next/navigation";
 import { useSidebar } from "../../../hooks/sidebar";
 import { useTranslation } from "react-i18next";
-import { IUser } from "../../../interfaces/strapi.interface";
 import { FiEdit3 } from "react-icons/fi";
 import { Logout } from "../../../lib/auth";
+import { IUserProps } from "../../../interfaces/props.interface";
 
-interface Props {
-  user: IUser | null;
-}
-
-export default function ProfileDefaultPage({ user }: Props) {
+export default function ProfileDefaultPage({ user }: IUserProps) {
   const router = useRouter();
 
   const [preview, setPreview] = useState<string | null>(null);
