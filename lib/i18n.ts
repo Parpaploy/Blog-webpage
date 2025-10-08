@@ -37,6 +37,9 @@ import blogsTh from "../public/locales/th/blogs.json";
 import subscribeBlogsEn from "../public/locales/en/subscribe-blogs.json";
 import subscribeBlogsTh from "../public/locales/th/subscribe-blogs.json";
 
+import addBlogEn from "../public/locales/en/addBlog.json";
+import addBlogTh from "../public/locales/th/addBlog.json";
+
 i18n.use(initReactI18next).init({
   resources: {
     th: {
@@ -52,6 +55,7 @@ i18n.use(initReactI18next).init({
       profile: profileTh,
       blogs: blogsTh,
       subscribeBlogs: subscribeBlogsTh,
+      addBlog: addBlogTh,
     },
     en: {
       template: templateEn,
@@ -66,6 +70,7 @@ i18n.use(initReactI18next).init({
       profile: profileEn,
       blogs: blogsEn,
       subscribeBlogs: subscribeBlogsEn,
+      addBlog: addBlogEn,
     },
   },
   lng: "th",

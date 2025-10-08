@@ -138,7 +138,7 @@ export default function SidebarDefault({
               isSidebar ? "items-start w-full px-1" : "items-center"
             }`}
           >
-            <div className="w-full border-t-1 border-black/30 mb-1" />
+            <div className="w-full border-t-1 border-black/30 mb-3" />
 
             <div className="w-full">
               {user !== null ? (
