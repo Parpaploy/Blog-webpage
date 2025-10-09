@@ -64,3 +64,19 @@ export interface ISubscribeBlog {
   author: IUser;
   categories: ICategory[];
 }
+
+export interface ICreateBlogParams {
+  title: string;
+  description: string;
+  detail: any;
+  authorId: number;
+  categories: number[];
+  thumbnail: File;
+  token: string;
+}
+
+export interface ICreateBlogResponse {
+  success: boolean;
+  data?: any;
+  error?: string;
+}

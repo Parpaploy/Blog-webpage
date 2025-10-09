@@ -25,7 +25,7 @@ export default function SmallSubscribeBlogCard({
       }}
     >
       <div
-        className={`flex lg:flex-row flex-col lg:min-w-full min-w-60 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg overflow-hidden transition-all ${
+        className={`flex lg:flex-row flex-col lg:min-w-full min-w-60 lg:max-w-full rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg overflow-hidden transition-all ${
           isSidebar
             ? "2xl:min-h-45 xl:min-h-35 lg:min-h-30 min-h-full"
             : "2xl:min-h-50 xl:min-h-40 lg:min-h-35 min-h-full"
@@ -57,8 +57,8 @@ export default function SmallSubscribeBlogCard({
               <div
                 className={`${
                   isSidebar
-                    ? "2xl:h-23 xl:h-11 lg:h-10 md:h-11.5"
-                    : "2xl:h-23 xl:h-10 lg:h-13 md:h-9.5"
+                    ? "2xl:h-23 xl:h-13 lg:h-10 md:h-11.5"
+                    : "2xl:h-23 xl:h-15 lg:h-13 md:h-9.5"
                 } flex flex-wrap justify-start items-end gap-1 overflow-y-auto`}
               >
                 {subBlog.categories.map((cat: ICategory, index: number) => {

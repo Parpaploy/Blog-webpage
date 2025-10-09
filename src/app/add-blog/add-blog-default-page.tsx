@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useSidebar } from "../../../hooks/sidebar";
 import RichTextEditor from "@/components/rich-text-editor";
 import { ICategory, IUser } from "../../../interfaces/strapi.interface";
+import { createBlog } from "../../../lib/apis/blog-uploader";
 
 export default function AddBlogDefaultPage({
   user,
@@ -53,101 +54,44 @@ export default function AddBlogDefaultPage({
     }
   };
 
+  const resetForm = () => {
+    setTitle("");
+    setDescription("");
+    setCategory([]);
+    setThumbnail(null);
+    setThumbnailPreview(null);
+    setPostContent({ type: "doc", content: [] });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
 
-    if (!thumbnail || !title || !user?.id) {
+    if (!thumbnail || !title || !user?.id || !token) {
       setError("Missing required fields. Please check title and thumbnail.");
       setIsLoading(false);
       return;
     }
 
-    try {
-      // ขั้นตอนที่ 1: Upload thumbnail ก่อน
-      const uploadFormData = new FormData();
-      uploadFormData.append("files", thumbnail);
+    const result = await createBlog({
+      title,
+      description,
+      detail: postContent,
+      authorId: user.id,
+      categories: category,
+      thumbnail,
+      token,
+    });
 
-      const uploadResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/upload`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: uploadFormData,
-        }
-      );
+    setIsLoading(false);
 
-      if (!uploadResponse.ok) {
-        throw new Error("Failed to upload thumbnail");
-      }
-
-      const uploadedFiles = await uploadResponse.json();
-      const thumbnailId = uploadedFiles[0]?.id;
-
-      if (!thumbnailId) {
-        throw new Error("No thumbnail ID returned from upload");
-      }
-
-      // ขั้นตอนที่ 2: สร้าง blog post พร้อม relate thumbnail
-      // Debug: ดูว่า postContent มีอะไรบ้าง
-      console.log("postContent before stringify:", postContent);
-
-      const detailString =
-        postContent && Object.keys(postContent).length > 0
-          ? JSON.stringify(postContent)
-          : null;
-
-      console.log("detailString:", detailString);
-
-      const blogData = {
-        data: {
-          title: title,
-          description: description,
-          detail: detailString,
-          author: user.id,
-          categories: category,
-          thumbnail: thumbnailId,
-        },
-      };
-
-      console.log("blogData to send:", blogData);
-
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/blogs`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(blogData),
-        }
-      );
-
-      if (!response.ok) {
-        const errorDetails = await response.json();
-        console.error("Strapi Error:", errorDetails.error || errorDetails);
-        throw new Error(errorDetails.error?.message || "Failed to create post");
-      }
-
-      const result = await response.json();
-      console.log("Successfully created:", result);
+    if (result.success) {
+      console.log("Successfully created:", result.data);
       alert("สร้างโพสต์สำเร็จ!");
-      // reset form
-      setTitle("");
-      setDescription("");
-      setCategory([]);
-      setThumbnail(null);
-      setThumbnailPreview(null);
-      setPostContent({ type: "doc", content: [] });
-    } catch (err: any) {
-      console.error("Failed to create post:", err);
-      setError(err.message);
-    } finally {
-      setIsLoading(false);
+      resetForm();
+    } else {
+      setError(result.error || "Failed to create post");
     }
   };
 
