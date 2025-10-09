@@ -41,9 +41,15 @@ export default function LogoutButton({
       } p-2 cursor-pointer hover:bg-white/20 text-white/50 hover:text-white/70 bg-white/10 border border-white/30 border-l-0 shadow-lg transition-all h-10`}
     >
       {isLogout ? (
-        <span className="flex items-center gap-2">
-          <TbLogout size={20} /> {t("loggingOut")}
-        </span>
+        isSidebar ? (
+          <span className="flex items-center gap-2">
+            <TbLogout size={20} /> {t("loggingOut")}
+          </span>
+        ) : (
+          <span className="flex justify-center">
+            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+          </span>
+        )
       ) : isSidebar ? (
         longTitle
       ) : (

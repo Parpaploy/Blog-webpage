@@ -21,6 +21,8 @@ export default function BlogDetailPage({
 
   const { isSidebar } = useSidebar();
 
+  console.log(blog);
+
   return (
     <main
       className={`w-full h-full flex lg:flex-row flex-col text-white ${
@@ -68,7 +70,8 @@ export default function BlogDetailPage({
       {/* Other blogs */}
       <section className="lg:w-[30%] w-full lg:h-full h-[30%] flex flex-col lg:pl-8 pl-0 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] pt-0">
         <h1 className="text-3xl font-bold text-start mb-3">Other blogs</h1>
-        <div className="w-full h-full flex lg:flex-col flex-row items-start justify-start gap-5 lg:overflow-x-hidden lg:overflow-y-auto overflow-y-hidden overflow-x-auto">
+
+        <div className="w-full h-full flex lg:flex-col flex-row items-start justify-start gap-5 lg:overflow-x-hidden lg:overflow-y-auto overflow-y-hidden overflow-x-auto pb-3">
           {blogs.map((blog, index: number) => {
             return <SmallBlogCard key={blog.id} blog={blog} />;
           })}

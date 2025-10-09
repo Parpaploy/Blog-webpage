@@ -40,14 +40,18 @@ export default function RichTextEditor({
     },
     immediatelyRender: false,
     onUpdate: ({ editor }) => {
-      onChange(editor.getHTML());
+      // --- START CORRECTION ---
+      // เปลี่ยนจาก .getHTML() ที่ส่งค่าเป็น String
+      // เป็น .getJSON() เพื่อส่งค่าเป็น JSON Object ที่ Strapi ต้องการ
+      onChange(editor.getJSON());
+      // --- END CORRECTION ---
     },
   });
 
   return (
     <div>
       <MenuBar editor={editor} />
-      <EditorContent editor={editor} />;
+      <EditorContent editor={editor} />
     </div>
   );
 }

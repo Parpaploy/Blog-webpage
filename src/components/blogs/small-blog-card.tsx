@@ -17,10 +17,10 @@ export default function SmallBlogCard({ blog }: { blog: IBlog }) {
       onClick={() => {
         router.push(`/blogs/${blog.documentId}`);
       }}
-      className={`cursor-pointer flex lg:flex-row flex-col lg:w-full w-60 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg overflow-hidden transition-all ${
+      className={`cursor-pointer flex lg:flex-row flex-col lg:min-w-full min-w-60 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg overflow-hidden transition-all ${
         isSidebar
-          ? "2xl:h-45 xl:h-35 lg:h-30 h-full"
-          : "2xl:h-50 xl:h-40 lg:h-35 h-full"
+          ? "2xl:min-h-45 xl:min-h-35 lg:min-h-30 h-full"
+          : "2xl:min-h-50 xl:min-h-40 lg:min-h-35 h-full"
       } transition-all`}
     >
       <div className="lg:w-[45%] lg:h-full w-full h-[50%] rounded-r-2xl overflow-hidden">

@@ -70,7 +70,8 @@ export default function SubscribeBlogDetailPage({
         <h1 className="text-3xl font-bold text-start mb-3">
           Other subscribe blogs
         </h1>
-        <div className="w-full h-full flex lg:flex-col flex-row items-start justify-start gap-5 lg:overflow-x-hidden lg:overflow-y-auto overflow-y-hidden overflow-x-auto">
+
+        <div className="w-full h-full flex lg:flex-col flex-row items-start justify-start gap-5 lg:overflow-x-hidden lg:overflow-y-auto overflow-y-hidden overflow-x-auto pb-3">
           {subBlogs.map((subBlog, index: number) => {
             return (
               <SmallSubscribeBlogCard key={subBlog.id} subBlog={subBlog} />

@@ -9,9 +9,11 @@ import { ICategory, IUser } from "../../../interfaces/strapi.interface";
 export default function AddBlogDefaultPage({
   user,
   categories,
+  token,
 }: {
   user: IUser | null;
   categories: ICategory[] | null;
+  token: string | undefined;
 }) {
   const { t } = useTranslation("addBlog");
   const { isSidebar } = useSidebar();
@@ -22,7 +24,12 @@ export default function AddBlogDefaultPage({
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
   const [author, setAuthor] = useState("");
-  const [postContent, setPostContent] = useState("");
+  const [postContent, setPostContent] = useState<any>({
+    type: "doc",
+    content: [],
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (user && user.username) {
@@ -30,7 +37,7 @@ export default function AddBlogDefaultPage({
     }
   }, [user]);
 
-  const onContentChange = (content: string) => {
+  const onContentChange = (content: any) => {
     setPostContent(content);
   };
 
@@ -39,21 +46,109 @@ export default function AddBlogDefaultPage({
       const file = e.target.files[0];
       setThumbnail(file);
 
-      setThumbnailPreview(URL.createObjectURL(file));
+      const previewUrl = URL.createObjectURL(file);
+      setThumbnailPreview(previewUrl);
+
+      return () => URL.revokeObjectURL(previewUrl);
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const blogData = {
-      title,
-      description,
-      category: category,
-      thumbnail,
-      author: [user?.id],
-      content: postContent,
-    };
-    console.log("Submitting Blog Data:", blogData);
+    setIsLoading(true);
+    setError(null);
+
+    if (!thumbnail || !title || !user?.id) {
+      setError("Missing required fields. Please check title and thumbnail.");
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      // ขั้นตอนที่ 1: Upload thumbnail ก่อน
+      const uploadFormData = new FormData();
+      uploadFormData.append("files", thumbnail);
+
+      const uploadResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/upload`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: uploadFormData,
+        }
+      );
+
+      if (!uploadResponse.ok) {
+        throw new Error("Failed to upload thumbnail");
+      }
+
+      const uploadedFiles = await uploadResponse.json();
+      const thumbnailId = uploadedFiles[0]?.id;
+
+      if (!thumbnailId) {
+        throw new Error("No thumbnail ID returned from upload");
+      }
+
+      // ขั้นตอนที่ 2: สร้าง blog post พร้อม relate thumbnail
+      // Debug: ดูว่า postContent มีอะไรบ้าง
+      console.log("postContent before stringify:", postContent);
+
+      const detailString =
+        postContent && Object.keys(postContent).length > 0
+          ? JSON.stringify(postContent)
+          : null;
+
+      console.log("detailString:", detailString);
+
+      const blogData = {
+        data: {
+          title: title,
+          description: description,
+          detail: detailString,
+          author: user.id,
+          categories: category,
+          thumbnail: thumbnailId,
+        },
+      };
+
+      console.log("blogData to send:", blogData);
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/blogs`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(blogData),
+        }
+      );
+
+      if (!response.ok) {
+        const errorDetails = await response.json();
+        console.error("Strapi Error:", errorDetails.error || errorDetails);
+        throw new Error(errorDetails.error?.message || "Failed to create post");
+      }
+
+      const result = await response.json();
+      console.log("Successfully created:", result);
+      alert("สร้างโพสต์สำเร็จ!");
+      // reset form
+      setTitle("");
+      setDescription("");
+      setCategory([]);
+      setThumbnail(null);
+      setThumbnailPreview(null);
+      setPostContent({ type: "doc", content: [] });
+    } catch (err: any) {
+      console.error("Failed to create post:", err);
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -65,6 +160,7 @@ export default function AddBlogDefaultPage({
       <form onSubmit={handleSubmit} className="max-w-4xl mx-auto space-y-6">
         <h1 className="text-3xl font-bold mb-4">{t("createNewPost")}</h1>
 
+        {/* Title */}
         <div>
           <label
             htmlFor="title"
@@ -83,6 +179,7 @@ export default function AddBlogDefaultPage({
           />
         </div>
 
+        {/* Description */}
         <div>
           <label
             htmlFor="description"
@@ -101,6 +198,7 @@ export default function AddBlogDefaultPage({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Author */}
           <div>
             <label
               htmlFor="author"
@@ -117,43 +215,40 @@ export default function AddBlogDefaultPage({
             />
           </div>
 
+          {/* Categories */}
           <div>
-            <label
-              htmlFor="categories"
-              className="block text-sm font-medium text-gray-300 mb-2"
-            >
+            <label className="block text-sm font-medium text-gray-300 mb-2">
               {t("categories")}
             </label>
-            {categories && categories.length > 0 && (
-              <div className="flex flex-wrap gap-3">
-                {categories.map((cat) => {
-                  const isSelected = category.includes(cat.id);
-                  return (
-                    <button
-                      key={cat.id}
-                      type="button"
-                      onClick={() => {
-                        setCategory((prev) =>
-                          isSelected
-                            ? prev.filter((id) => id !== cat.id)
-                            : [...prev, cat.id]
-                        );
-                      }}
-                      className={`px-4 py-2 rounded-md border transition-colors duration-200 ${
+            <div className="flex flex-wrap gap-3">
+              {categories?.map((cat) => {
+                const isSelected = category.includes(cat.id);
+                return (
+                  <button
+                    key={cat.id}
+                    type="button"
+                    onClick={() =>
+                      setCategory((prev) =>
                         isSelected
-                          ? "bg-blue-600 border-blue-500 text-white"
-                          : "bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700"
-                      }`}
-                    >
-                      {cat.title}
-                    </button>
-                  );
-                })}
-              </div>
-            )}
+                          ? prev.filter((id) => id !== cat.id)
+                          : [...prev, cat.id]
+                      )
+                    }
+                    className={`px-4 py-2 rounded-md border transition-colors duration-200 ${
+                      isSelected
+                        ? "bg-blue-600 border-blue-500 text-white"
+                        : "bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700"
+                    }`}
+                  >
+                    {cat.title}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
 
+        {/* Thumbnail */}
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-2">
             {t("thumbnail")}
@@ -167,30 +262,12 @@ export default function AddBlogDefaultPage({
                   className="mx-auto h-48 w-auto rounded-md object-cover"
                 />
               ) : (
-                <svg
-                  className="mx-auto h-12 w-12 text-gray-400"
-                  stroke="currentColor"
-                  fill="none"
-                  viewBox="0 0 48 48"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8"
-                    strokeWidth={2}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+                <div className="text-gray-400">No preview</div>
               )}
               <div className="flex text-sm text-gray-500 justify-center">
-                <label
-                  htmlFor="file-upload"
-                  className="relative cursor-pointer bg-gray-800 rounded-md font-medium text-blue-500 hover:text-blue-400 focus-within:outline-none p-1"
-                >
+                <label className="relative cursor-pointer bg-gray-800 rounded-md font-medium text-blue-500 hover:text-blue-400 focus-within:outline-none p-1">
                   <span>{t("uploadFile")}</span>
                   <input
-                    id="file-upload"
-                    name="file-upload"
                     type="file"
                     className="sr-only"
                     onChange={handleThumbnailChange}
@@ -204,20 +281,31 @@ export default function AddBlogDefaultPage({
           </div>
         </div>
 
+        {/* Rich Text Editor */}
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-2">
             {t("content")}
           </label>
-
           <RichTextEditor content={postContent} onChange={onContentChange} />
         </div>
 
+        {/* Error */}
+        {error && (
+          <div className="text-red-400 bg-red-900/30 p-3 rounded-md border border-red-500">
+            <p>
+              <strong>Error:</strong> {error}
+            </p>
+          </div>
+        )}
+
+        {/* Submit */}
         <div className="flex justify-end pt-4">
           <button
             type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-200"
+            disabled={isLoading}
+            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-200 disabled:bg-gray-500 disabled:cursor-not-allowed"
           >
-            {t("publishPost")}
+            {isLoading ? t("publishing") : t("publishPost")}
           </button>
         </div>
       </form>

@@ -10,6 +10,6 @@ export interface IUserProps {
 }
 
 export interface IRichTextEditorProps {
-  content: string;
-  onChange: (content: string) => void;
+  content: any;
+  onChange: (content: any) => void;
 }
