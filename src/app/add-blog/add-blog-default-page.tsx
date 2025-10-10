@@ -328,7 +328,11 @@ export default function AddBlogDefaultPage({
               </div>
             </div>
           </div>
-          <RichTextEditor content={postContent} onChange={onContentChange} />
+          <RichTextEditor
+            content={postContent}
+            onChange={onContentChange}
+            token={token}
+          />
           {error && (
             <div className="text-red-400 bg-red-900/30 p-3 rounded-md border border-red-500">
               <p>

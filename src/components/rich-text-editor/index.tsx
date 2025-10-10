@@ -6,30 +6,30 @@ import React from "react";
 import MenuBar from "./menu-bar";
 import TextAlign from "@tiptap/extension-text-align";
 import Highlight from "@tiptap/extension-highlight";
+import Image from "@tiptap/extension-image";
 import { IRichTextEditorProps } from "../../../interfaces/props.interface";
 
 export default function RichTextEditor({
   content,
   onChange,
-}: IRichTextEditorProps) {
+  token,
+}: {
+  content: IRichTextEditorProps;
+  onChange: (content: any) => void;
+  token: string | undefined;
+}) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
-        bulletList: {
-          HTMLAttributes: {
-            class: "list-disc ml-3",
-          },
-        },
-        orderedList: {
-          HTMLAttributes: {
-            class: "list-decimal ml-3",
-          },
-        },
+        bulletList: { HTMLAttributes: { class: "list-disc ml-3" } },
+        orderedList: { HTMLAttributes: { class: "list-decimal ml-3" } },
       }),
-      TextAlign.configure({
-        types: ["heading", "paragraph"],
-      }),
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
       Highlight,
+      Image.configure({
+        inline: false,
+        allowBase64: true,
+      }),
     ],
     content: content,
     editorProps: {
@@ -45,8 +45,8 @@ export default function RichTextEditor({
   });
 
   return (
-    <div>
-      <MenuBar editor={editor} />
+    <div className="w-full">
+      <MenuBar token={token} editor={editor} />
       <EditorContent editor={editor} />
     </div>
   );

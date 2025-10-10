@@ -1,5 +1,7 @@
+"use client";
+
 import "../../app/globals.css";
-import React from "react";
+import React, { useRef } from "react";
 import {
   AlignCenter,
   AlignLeft,
@@ -13,95 +15,151 @@ import {
   List,
   ListOrdered,
   Strikethrough,
+  Image as ImageIcon,
 } from "lucide-react";
 import { Toggle } from "../ui/toggle";
 
-export default function MenuBar({ editor }: any) {
-  if (!editor) {
-    return null;
-  }
+export default function MenuBar({
+  editor,
+  token,
+}: {
+  editor: any;
+  token: string | undefined;
+}) {
+  if (!editor) return null;
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImageUpload = async (file: File) => {
+    const formData = new FormData();
+    formData.append("files", file);
+
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/upload`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
+
+      const data = await res.json();
+      const imageUrl = data[0]?.url
+        ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${data[0].url}`
+        : null;
+
+      if (imageUrl) {
+        editor.chain().focus().setImage({ src: imageUrl }).run();
+      } else {
+        alert("อัปโหลดไม่สำเร็จ");
+      }
+    } catch (error) {
+      console.error("Upload failed:", error);
+      alert("เกิดข้อผิดพลาดขณะอัปโหลดรูปภาพ");
+    }
+  };
+
+  const addImage = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) handleImageUpload(file);
+  };
 
   const Options = [
     {
-      icon: <Heading1 className="size-4" />,
+      icon: <Heading1 />,
       onClick: () => editor.chain().focus().toggleHeading({ level: 1 }).run(),
-      preesed: editor.isActive("heading", { level: 1 }),
+      pressed: editor.isActive("heading", { level: 1 }),
     },
     {
-      icon: <Heading2 className="size-4" />,
+      icon: <Heading2 />,
       onClick: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
-      preesed: editor.isActive("heading", { level: 2 }),
+      pressed: editor.isActive("heading", { level: 2 }),
     },
     {
-      icon: <Heading3 className="size-4" />,
+      icon: <Heading3 />,
       onClick: () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
-      preesed: editor.isActive("heading", { level: 3 }),
+      pressed: editor.isActive("heading", { level: 3 }),
     },
     {
-      icon: <Bold className="size-4" />,
+      icon: <Bold />,
       onClick: () => editor.chain().focus().toggleBold().run(),
-      preesed: editor.isActive("bold"),
+      pressed: editor.isActive("bold"),
     },
     {
-      icon: <Italic className="size-4" />,
+      icon: <Italic />,
       onClick: () => editor.chain().focus().toggleItalic().run(),
-      preesed: editor.isActive("italic"),
+      pressed: editor.isActive("italic"),
     },
     {
-      icon: <Strikethrough className="size-4" />,
+      icon: <Strikethrough />,
       onClick: () => editor.chain().focus().toggleStrike().run(),
-      preesed: editor.isActive("strike"),
+      pressed: editor.isActive("strike"),
     },
     {
-      icon: <AlignLeft className="size-4" />,
+      icon: <AlignLeft />,
       onClick: () => editor.chain().focus().setTextAlign("left").run(),
-      preesed: editor.isActive({ textAlign: "left" }),
+      pressed: editor.isActive({ textAlign: "left" }),
     },
     {
-      icon: <AlignCenter className="size-4" />,
+      icon: <AlignCenter />,
       onClick: () => editor.chain().focus().setTextAlign("center").run(),
-      preesed: editor.isActive({ textAlign: "center" }),
+      pressed: editor.isActive({ textAlign: "center" }),
     },
     {
-      icon: <AlignRight className="size-4" />,
+      icon: <AlignRight />,
       onClick: () => editor.chain().focus().setTextAlign("right").run(),
-      preesed: editor.isActive({ textAlign: "right" }),
+      pressed: editor.isActive({ textAlign: "right" }),
     },
     {
-      icon: <List className="size-4" />,
+      icon: <List />,
       onClick: () => editor.chain().focus().toggleBulletList().run(),
-      preesed: editor.isActive("bulletList"),
+      pressed: editor.isActive("bulletList"),
     },
     {
-      icon: <ListOrdered className="size-4" />,
+      icon: <ListOrdered />,
       onClick: () => editor.chain().focus().toggleOrderedList().run(),
-      preesed: editor.isActive("orderedList"),
+      pressed: editor.isActive("orderedList"),
     },
     {
-      icon: <Highlighter className="size-4" />,
+      icon: <Highlighter />,
       onClick: () => editor.chain().focus().toggleHighlight().run(),
-      preesed: editor.isActive("highlight"),
+      pressed: editor.isActive("highlight"),
     },
+    { icon: <ImageIcon />, onClick: addImage, pressed: false },
   ];
 
   return (
     <div className="rounded-4xl p-1 mb-1 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg space-x-2 z-50 text-white/90">
-      {Options.map((option, index) => (
+      {Options.map((option, i) => (
         <Toggle
-          key={index}
-          pressed={option.preesed}
+          key={i}
+          pressed={option.pressed}
           onPressedChange={option.onClick}
           className={`p-2 rounded-full transition-all cursor-pointer text-white/50
         ${
-          option.preesed
+          option.pressed
             ? "bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg data-[state=on]:bg-white/10 data-[state=on]:text-white"
             : "bg-transparent hover:bg-white/20 hover:text-white/80"
-        }
-      `}
+        }`}
         >
           {option.icon}
         </Toggle>
       ))}
+
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        accept="image/*"
+        className="hidden"
+      />
     </div>
   );
 }

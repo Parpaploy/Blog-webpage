@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 
 export function FormatRichText(content: any) {
@@ -8,20 +9,14 @@ export function FormatRichText(content: any) {
     switch (node.type) {
       case "paragraph":
         return (
-          <p key={index} className="text-start indent-3 text-lg mb-4">
+          <p key={index} className="mb-2">
             {node.content?.map((child: any, i: number) => renderNode(child, i))}
           </p>
         );
 
-      case "heading":
+      case "heading": {
         const level = node.attrs?.level || 1;
-        const HeadingTag = `h${level}` as
-          | "h1"
-          | "h2"
-          | "h3"
-          | "h4"
-          | "h5"
-          | "h6";
+        const HeadingTag = `h${level}` as keyof React.JSX.IntrinsicElements;
         const headingClasses = {
           1: "text-4xl font-bold mb-4",
           2: "text-3xl font-semibold mb-3",
@@ -30,6 +25,7 @@ export function FormatRichText(content: any) {
           5: "text-lg font-medium mb-1",
           6: "text-base font-medium",
         };
+
         return React.createElement(
           HeadingTag,
           {
@@ -38,6 +34,7 @@ export function FormatRichText(content: any) {
           },
           node.content?.map((child: any, i: number) => renderNode(child, i))
         );
+      }
 
       case "text":
         let text: React.ReactNode = node.text;
@@ -45,27 +42,28 @@ export function FormatRichText(content: any) {
           node.marks.forEach((mark: any) => {
             switch (mark.type) {
               case "bold":
-                text = <strong>{text}</strong>;
+                text = <strong key={index}>{text}</strong>;
                 break;
               case "italic":
-                text = <em>{text}</em>;
+                text = <em key={index}>{text}</em>;
                 break;
               case "strike":
-                text = <s>{text}</s>;
+                text = <s key={index}>{text}</s>;
                 break;
-              case "code":
-                text = <code className="bg-gray-900 px-1 rounded">{text}</code>;
-                break;
-              case "underline":
-                text = <u>{text}</u>;
+              case "highlight":
+                text = (
+                  <mark key={index} className="bg-yellow-200 px-1 rounded">
+                    {text}
+                  </mark>
+                );
                 break;
               case "link":
                 text = (
                   <a
-                    href={mark.attrs?.href}
-                    className="text-blue-600 underline hover:text-blue-800"
+                    key={index}
+                    href={mark.attrs.href}
                     target="_blank"
-                    rel="noopener noreferrer"
+                    className="text-blue-500 underline"
                   >
                     {text}
                   </a>
@@ -76,23 +74,34 @@ export function FormatRichText(content: any) {
         }
         return <React.Fragment key={index}>{text}</React.Fragment>;
 
+      case "image":
+        return (
+          <div key={index} className="my-4 flex justify-center">
+            <img
+              src={node.attrs.src}
+              alt={node.attrs.alt || ""}
+              className="max-w-full rounded-xl shadow-md"
+            />
+          </div>
+        );
+
       case "bulletList":
         return (
-          <ul key={index} className="list-disc list-inside mb-4">
+          <ul key={index} className="list-disc ml-6 mb-2">
             {node.content?.map((child: any, i: number) => renderNode(child, i))}
           </ul>
         );
 
       case "orderedList":
         return (
-          <ol key={index} className="list-decimal list-inside mb-4">
+          <ol key={index} className="list-decimal ml-6 mb-2">
             {node.content?.map((child: any, i: number) => renderNode(child, i))}
           </ol>
         );
 
       case "listItem":
         return (
-          <li key={index} className="ml-6 mb-1">
+          <li key={index}>
             {node.content?.map((child: any, i: number) => renderNode(child, i))}
           </li>
         );
@@ -101,7 +110,7 @@ export function FormatRichText(content: any) {
         return (
           <blockquote
             key={index}
-            className="border-l-4 border-gray-400 pl-4 italic my-4"
+            className="border-l-4 border-gray-400 pl-4 italic text-gray-700 my-3"
           >
             {node.content?.map((child: any, i: number) => renderNode(child, i))}
           </blockquote>
@@ -111,7 +120,7 @@ export function FormatRichText(content: any) {
         return (
           <pre
             key={index}
-            className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto my-4"
+            className="bg-gray-900 text-white p-3 rounded-md mb-3 overflow-x-auto"
           >
             <code>{node.content?.[0]?.text || ""}</code>
           </pre>
