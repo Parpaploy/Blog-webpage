@@ -116,10 +116,10 @@ export default function AddBlogDefaultPage({
         isSidebar ? "pl-65" : "pl-25"
       } transition-all`}
     >
-      <section className="w-full h-full pb-3 scrollbar-hide overflow-y-auto px-3">
+      <section className="w-full h-full scrollbar-hide overflow-y-auto px-3">
         <form
           onSubmit={handleSubmit}
-          className="h-full max-w-4xl mx-auto space-y-6 text-white/80"
+          className="h-full w-full space-y-6 text-white/80"
         >
           <h1 className="text-3xl font-bold mb-4">{t("createNewPost")}</h1>
           <div className="w-full flex gap-4">
@@ -337,15 +337,13 @@ export default function AddBlogDefaultPage({
             </div>
           )}
 
-          <div className="flex justify-end pt-4">
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="cursor-pointer text-white/80 hover:text-white/90 w-full px-3 py-2 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl transition-all disabled:bg-gray-500 disabled:cursor-not-allowed"
-            >
-              {isLoading ? t("publishing") : t("publishPost")}
-            </button>
-          </div>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="mb-3 cursor-pointer text-white/80 hover:text-white/90 w-full px-3 py-2 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl transition-all disabled:bg-gray-500 disabled:cursor-not-allowed"
+          >
+            {isLoading ? t("publishing") : t("publishPost")}
+          </button>
         </form>
       </section>
     </main>
