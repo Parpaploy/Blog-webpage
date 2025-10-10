@@ -11,6 +11,8 @@ export async function createBlog({
   categories,
   thumbnail,
   token,
+  endpoint = "/api/blogs",
+  price,
 }: ICreateBlogParams): Promise<ICreateBlogResponse> {
   try {
     const uploadFormData = new FormData();
@@ -41,7 +43,7 @@ export async function createBlog({
     const detailString =
       detail && Object.keys(detail).length > 0 ? JSON.stringify(detail) : null;
 
-    const blogData = {
+    const blogData: any = {
       data: {
         title,
         description,
@@ -52,8 +54,15 @@ export async function createBlog({
       },
     };
 
+    if (price !== undefined && price !== null) {
+      blogData.data.price = String(price);
+    }
+
+    console.log("Posting to endpoint:", endpoint);
+    console.log("Blog data:", blogData);
+
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/blogs`,
+      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${endpoint}`,
       {
         method: "POST",
         headers: {

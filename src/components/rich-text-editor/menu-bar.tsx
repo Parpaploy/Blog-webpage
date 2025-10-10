@@ -85,12 +85,19 @@ export default function MenuBar({ editor }: any) {
   ];
 
   return (
-    <div className="rounded-md p-1 mb-1 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg space-x-2 z-50">
+    <div className="rounded-4xl p-1 mb-1 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg space-x-2 z-50 text-white/90">
       {Options.map((option, index) => (
         <Toggle
           key={index}
           pressed={option.preesed}
           onPressedChange={option.onClick}
+          className={`p-2 rounded-full transition-all cursor-pointer text-white/50
+        ${
+          option.preesed
+            ? "bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg data-[state=on]:bg-white/10 data-[state=on]:text-white"
+            : "bg-transparent hover:bg-white/20 hover:text-white/80"
+        }
+      `}
         >
           {option.icon}
         </Toggle>

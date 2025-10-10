@@ -31,6 +31,8 @@ export default function AddBlogDefaultPage({
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [postType, setPostType] = useState<"free" | "price">("free");
+  const [price, setPrice] = useState("");
 
   useEffect(() => {
     if (user && user.username) {
@@ -61,6 +63,8 @@ export default function AddBlogDefaultPage({
     setThumbnail(null);
     setThumbnailPreview(null);
     setPostContent({ type: "doc", content: [] });
+    setPostType("free");
+    setPrice("");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -74,6 +78,15 @@ export default function AddBlogDefaultPage({
       return;
     }
 
+    if (postType === "price" && (!price || parseFloat(price) <= 0)) {
+      setError("Please enter a valid price for paid content.");
+      setIsLoading(false);
+      return;
+    }
+
+    const endpoint =
+      postType === "free" ? "/api/blogs" : "/api/subscribe-blogs";
+
     const result = await createBlog({
       title,
       description,
@@ -82,6 +95,8 @@ export default function AddBlogDefaultPage({
       categories: category,
       thumbnail,
       token,
+      endpoint,
+      ...(postType === "price" && { price: parseFloat(price) }),
     });
 
     setIsLoading(false);
@@ -97,70 +112,95 @@ export default function AddBlogDefaultPage({
 
   return (
     <main
-      className={`w-full h-full overflow-y-auto p-8 transition-all duration-300 text-white ${
+      className={`w-full h-full 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[5svh] ${
         isSidebar ? "pl-65" : "pl-25"
-      }`}
+      } transition-all`}
     >
-      <form onSubmit={handleSubmit} className="max-w-4xl mx-auto space-y-6">
+      <form
+        onSubmit={handleSubmit}
+        className="h-full max-w-4xl mx-auto space-y-6 pb-3 overflow-y-auto text-white/80 px-3 scrollbar-hide"
+      >
         <h1 className="text-3xl font-bold mb-4">{t("createNewPost")}</h1>
 
         {/* Title */}
-        <div>
-          <label
-            htmlFor="title"
-            className="block text-sm font-medium text-gray-300 mb-2"
-          >
-            {t("title")}
-          </label>
-          <input
-            type="text"
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full bg-gray-800 border border-gray-600 rounded-md py-2 px-4 focus:ring-blue-500 focus:border-blue-500"
-            placeholder={t("titlePlaceholder")}
-            required
-          />
-        </div>
+        <input
+          type="text"
+          id="title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="w-full px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
+          placeholder={t("titlePlaceholder")}
+          required
+        />
 
         {/* Description */}
-        <div>
-          <label
-            htmlFor="description"
-            className="block text-sm font-medium text-gray-300 mb-2"
-          >
-            {t("description")}
-          </label>
-          <textarea
-            id="description"
-            rows={3}
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="w-full bg-gray-800 border border-gray-600 rounded-md py-2 px-4 focus:ring-blue-500 focus:border-blue-500"
-            placeholder={t("descriptionPlaceholder")}
-          />
-        </div>
+        <textarea
+          id="description"
+          rows={3}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          className="w-full px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-3xl focus:ring-2 focus:ring-white/30 focus:outline-none"
+          placeholder={t("descriptionPlaceholder")}
+        />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Author */}
+          {/* Post Type */}
           <div>
-            <label
-              htmlFor="author"
-              className="block text-sm font-medium text-gray-300 mb-2"
-            >
-              {t("author")}
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              {t("postType") || "ประเภทโพสต์"}
             </label>
-            <input
-              type="text"
-              id="author"
-              value={author}
-              className="w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-4 cursor-not-allowed"
-              readOnly
-            />
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() => setPostType("free")}
+                className={`flex-1 px-4 py-2 rounded-full border duration-200 transition-all shadow-lg ${
+                  postType === "free"
+                    ? "cursor-pointer text-white/90 bg-white/40 backdrop-blur-sm border-white/30"
+                    : "cursor-pointer text-white/80 hover:text-white/90 hover:bg-white/30 bg-white/20 backdrop-blur-sm border-white/30"
+                }`}
+              >
+                {t("free") || "ฟรี"}
+              </button>
+              <button
+                type="button"
+                onClick={() => setPostType("price")}
+                className={`flex-1 px-4 py-2 rounded-full border duration-200 transition-all shadow-lg ${
+                  postType === "price"
+                    ? "cursor-pointer text-white/90 bg-white/40 backdrop-blur-sm border-white/30"
+                    : "cursor-pointer text-white/80 hover:text-white/90 hover:bg-white/30 bg-white/20 backdrop-blur-sm border-white/30"
+                }`}
+              >
+                {t("paid") || "เสียค่าสมัครสมาชิก"}
+              </button>
+            </div>
           </div>
 
+          {/* Price (only show if postType is "price") */}
+          {postType === "price" && (
+            <div>
+              <label
+                htmlFor="price"
+                className="block text-sm font-medium text-gray-300 mb-2"
+              >
+                {t("price") || "ราคา (บาท)"}{" "}
+                <span className="text-red-400">*</span>
+              </label>
+              <input
+                type="number"
+                id="price"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                className="w-full px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
+                placeholder={t("pricePlaceholder") || "เช่น 99"}
+                min="0"
+                step="0.01"
+                required={postType === "price"}
+              />
+            </div>
+          )}
+
           {/* Categories */}
-          <div>
+          <div className={postType === "price" ? "md:col-span-2" : ""}>
             <label className="block text-sm font-medium text-gray-300 mb-2">
               {t("categories")}
             </label>
@@ -178,10 +218,10 @@ export default function AddBlogDefaultPage({
                           : [...prev, cat.id]
                       )
                     }
-                    className={`px-4 py-2 rounded-md border transition-colors duration-200 ${
+                    className={`px-3 py-2 rounded-full border duration-200 transition-all shadow-lg ${
                       isSelected
-                        ? "bg-blue-600 border-blue-500 text-white"
-                        : "bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700"
+                        ? "cursor-pointer text-white/90 bg-white/40 backdrop-blur-sm border border-white/30"
+                        : "cursor-pointer text-white/80 hover:text-white/90 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30"
                     }`}
                   >
                     {cat.title}
@@ -194,10 +234,10 @@ export default function AddBlogDefaultPage({
 
         {/* Thumbnail */}
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
+          <label className="block text-sm font-medium mb-2">
             {t("thumbnail")}
           </label>
-          <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-600 border-dashed rounded-md">
+          <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-white/30 bg-white/10 backdrop-blur-sm border-dashed rounded-3xl">
             <div className="space-y-1 text-center">
               {thumbnailPreview ? (
                 <img
@@ -206,10 +246,10 @@ export default function AddBlogDefaultPage({
                   className="mx-auto h-48 w-auto rounded-md object-cover"
                 />
               ) : (
-                <div className="text-gray-400">No preview</div>
+                <div>No preview</div>
               )}
-              <div className="flex text-sm text-gray-500 justify-center">
-                <label className="relative cursor-pointer bg-gray-800 rounded-md font-medium text-blue-500 hover:text-blue-400 focus-within:outline-none p-1">
+              <div className="flex text-sm justify-center">
+                <label className="relative cursor-pointer px-2 py-1 hover:text-white/90 bg-white/10 hover:bg-white/30 transition-all backdrop-blur-sm border border-white/30 shadow-lg rounded-3xl focus:ring-2 focus:ring-white/30 focus:outline-none">
                   <span>{t("uploadFile")}</span>
                   <input
                     type="file"
@@ -220,18 +260,13 @@ export default function AddBlogDefaultPage({
                 </label>
                 <p className="pl-1">{t("orDragAndDrop")}</p>
               </div>
-              <p className="text-xs text-gray-400">PNG, JPG, GIF up to 10MB</p>
+              <p className="text-xs">PNG, JPG, GIF up to 10MB</p>
             </div>
           </div>
         </div>
 
         {/* Rich Text Editor */}
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
-            {t("content")}
-          </label>
-          <RichTextEditor content={postContent} onChange={onContentChange} />
-        </div>
+        <RichTextEditor content={postContent} onChange={onContentChange} />
 
         {/* Error */}
         {error && (
@@ -247,7 +282,7 @@ export default function AddBlogDefaultPage({
           <button
             type="submit"
             disabled={isLoading}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-200 disabled:bg-gray-500 disabled:cursor-not-allowed"
+            className="cursor-pointer text-white/80 hover:text-white/90 w-full px-3 py-2 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl transition-all disabled:bg-gray-500 disabled:cursor-not-allowed"
           >
             {isLoading ? t("publishing") : t("publishPost")}
           </button>

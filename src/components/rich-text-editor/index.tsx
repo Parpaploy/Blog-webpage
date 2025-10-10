@@ -35,16 +35,12 @@ export default function RichTextEditor({
     editorProps: {
       attributes: {
         class:
-          "min-h-100 px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none",
+          "min-h-100 px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-3xl focus:ring-2 focus:ring-white/30 focus:outline-none",
       },
     },
     immediatelyRender: false,
     onUpdate: ({ editor }) => {
-      // --- START CORRECTION ---
-      // เปลี่ยนจาก .getHTML() ที่ส่งค่าเป็น String
-      // เป็น .getJSON() เพื่อส่งค่าเป็น JSON Object ที่ Strapi ต้องการ
       onChange(editor.getJSON());
-      // --- END CORRECTION ---
     },
   });
 

@@ -73,6 +73,8 @@ export interface ICreateBlogParams {
   categories: number[];
   thumbnail: File;
   token: string;
+  endpoint?: string;
+  price?: number;
 }
 
 export interface ICreateBlogResponse {
