@@ -34,7 +34,7 @@ export default function LanguageSwitcher() {
 
       <button
         onClick={toggleLang}
-        className="w-20 h-8.5 rounded-full relative overflow-hidden flex items-center justify-center bg-white/10 backdrop-blur-xs border border-white/30 shadow-lg cursor-pointer"
+        className="w-20 h-10 rounded-full relative overflow-hidden flex items-center justify-center bg-white/10 backdrop-blur-xs border border-white/30 shadow-lg cursor-pointer"
         disabled={loading}
       >
         {loading && (

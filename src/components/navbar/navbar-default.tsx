@@ -9,6 +9,7 @@ import SignupButton from "./components/signup-btn";
 import LanguageSwitcher from "./components/language-switcher";
 import { GoSearch } from "react-icons/go";
 import { useRouter } from "next/navigation";
+import ProfilePanel from "./components/profile-panel";
 
 export default function NavbarDefault({
   isLoggedIn,
@@ -26,6 +27,8 @@ export default function NavbarDefault({
   const [query, setQuery] = useState("");
 
   const router = useRouter();
+
+  const [isToggle, setIsToggle] = useState<boolean>(false);
 
   const handleSearch = () => {
     alert("Searching for: " + query);
@@ -68,9 +71,9 @@ export default function NavbarDefault({
 
                 <div
                   onClick={() => {
-                    router.push("/profile");
+                    setIsToggle(!isToggle);
                   }}
-                  className="cursor-pointer w-8.5 h-8.5 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg"
+                  className="cursor-pointer w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg"
                 >
                   <img
                     className="w-full h-full rounded-full overflow-hidden object-cover aspect-square opacity-80"
@@ -99,6 +102,8 @@ export default function NavbarDefault({
           )}
         </div>
       </nav>
+
+      <ProfilePanel toggle={isToggle} setToggle={setIsToggle} />
     </main>
   );
 }

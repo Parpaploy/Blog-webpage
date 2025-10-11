@@ -13,7 +13,7 @@ export default function TemplateDefaultPage() {
     <main
       className={`w-full h-full overflow-y-auto 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[5svh] ${
         isSidebar ? "pl-65" : "pl-25"
-      } transition-all`}
+      } transition-all pb-3`}
     >
       <section>
         <h1>{t("hello")}</h1>

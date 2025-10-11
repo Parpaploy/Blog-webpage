@@ -6,6 +6,7 @@ import { useSidebar } from "../../../hooks/sidebar";
 import RichTextEditor from "@/components/rich-text-editor";
 import { ICategory, IUser } from "../../../interfaces/strapi.interface";
 import { createBlog } from "../../../lib/apis/blog-uploader";
+import { useRouter } from "next/navigation";
 
 export default function AddBlogDefaultPage({
   user,
@@ -33,6 +34,8 @@ export default function AddBlogDefaultPage({
   const [error, setError] = useState<string | null>(null);
   const [postType, setPostType] = useState<"free" | "price">("free");
   const [price, setPrice] = useState("");
+
+  const router = useRouter();
 
   useEffect(() => {
     if (user && user.username) {
@@ -104,6 +107,7 @@ export default function AddBlogDefaultPage({
     if (result.success) {
       console.log("Successfully created:", result.data);
       alert("สร้างโพสต์สำเร็จ!");
+      router.push("/your-blogs");
       resetForm();
     } else {
       setError(result.error || "Failed to create post");

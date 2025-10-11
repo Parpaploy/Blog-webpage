@@ -63,6 +63,7 @@ export interface ISubscribeBlog {
   detail: any;
   author: IUser;
   categories: ICategory[];
+  price: string;
 }
 
 export interface ICreateBlogParams {

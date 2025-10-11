@@ -6,7 +6,6 @@ import { useTranslation } from "react-i18next";
 import { useSidebar } from "../../../hooks/sidebar";
 import LogoutButton from "./components/logout-btn";
 import SidebarMenu from "./components/sidebar-menu";
-import { Logout } from "../../../lib/auth";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { TbLogout } from "react-icons/tb";
 import { IoPersonOutline } from "react-icons/io5";

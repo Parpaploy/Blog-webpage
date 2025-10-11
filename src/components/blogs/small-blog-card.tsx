@@ -40,6 +40,24 @@ export default function SmallBlogCard({ blog }: { blog: IBlog }) {
           <p className="font-medium text-md text-[#bdbdbd]/70 line-clamp-1">
             {blog.description}
           </p>
+
+          <div className="w-full flex justify-start items-center gap-2">
+            <div className="xl:w-6 xl:h-6 lg:w-4 lg:h-4 w-5 h-5 overflow-hidden rounded-full">
+              <img
+                className="w-full h-full object-cover"
+                src={
+                  blog.author?.profile?.formats?.small?.url
+                    ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${blog.author.profile.formats.small.url}`
+                    : "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1906669723.jpg"
+                }
+                alt={blog.author + "profile picture"}
+              />
+            </div>
+
+            <p className="xl:text-sm lg:text-xs text-sm">
+              {blog.author.username}
+            </p>
+          </div>
         </div>
 
         <div className="w-full space-y-1">
@@ -47,8 +65,8 @@ export default function SmallBlogCard({ blog }: { blog: IBlog }) {
             <div
               className={`${
                 isSidebar
-                  ? "2xl:h-23 xl:h-13 lg:h-10 md:h-11.5"
-                  : "2xl:h-23 xl:h-15 lg:h-13 md:h-9.5"
+                  ? "2xl:h-15 xl:h-6 lg:h-4.5 md:h-7"
+                  : "2xl:h-18 xl:h-8 lg:h-7 md:h-5"
               } flex flex-wrap justify-start items-end gap-1 overflow-y-auto`}
             >
               {blog.categories.map((cat: ICategory, index: number) => {
@@ -59,7 +77,7 @@ export default function SmallBlogCard({ blog }: { blog: IBlog }) {
             </div>
           )}
 
-          <p className="xl:text-xs lg:text-[10px] md:text-[14px] text-[#bdbdbd]/70">
+          <p className="xl:text-xs lg:text-[10px] md:text-[14px] text-[#bdbdbd]/70 text-end">
             {FormatDate(blog.createdAt)}
           </p>
         </div>

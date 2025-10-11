@@ -7,6 +7,7 @@ import { FormatDate } from "../../../../utils/format-date";
 import { FormatRichText } from "../../../../utils/format-rich-text";
 import { useTranslation } from "react-i18next";
 import { useSidebar } from "../../../../hooks/sidebar";
+import GlobalLoading from "@/app/loading";
 
 export default function BlogDetailPage({
   blog,
@@ -21,7 +22,24 @@ export default function BlogDetailPage({
 
   const { isSidebar } = useSidebar();
 
-  console.log(blog);
+  // console.log(blog);
+
+  const authorBlogs = blog?.author?.id
+    ? blogs.filter(
+        (b) =>
+          b.author?.id &&
+          b.author.id === blog.author.id &&
+          b.documentId !== blog.documentId
+      )
+    : [];
+
+  if (!blog) {
+    return (
+      <div className="w-full h-full flex items-center justify-center text-white">
+        <GlobalLoading />
+      </div>
+    );
+  }
 
   return (
     <main
@@ -31,8 +49,7 @@ export default function BlogDetailPage({
     >
       {/* Detail */}
       <section className="lg:w-[70%] w-full lg:h-full h-[70%] overflow-y-auto pr-8 lg:mb-0 mb-3 scrollbar-hide">
-        <div className="before:block 2xl:before:h-[7svh] xl:before:h-[9svh] lg:before:h-[8svh] md:before:h-[5svh] before:content-['']" />
-
+        <div className="before:block 2xl:before:h-[7svh] xl:before:h-[9svh] lg:before:h-[8svh] md:before:h-[6svh] before:content-['']" />
         <div className="w-full text-start mb-5">
           <h1 className="text-4xl font-bold">{blog?.title}</h1>
           <p className="text-[#cfcfcf]">{blog?.description}</p>
@@ -48,7 +65,11 @@ export default function BlogDetailPage({
             <div className="w-10 h-10 rounded-full overflow-hidden">
               <img
                 className="w-full h-full"
-                src={`${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${blogUser.author?.profile.formats.small?.url}`}
+                src={
+                  blogUser.author?.profile?.formats?.small?.url
+                    ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${blogUser.author.profile.formats.small.url}`
+                    : "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1906669723.jpg"
+                }
               />
             </div>
 
@@ -61,20 +82,29 @@ export default function BlogDetailPage({
             </p>
           </div>
         </div>
-
         {FormatRichText(blog?.detail)}
       </section>
 
-      <div className="w-[1px] bg-white/30 h-[95%] my-auto" />
+      <div className="lg:w-[1px] w-[95%] bg-white/30 lg:h-[95%] h-[1px] lg:mb-0 mb-3 mx-auto lg:my-auto" />
 
       {/* Other blogs */}
       <section className="lg:w-[30%] w-full lg:h-full h-[30%] flex flex-col lg:pl-8 pl-0 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] pt-0">
-        <h1 className="text-3xl font-bold text-start mb-3">Other blogs</h1>
+        <h1 className="text-3xl font-bold text-start mb-3">
+          More from {blog.author?.username}
+        </h1>
 
         <div className="w-full h-full flex lg:flex-col flex-row items-start justify-start gap-5 lg:overflow-x-hidden lg:overflow-y-auto overflow-y-hidden overflow-x-auto scrollbar-hide pb-3">
-          {blogs.map((blog, index: number) => {
-            return <SmallBlogCard key={blog.id} blog={blog} />;
-          })}
+          {authorBlogs.length > 0 ? (
+            <div className="w-full h-full flex lg:flex-col flex-row items-start justify-start gap-5 lg:overflow-x-hidden lg:overflow-y-auto overflow-y-hidden overflow-x-auto scrollbar-hide pb-3">
+              {authorBlogs.map((authorBlog) => {
+                return <SmallBlogCard key={authorBlog.id} blog={authorBlog} />;
+              })}
+            </div>
+          ) : (
+            <p className="text-white/50 text-sm">
+              No other blogs from this author yet.
+            </p>
+          )}
         </div>
       </section>
     </main>

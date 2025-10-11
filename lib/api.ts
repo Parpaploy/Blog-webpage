@@ -25,7 +25,7 @@ export const fetchUser = async (): Promise<IUser | null> => {
 export const fetchBlogs = async () => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/blogs?populate=*`
+      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/blogs?populate[thumbnail]=true&populate[author][populate]=*&populate[categories]=true`
     );
 
     return response.data.data;
@@ -66,7 +66,7 @@ export const fetchSubscribeBlogs = async () => {
     // console.log("token:", token);
 
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/subscribe-blogs?populate=*`,
+      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/subscribe-blogs?populate[thumbnail]=true&populate[author][populate]=*&populate[categories]=true`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

@@ -14,7 +14,7 @@ export default function BlogCard({ blog }: { blog: IBlog }) {
       onClick={() => {
         router.push(`/blogs/${blog.documentId}`);
       }}
-      className="cursor-pointer xl:w-80 xl:h-90 w-60 h-70 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg overflow-hidden"
+      className="cursor-pointer 2xl:w-95 2xl:h-105 xl:w-85 xl:h-95 w-70 h-80 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg overflow-hidden"
     >
       <div className="w-full h-[50%] rounded-b-2xl overflow-hidden">
         <img
@@ -28,18 +28,34 @@ export default function BlogCard({ blog }: { blog: IBlog }) {
         />
       </div>
       <div className="w-full h-[50%] flex flex-col justify-between items-start text-start px-5 py-3">
-        <div className="w-full h-full">
+        <div className="w-full h-fit">
           <h2 className="font-bold xl:text-2xl text-xl line-clamp-1">
             {blog.title}
           </h2>
           <p className="font-medium xl:text-md text-sm text-[#bdbdbd]/70 line-clamp-1">
             {blog.description}
           </p>
+
+          <div className="w-full flex justify-start items-center gap-2">
+            <div className="xl:w-6 xl:h-6 w-5 h-5 overflow-hidden rounded-full">
+              <img
+                className="w-full h-full object-cover"
+                src={
+                  blog.author?.profile?.formats?.small?.url
+                    ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${blog.author.profile.formats.small.url}`
+                    : "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1906669723.jpg"
+                }
+                alt={blog.author + "profile picture"}
+              />
+            </div>
+
+            <p>{blog.author.username}</p>
+          </div>
         </div>
 
         <div className="w-full flex flex-col gap-1">
           {blog.categories && blog.categories.length > 0 && (
-            <div className="flex flex-wrap xl:h-20 lg:h-12 md:h-10 h-9 justify-start items-end gap-1 overflow-x-auto">
+            <div className="flex flex-wrap 2xl:h-21 xl:h-16 lg:h-10 md:h-9 h-9 justify-start items-end gap-1 overflow-x-auto">
               {blog.categories.map((cat: ICategory, index: number) => {
                 return (
                   <CategoryTag key={index} title={cat.title} textSize="base" />
@@ -48,7 +64,7 @@ export default function BlogCard({ blog }: { blog: IBlog }) {
             </div>
           )}
 
-          <p className="xl:text-xs lg:text-[10px] md:text-[14px] text-[#bdbdbd]/70">
+          <p className="xl:text-xs lg:text-[10px] md:text-[14px] text-[#bdbdbd]/70 text-end">
             {FormatDate(blog.createdAt)}
           </p>
         </div>
