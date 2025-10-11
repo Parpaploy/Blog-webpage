@@ -31,6 +31,9 @@ import verificationTh from "../public/locales/th/verification.json";
 import profileEn from "../public/locales/en/profile.json";
 import profileTh from "../public/locales/th/profile.json";
 
+import yourBlogEn from "../public/locales/en/your-blogs.json";
+import yourBlogTh from "../public/locales/th/your-blogs.json";
+
 import blogsEn from "../public/locales/en/blogs.json";
 import blogsTh from "../public/locales/th/blogs.json";
 
@@ -56,6 +59,7 @@ i18n.use(initReactI18next).init({
       blogs: blogsTh,
       subscribeBlogs: subscribeBlogsTh,
       addBlog: addBlogTh,
+      yourBlog: yourBlogTh,
     },
     en: {
       template: templateEn,
@@ -71,6 +75,7 @@ i18n.use(initReactI18next).init({
       blogs: blogsEn,
       subscribeBlogs: subscribeBlogsEn,
       addBlog: addBlogEn,
+      yourBlog: yourBlogEn,
     },
   },
   lng: "th",
