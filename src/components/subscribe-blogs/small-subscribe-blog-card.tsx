@@ -74,7 +74,7 @@ export default function SmallSubscribeBlogCard({
             </div>
 
             <p className="xl:text-sm lg:text-xs text-sm">
-              {subBlog.author.username}
+              {subBlog.author?.username}
             </p>
           </div>
         </div>

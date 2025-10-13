@@ -70,7 +70,7 @@ export default function BlogCard({
               />
             </div>
 
-            <p>{blog.author.username}</p>
+            <p>{blog.author?.username}</p>
           </div>
         </div>
 

@@ -142,3 +142,15 @@ export const fetchCategories = async () => {
     console.log("error:", error);
   }
 };
+
+export const fetchHighlight = async () => {
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/highlight?populate[blogs][populate][thumbnail]=true&populate[blogs][populate][author][populate]=*&populate[blogs][populate][categories]=true&populate[subscribe_blogs][populate][thumbnail]=true&populate[subscribe_blogs][populate][author][populate]=*&populate[subscribe_blogs][populate][categories]=true`
+    );
+
+    return response.data.data;
+  } catch (error) {
+    console.log("error:", error);
+  }
+};

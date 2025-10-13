@@ -1,5 +1,10 @@
 import { cookies } from "next/headers";
-import { fetchBlogs, fetchSubscribeBlogs, fetchUser } from "../../lib/api";
+import {
+  fetchBlogs,
+  fetchHighlight,
+  fetchSubscribeBlogs,
+  fetchUser,
+} from "../../lib/api";
 import HomepageDefault from "./homepage-default";
 import { IUser } from "../../interfaces/strapi.interface";
 
@@ -12,14 +17,18 @@ export default async function Homepage() {
 
   const userToShow = fetchedUser || initialUser;
 
+  const highlight = await fetchHighlight();
   const blogs = await fetchBlogs();
   const subscribeBlogs = await fetchSubscribeBlogs();
+
+  // console.log(highlight, ":Highlight");
 
   return (
     <HomepageDefault
       user={userToShow}
       blogs={blogs}
       subscribeBlogs={subscribeBlogs}
+      highlight={highlight}
     />
   );
 }

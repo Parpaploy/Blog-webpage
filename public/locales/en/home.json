@@ -1,4 +1,6 @@
 {
-  "blog_title": "Popular blogs",
-  "subscribe_blog_title": "Popular subscribe blogs"
+  "blog_title": "All blogs",
+  "subscribe_blog_title": "All subscribe blogs",
+  "highlight_blog_title": "Popular blogs",
+  "highlight_subscribe_blog_title": "Popular subscribe blogs"
 }

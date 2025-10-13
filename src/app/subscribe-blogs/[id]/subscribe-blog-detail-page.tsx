@@ -20,7 +20,7 @@ export default function SubscribeBlogDetailPage({
   subBlogUser: ISubscribeBlog;
   user: IUser | null;
 }) {
-  const { t } = useTranslation("subscribe-blogs");
+  const { t } = useTranslation("subscribeBlogs");
 
   const { isSidebar } = useSidebar();
 
@@ -90,7 +90,8 @@ export default function SubscribeBlogDetailPage({
       {/* Other blogs */}
       <section className="lg:w-[30%] w-full lg:h-full h-[30%] flex flex-col lg:pl-8 pl-0 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] pt-0">
         <h1 className="text-3xl font-bold text-start mb-3">
-          More from {subBlog.author?.username}
+          {/* {t("more", { username: subBlog.author?.username })} */}
+          {t("more", { username: subBlog.author?.username })}
         </h1>
 
         <div className="w-full h-full flex lg:flex-col flex-row items-start justify-start gap-5 lg:overflow-x-hidden lg:overflow-y-auto overflow-y-hidden overflow-x-auto scrollbar-hide pb-3">

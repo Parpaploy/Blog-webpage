@@ -83,3 +83,13 @@ export interface ICreateBlogResponse {
   data?: any;
   error?: string;
 }
+
+export interface IHighlight {
+  id: number;
+  documentId: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  blogs: IBlog[];
+  subscribe_blogs: ISubscribeBlog[];
+}

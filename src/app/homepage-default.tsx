@@ -6,6 +6,7 @@ import { useSidebar } from "../../hooks/sidebar";
 import BlogCard from "@/components/blogs/blog-card";
 import {
   IBlog,
+  IHighlight,
   ISubscribeBlog,
   IUser,
 } from "../../interfaces/strapi.interface";
@@ -18,13 +19,16 @@ export default function HomepageDefault({
   user,
   blogs,
   subscribeBlogs,
+  highlight,
 }: {
   user: IUser | null;
   blogs: IBlog[];
   subscribeBlogs: ISubscribeBlog[];
+  highlight: IHighlight;
 }) {
   // console.log(blogs, ":blogs");
   // console.log(subscribeBlogs, ":subscribe blogs");
+  console.log(highlight, ":Highlight");
 
   const { t } = useTranslation("home");
 
@@ -38,6 +42,66 @@ export default function HomepageDefault({
         isSidebar ? "pl-65" : "pl-25"
       } transition-all relative`}
     >
+      <div className="mb-5">
+        <div
+          onClick={() => {
+            router.push("/blogs");
+          }}
+          className="cursor-pointer text-2xl font-bold"
+        >
+          {t("highlight_blog_title")}
+        </div>
+
+        {highlight.blogs && highlight.blogs.length > 0 ? (
+          <section className="w-full h-auto overflow-y-auto py-3 scrollbar-hide">
+            <div className="inline-flex min-w-full gap-5 items-center justify-start overflow-x-auto">
+              {highlight.blogs.map((blog, index: number) => (
+                <BlogCard key={blog.id} blog={blog} user={user} />
+              ))}
+
+              <ContinueButton path="/blogs" />
+            </div>
+          </section>
+        ) : (
+          <section className="text-center w-full h-80 flex items-center justify-center">
+            No Blogs found
+          </section>
+        )}
+      </div>
+
+      <div className="mb-5">
+        <div
+          onClick={() => {
+            if (user !== null) {
+              router.push("/subscribe-blogs");
+            }
+          }}
+          className="cursor-pointer text-2xl font-bold w-fit"
+        >
+          {t("highlight_subscribe_blog_title")}
+        </div>
+
+        {highlight.subscribe_blogs && highlight.subscribe_blogs.length > 0 ? (
+          <section className="w-full h-auto overflow-y-auto py-3 scrollbar-hide overflow-x-auto">
+            <div className="inline-flex min-w-full gap-5 items-center justify-start">
+              {highlight.subscribe_blogs.map((subBlog, index: number) => (
+                <SubscribeBlogCard
+                  key={subBlog.id}
+                  subBlog={subBlog}
+                  user={user}
+                />
+              ))}
+
+              <ContinueButton path="/subscribe-blogs" />
+            </div>
+          </section>
+        ) : (
+          <section className="text-center w-full h-80 flex items-center justify-center">
+            No Subscribe blogs found
+          </section>
+        )}
+      </div>
+
       <div className="mb-5">
         <div
           onClick={() => {
@@ -65,36 +129,38 @@ export default function HomepageDefault({
         )}
       </div>
 
-      <div
-        onClick={() => {
-          if (user !== null) {
-            router.push("/subscribe-blogs");
-          }
-        }}
-        className="cursor-pointer text-2xl font-bold w-fit"
-      >
-        {t("subscribe_blog_title")}
+      <div className="mb-5">
+        <div
+          onClick={() => {
+            if (user !== null) {
+              router.push("/subscribe-blogs");
+            }
+          }}
+          className="cursor-pointer text-2xl font-bold w-fit"
+        >
+          {t("subscribe_blog_title")}
+        </div>
+
+        {subscribeBlogs && subscribeBlogs.length > 0 ? (
+          <section className="w-full h-auto overflow-y-auto py-3 scrollbar-hide overflow-x-auto">
+            <div className="inline-flex min-w-full gap-5 items-center justify-start">
+              {subscribeBlogs.map((subBlog, index: number) => (
+                <SubscribeBlogCard
+                  key={subBlog.id}
+                  subBlog={subBlog}
+                  user={user}
+                />
+              ))}
+
+              <ContinueButton path="/subscribe-blogs" />
+            </div>
+          </section>
+        ) : (
+          <section className="text-center w-full h-80 flex items-center justify-center">
+            No Subscribe blogs found
+          </section>
+        )}
       </div>
-
-      {subscribeBlogs && subscribeBlogs.length > 0 ? (
-        <section className="w-full h-auto overflow-y-auto py-3 scrollbar-hide overflow-x-auto">
-          <div className="inline-flex min-w-full gap-5 items-center justify-start">
-            {subscribeBlogs.map((subBlog, index: number) => (
-              <SubscribeBlogCard
-                key={subBlog.id}
-                subBlog={subBlog}
-                user={user}
-              />
-            ))}
-
-            <ContinueButton path="/subscribe-blogs" />
-          </div>
-        </section>
-      ) : (
-        <section className="text-center w-full h-80 flex items-center justify-center">
-          No Subscribe blogs found
-        </section>
-      )}
 
       <AddButton />
     </main>

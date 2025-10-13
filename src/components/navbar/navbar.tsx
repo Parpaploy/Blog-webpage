@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { IUser } from "../../../interfaces/strapi.interface";
 import { Logout } from "../../../lib/auth";
 import NavbarDefault from "./navbar-default";
-import { fetchUser } from "../../../lib/api";
+import { fetchCategories, fetchUser } from "../../../lib/api";
 
 export default async function Navbar() {
   const cookieStore = await cookies();
@@ -14,9 +14,16 @@ export default async function Navbar() {
   const userToShow = fetchedUser || initialUser;
   const isLoggedIn = userToShow !== null;
 
+  const categories = await fetchCategories();
+
   // console.log(userToShow, ":navbar user");
 
   return (
-    <NavbarDefault isLoggedIn={isLoggedIn} user={userToShow} Logout={Logout} />
+    <NavbarDefault
+      isLoggedIn={isLoggedIn}
+      user={userToShow}
+      Logout={Logout}
+      categories={categories}
+    />
   );
 }

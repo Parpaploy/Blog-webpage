@@ -13,7 +13,7 @@ export default function BlogsDefaultPage({
   blogs: IBlog[];
   user: IUser | null;
 }) {
-  console.log(blogs);
+  // console.log(blogs);
 
   const { t } = useTranslation("blogs");
 

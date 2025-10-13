@@ -14,6 +14,7 @@ import { TbBrandBlogger } from "react-icons/tb";
 import { FaRegStar } from "react-icons/fa";
 import LoginButton from "./components/login-btn";
 import { useRouter } from "next/navigation";
+import { GoSearch } from "react-icons/go";
 
 export default function SidebarDefault({
   isLoggedIn,
@@ -85,6 +86,23 @@ export default function SidebarDefault({
                     <RiHomeLine size={24} />
                   </div>
                   <div className="w-[90%]">{t("home")}</div>
+                </div>
+              }
+            />
+
+            <SidebarMenu
+              path="/search"
+              shortTitle={
+                <p className="flex items-center justify-center">
+                  <GoSearch size={24} />
+                </p>
+              }
+              longTitle={
+                <div className="flex items-stretch justify-start gap-10">
+                  <div className="w-[10%]">
+                    <GoSearch size={24} />
+                  </div>
+                  <div className="w-[90%]">{t("search")}</div>
                 </div>
               }
             />

@@ -37,11 +37,14 @@ import yourBlogTh from "../public/locales/th/your-blogs.json";
 import userBlogsEn from "../public/locales/en/userBlogs.json";
 import userBlogsTh from "../public/locales/th/userBlogs.json";
 
+import searchEn from "../public/locales/en/search.json";
+import searchTh from "../public/locales/th/search.json";
+
 import blogsEn from "../public/locales/en/blogs.json";
 import blogsTh from "../public/locales/th/blogs.json";
 
-import subscribeBlogsEn from "../public/locales/en/subscribe-blogs.json";
-import subscribeBlogsTh from "../public/locales/th/subscribe-blogs.json";
+import subscribeBlogsEn from "../public/locales/en/subscribeBlogs.json";
+import subscribeBlogsTh from "../public/locales/th/subscribeBlogs.json";
 
 import addBlogEn from "../public/locales/en/addBlog.json";
 import addBlogTh from "../public/locales/th/addBlog.json";
@@ -61,6 +64,7 @@ i18n.use(initReactI18next).init({
       profile: profileTh,
       yourBlog: yourBlogTh,
       userBlogs: userBlogsTh,
+      search: searchTh,
       blogs: blogsTh,
       subscribeBlogs: subscribeBlogsTh,
       addBlog: addBlogTh,
@@ -78,6 +82,7 @@ i18n.use(initReactI18next).init({
       profile: profileEn,
       yourBlog: yourBlogEn,
       userBlogs: userBlogsEn,
+      search: searchEn,
       blogs: blogsEn,
       subscribeBlogs: subscribeBlogsEn,
       addBlog: addBlogEn,

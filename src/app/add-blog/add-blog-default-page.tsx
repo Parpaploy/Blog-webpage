@@ -105,7 +105,7 @@ export default function AddBlogDefaultPage({
     setIsLoading(false);
 
     if (result.success) {
-      console.log("Successfully created:", result.data);
+      // console.log("Successfully created:", result.data);
       alert("สร้างโพสต์สำเร็จ!");
       router.push("/your-blogs");
       resetForm();

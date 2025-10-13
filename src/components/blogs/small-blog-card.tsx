@@ -73,7 +73,7 @@ export default function SmallBlogCard({
             </div>
 
             <p className="xl:text-sm lg:text-xs text-sm">
-              {blog.author.username}
+              {blog.author?.username}
             </p>
           </div>
         </div>

@@ -58,8 +58,8 @@ export async function createBlog({
       blogData.data.price = String(price);
     }
 
-    console.log("Posting to endpoint:", endpoint);
-    console.log("Blog data:", blogData);
+    // console.log("Posting to endpoint:", endpoint);
+    // console.log("Blog data:", blogData);
 
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${endpoint}`,

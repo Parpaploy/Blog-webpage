@@ -79,7 +79,7 @@ export default function SubscribeBlogCard({
               />
             </div>
 
-            <p>{subBlog.author.username}</p>
+            <p>{subBlog.author?.username}</p>
           </div>
         </div>
 
