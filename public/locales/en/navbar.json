@@ -3,5 +3,8 @@
   "login": "Login",
   "logout": "Logout",
   "signup": "Sign Up",
-  "guest": "Guest"
+  "guest": "Guest",
+
+  "manage": "Manage your profile",
+  "your-blogs": "All your blogs"
 }
