@@ -1,21 +1,32 @@
 "use client";
 
 import React from "react";
-import { IBlog, ICategory } from "../../../interfaces/strapi.interface";
+import { IBlog, ICategory, IUser } from "../../../interfaces/strapi.interface";
 import { FormatDate } from "../../../utils/format-date";
 import { useSidebar } from "../../../hooks/sidebar";
 import CategoryTag from "../category-tag";
-import { FaStar } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import Star from "./star";
 
 export default function SmallSubscribeBlogCard({
   subBlog,
+  user,
 }: {
   subBlog: IBlog;
+  user: IUser | null;
 }) {
   const { isSidebar } = useSidebar();
 
   const router = useRouter();
+
+  const goToUserBlogs = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (user?.id !== subBlog.author?.id) {
+      router.push(`/user-blogs/${subBlog.author?.id}`);
+    } else {
+      router.push("/your-blogs");
+    }
+  };
 
   return (
     <div
@@ -46,7 +57,10 @@ export default function SmallSubscribeBlogCard({
             {subBlog.description}
           </p>
 
-          <div className="w-full flex justify-start items-center gap-2">
+          <div
+            className="w-fit max-w-full flex justify-start items-center gap-2"
+            onClick={goToUserBlogs}
+          >
             <div className="xl:w-6 xl:h-6 lg:w-4 lg:h-4 w-5 h-5 overflow-hidden rounded-full">
               <img
                 className="w-full h-full object-cover"
@@ -88,9 +102,7 @@ export default function SmallSubscribeBlogCard({
         </div>
       </div>
 
-      <div className="absolute top-2 left-2 text-[#424EDD] rounded-full bg-amber-300 z-20 p-1">
-        <FaStar className="w-5 h-5" />
-      </div>
+      <Star />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { IBlog } from "../../../../interfaces/strapi.interface";
+import { IBlog, IUser } from "../../../../interfaces/strapi.interface";
 import SmallBlogCard from "@/components/blogs/small-blog-card";
 import { FormatDate } from "../../../../utils/format-date";
 import { FormatRichText } from "../../../../utils/format-rich-text";
@@ -13,10 +13,12 @@ export default function BlogDetailPage({
   blog,
   blogs,
   blogUser,
+  user,
 }: {
   blog: IBlog;
   blogs: IBlog[];
   blogUser: IBlog;
+  user: IUser | null;
 }) {
   const { t } = useTranslation("blogs");
 
@@ -97,7 +99,13 @@ export default function BlogDetailPage({
           {authorBlogs.length > 0 ? (
             <div className="w-full h-full flex lg:flex-col flex-row items-start justify-start gap-5 lg:overflow-x-hidden lg:overflow-y-auto overflow-y-hidden overflow-x-auto scrollbar-hide pb-3">
               {authorBlogs.map((authorBlog) => {
-                return <SmallBlogCard key={authorBlog.id} blog={authorBlog} />;
+                return (
+                  <SmallBlogCard
+                    key={authorBlog.id}
+                    blog={authorBlog}
+                    user={user}
+                  />
+                );
               })}
             </div>
           ) : (

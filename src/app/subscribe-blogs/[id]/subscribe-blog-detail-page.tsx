@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ISubscribeBlog } from "../../../../interfaces/strapi.interface";
+import { ISubscribeBlog, IUser } from "../../../../interfaces/strapi.interface";
 import { FormatDate } from "../../../../utils/format-date";
 import { FormatRichText } from "../../../../utils/format-rich-text";
 import { useTranslation } from "react-i18next";
@@ -13,10 +13,12 @@ export default function SubscribeBlogDetailPage({
   subBlog,
   subBlogs,
   subBlogUser,
+  user,
 }: {
   subBlog: ISubscribeBlog;
   subBlogs: ISubscribeBlog[];
   subBlogUser: ISubscribeBlog;
+  user: IUser | null;
 }) {
   const { t } = useTranslation("subscribe-blogs");
 
@@ -99,6 +101,7 @@ export default function SubscribeBlogDetailPage({
                   <SmallSubscribeBlogCard
                     key={authorBlog.id}
                     subBlog={authorBlog}
+                    user={user}
                   />
                 );
               })}

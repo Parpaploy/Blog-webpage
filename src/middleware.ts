@@ -7,7 +7,7 @@ export async function middleware(request: NextRequest) {
 
     if (!token) {
       console.log("❌ No token found, redirecting...");
-      return NextResponse.redirect(new URL("/", request.url));
+      return NextResponse.redirect(new URL("/login", request.url));
     }
 
     const response = await fetch(
@@ -20,7 +20,7 @@ export async function middleware(request: NextRequest) {
     console.log("🌐 Strapi response status:", response.status);
 
     if (!response.ok) {
-      const res = NextResponse.redirect(new URL("/", request.url));
+      const res = NextResponse.redirect(new URL("/login", request.url));
       res.cookies.delete("token");
       res.cookies.delete("user");
       return res;
@@ -44,5 +44,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/subscribe-blogs/:path*", "/add-blog/:path*"],
+  matcher: ["/subscribe-blogs/:id", "/add-blog/:path*"],
 };

@@ -1,12 +1,18 @@
 "use client";
 
 import React from "react";
-import { IBlog } from "../../../interfaces/strapi.interface";
+import { IBlog, IUser } from "../../../interfaces/strapi.interface";
 import BlogCard from "../../components/blogs/blog-card";
 import { useTranslation } from "react-i18next";
 import { useSidebar } from "../../../hooks/sidebar";
 
-export default function BlogsDefaultPage({ blogs }: { blogs: IBlog[] }) {
+export default function BlogsDefaultPage({
+  blogs,
+  user,
+}: {
+  blogs: IBlog[];
+  user: IUser | null;
+}) {
   console.log(blogs);
 
   const { t } = useTranslation("blogs");
@@ -15,17 +21,17 @@ export default function BlogsDefaultPage({ blogs }: { blogs: IBlog[] }) {
 
   return (
     <main
-      className={`w-full h-full overflow-y-auto 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[5svh] text-white/80 ${
+      className={`w-full h-full overflow-y-auto 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] text-white/80 ${
         isSidebar ? "pl-65" : "pl-25"
-      } transition-all pb-1.5`}
+      } transition-all scrollbar-hide`}
     >
       <h1 className="text-2xl font-bold">{t("title")}</h1>
 
       {blogs && blogs.length > 0 ? (
-        <section className="w-full h-full p-10">
+        <section className="w-full lg:px-10 lg:pt-10 md:px-0 md:pt-10 pb-3">
           <div className="flex flex-wrap gap-5 items-center justify-center">
             {blogs.map((blog, index: number) => (
-              <BlogCard key={blog.id} blog={blog} />
+              <BlogCard key={blog.id} blog={blog} user={user} />
             ))}
           </div>
         </section>

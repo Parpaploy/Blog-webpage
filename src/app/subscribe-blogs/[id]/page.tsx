@@ -3,9 +3,11 @@ import {
   fetchSubscribeBlogs,
   fetchSubscribeBlogsByID,
   fetchSubscribeBlogsUserByID,
+  fetchUser,
 } from "../../../../lib/api";
 import BlogDetailPage from "./subscribe-blog-detail-page";
-import { ISubscribeBlog } from "../../../../interfaces/strapi.interface";
+import { ISubscribeBlog, IUser } from "../../../../interfaces/strapi.interface";
+import { cookies } from "next/headers";
 
 export default async function BlogDetail({ params }: any) {
   const { id } = await params;
@@ -14,11 +16,20 @@ export default async function BlogDetail({ params }: any) {
   const subBlogs: ISubscribeBlog[] = await fetchSubscribeBlogs();
   const subBlogUser: ISubscribeBlog = await fetchSubscribeBlogsUserByID(id);
 
+  const cookieStore = await cookies();
+  const userCookie = cookieStore.get("user")?.value;
+  const initialUser: IUser | null = userCookie ? JSON.parse(userCookie) : null;
+
+  const fetchedUser: IUser | null = await fetchUser();
+
+  const userToShow = fetchedUser || initialUser;
+
   return (
     <BlogDetailPage
       subBlog={subBlog}
       subBlogs={subBlogs}
       subBlogUser={subBlogUser}
+      user={userToShow}
     />
   );
 }

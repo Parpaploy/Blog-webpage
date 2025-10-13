@@ -1,16 +1,31 @@
 "use client";
 
 import React from "react";
-import { IBlog, ICategory } from "../../../interfaces/strapi.interface";
+import { IBlog, ICategory, IUser } from "../../../interfaces/strapi.interface";
 import { FormatDate } from "../../../utils/format-date";
 import { useSidebar } from "../../../hooks/sidebar";
 import CategoryTag from "../category-tag";
 import { useRouter } from "next/navigation";
 
-export default function SmallBlogCard({ blog }: { blog: IBlog }) {
+export default function SmallBlogCard({
+  blog,
+  user,
+}: {
+  blog: IBlog;
+  user: IUser | null;
+}) {
   const { isSidebar } = useSidebar();
 
   const router = useRouter();
+
+  const goToUserBlogs = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (user?.id !== blog.author?.id) {
+      router.push(`/user-blogs/${blog.author?.id}`);
+    } else {
+      router.push("/your-blogs");
+    }
+  };
 
   return (
     <div
@@ -41,7 +56,10 @@ export default function SmallBlogCard({ blog }: { blog: IBlog }) {
             {blog.description}
           </p>
 
-          <div className="w-full flex justify-start items-center gap-2">
+          <div
+            className="w-fit max-w-full flex justify-start items-center gap-2"
+            onClick={goToUserBlogs}
+          >
             <div className="xl:w-6 xl:h-6 lg:w-4 lg:h-4 w-5 h-5 overflow-hidden rounded-full">
               <img
                 className="w-full h-full object-cover"

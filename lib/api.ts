@@ -66,12 +66,12 @@ export const fetchSubscribeBlogs = async () => {
     // console.log("token:", token);
 
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/subscribe-blogs?populate[thumbnail]=true&populate[author][populate]=*&populate[categories]=true`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/subscribe-blogs?populate[thumbnail]=true&populate[author][populate]=*&populate[categories]=true`
+      // {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      // }
     );
 
     return response.data.data;
@@ -119,6 +119,17 @@ export const fetchSubscribeBlogsUserByID = async (id: string) => {
     console.log("error:", error);
   }
 };
+
+// export const fetchAllBlogsByAuthor = async (id: string) => {
+//   try {
+//     const response = await axios.get(
+//       `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/users/${id}?populate[blogs]=*&populate[subscribe_blogs][populate]=*`
+//     );
+//     return response.data.data;
+//   } catch (error) {
+//     console.log("error fetching user:", error);
+//   }
+// };
 
 export const fetchCategories = async () => {
   try {

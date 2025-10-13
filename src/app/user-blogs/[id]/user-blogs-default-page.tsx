@@ -1,36 +1,34 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import {
   IBlog,
   ISubscribeBlog,
   IUser,
-} from "../../../interfaces/strapi.interface";
+} from "../../../../interfaces/strapi.interface";
 import { useTranslation } from "react-i18next";
-import { useSidebar } from "../../../hooks/sidebar";
-import BlogCard from "../../components/blogs/blog-card";
+import { useSidebar } from "../../../../hooks/sidebar";
+import BlogCard from "../../../components/blogs/blog-card";
 import SubscribeBlogCard from "@/components/subscribe-blogs/subscribe-blog-card";
 import { useRouter } from "next/navigation";
 
-export default function YourBlogsDefaultPage({
-  blogs,
-  subscribeBlogs,
+export default function UserBlogsDefaultPage({
   user,
+  userBlogs,
+  userSubscribeBlogs,
 }: {
-  blogs: IBlog[];
-  subscribeBlogs: ISubscribeBlog[];
   user: IUser | null;
+  userBlogs: IBlog[];
+  userSubscribeBlogs: ISubscribeBlog[];
 }) {
-  const { t } = useTranslation("yourBlogs");
+  const { t } = useTranslation("userBlogs");
 
   const { isSidebar } = useSidebar();
 
   const router = useRouter();
 
-  const userBlogs = blogs.filter((blog) => blog.author?.id === user?.id);
-  const userSubscribeBlogs = subscribeBlogs.filter(
-    (subBlog) => subBlog.author?.id === user?.id
-  );
+  // console.log(user?.id, ":user id");
+  // console.log(userBlogs[0]?.author.id, ":user blog id");
 
   return (
     <main
@@ -45,7 +43,11 @@ export default function YourBlogsDefaultPage({
           }}
           className="cursor-pointer text-2xl font-bold"
         >
-          {t("blog_title")}
+          {t("blog_title", {
+            username: userBlogs[0]?.author.username
+              ? userBlogs[0].author.username
+              : t("no_username"),
+          })}
         </div>
 
         {userBlogs && userBlogs.length > 0 ? (
@@ -68,7 +70,11 @@ export default function YourBlogsDefaultPage({
           }}
           className="cursor-pointer text-2xl font-bold w-fit"
         >
-          {t("subscribe_blog_title")}
+          {t("subscribe_blog_title", {
+            username: userSubscribeBlogs[0]?.author.username
+              ? userSubscribeBlogs[0].author.username
+              : t("no_username"),
+          })}
         </div>
 
         {userSubscribeBlogs && userSubscribeBlogs.length > 0 ? (

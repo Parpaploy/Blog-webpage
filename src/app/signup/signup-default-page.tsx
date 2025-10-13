@@ -119,7 +119,7 @@ export default function SignupDefaultPage() {
 
   return (
     <main
-      className={`w-full h-full 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[5svh] ${
+      className={`w-full h-full 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] ${
         isSidebar ? "pl-65" : "pl-25"
       } transition-all`}
     >

@@ -34,6 +34,9 @@ import profileTh from "../public/locales/th/profile.json";
 import yourBlogEn from "../public/locales/en/your-blogs.json";
 import yourBlogTh from "../public/locales/th/your-blogs.json";
 
+import userBlogsEn from "../public/locales/en/userBlogs.json";
+import userBlogsTh from "../public/locales/th/userBlogs.json";
+
 import blogsEn from "../public/locales/en/blogs.json";
 import blogsTh from "../public/locales/th/blogs.json";
 
@@ -56,10 +59,11 @@ i18n.use(initReactI18next).init({
       resetPassword: resetPasswordTh,
       verification: verificationTh,
       profile: profileTh,
+      yourBlog: yourBlogTh,
+      userBlogs: userBlogsTh,
       blogs: blogsTh,
       subscribeBlogs: subscribeBlogsTh,
       addBlog: addBlogTh,
-      yourBlog: yourBlogTh,
     },
     en: {
       template: templateEn,
@@ -72,10 +76,11 @@ i18n.use(initReactI18next).init({
       resetPassword: resetPasswordEn,
       verification: verificationEn,
       profile: profileEn,
+      yourBlog: yourBlogEn,
+      userBlogs: userBlogsEn,
       blogs: blogsEn,
       subscribeBlogs: subscribeBlogsEn,
       addBlog: addBlogEn,
-      yourBlog: yourBlogEn,
     },
   },
   lng: "th",

@@ -4,24 +4,43 @@ import React from "react";
 import {
   ICategory,
   ISubscribeBlog,
+  IUser,
 } from "../../../interfaces/strapi.interface";
 import { FormatDate } from "../../../utils/format-date";
 import CategoryTag from "../category-tag";
-import { FaStar } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import Star from "./star";
 
 export default function SubscribeBlogCard({
   subBlog,
+  user,
 }: {
   subBlog: ISubscribeBlog;
+  user: IUser | null;
 }) {
   const router = useRouter();
 
+  const handleClick = () => {
+    if (user) {
+      router.push(`/subscribe-blogs/${subBlog.documentId}`);
+    } else {
+      router.push("/login");
+    }
+  };
+
+  const goToUserBlogs = (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    if (user?.id !== subBlog.author?.id) {
+      router.push(`/user-blogs/${subBlog.author?.id}`);
+    } else {
+      router.push("/your-blogs");
+    }
+  };
+
   return (
     <div
-      onClick={() => {
-        router.push(`/subscribe-blogs/${subBlog.documentId}`);
-      }}
+      onClick={handleClick}
       className="cursor-pointer 2xl:w-95 2xl:h-105 xl:w-85 xl:h-95 w-70 h-80 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg overflow-hidden relative"
     >
       <div className="w-full h-[50%] rounded-b-2xl overflow-hidden">
@@ -44,7 +63,10 @@ export default function SubscribeBlogCard({
             {subBlog.description}
           </p>
 
-          <div className="w-full flex justify-start items-center gap-2">
+          <div
+            className="w-fit max-w-full flex justify-start items-center gap-2"
+            onClick={goToUserBlogs}
+          >
             <div className="xl:w-6 xl:h-6 w-5 h-5 overflow-hidden rounded-full">
               <img
                 className="w-full h-full object-cover"
@@ -78,9 +100,7 @@ export default function SubscribeBlogCard({
         </div>
       </div>
 
-      <div className="absolute top-2 left-2 text-[#424EDD] rounded-full bg-amber-300 z-20 p-1">
-        <FaStar className="w-5 h-5" />
-      </div>
+      <Star />
     </div>
   );
 }

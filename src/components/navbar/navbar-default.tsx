@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IUser } from "../../../interfaces/strapi.interface";
 import { useTranslation } from "react-i18next";
 import LoginButton from "./components/login-btn";
@@ -8,7 +8,7 @@ import { useSidebar } from "../../../hooks/sidebar";
 import SignupButton from "./components/signup-btn";
 import LanguageSwitcher from "./components/language-switcher";
 import { GoSearch } from "react-icons/go";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import ProfilePanel from "./components/profile-panel";
 
 export default function NavbarDefault({
@@ -28,11 +28,17 @@ export default function NavbarDefault({
 
   const router = useRouter();
 
+  const pathname = usePathname();
+
   const [isToggle, setIsToggle] = useState<boolean>(false);
 
   const handleSearch = () => {
     alert("Searching for: " + query);
   };
+
+  useEffect(() => {
+    setIsToggle(false);
+  }, [pathname]);
 
   return (
     <main

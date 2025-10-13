@@ -13,7 +13,7 @@ export default function CategoryTag({
 }) {
   return (
     <div
-      className={`2xl:text-[14px] xl:text-[12px] md:text-[10px] text-white px-1.5 rounded-md bg-white/10 backdrop-blur-sm border border-white/20 shadow-lg line-clamp-1 ${getTextSizeClass(
+      className={`xl:text-[14px] md:text-[10px] text-white xl:px-1.5 px-1 xl:rounded-md rounded-sm bg-white/10 backdrop-blur-sm border border-white/20 shadow-lg line-clamp-1 ${getTextSizeClass(
         textSize
       )}`}
     >

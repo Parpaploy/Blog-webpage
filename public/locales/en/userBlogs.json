@@ -1,0 +1,5 @@
+{
+  "blog_title": "{{username}}'s all blogs",
+  "subscribe_blog_title": "{{username}}'s all subscribe blogs",
+  "no_username": "This author"
+}

@@ -12,7 +12,6 @@ import { IoPersonOutline } from "react-icons/io5";
 import { RiHomeLine } from "react-icons/ri";
 import { TbBrandBlogger } from "react-icons/tb";
 import { FaRegStar } from "react-icons/fa";
-import { usePathname } from "next/navigation";
 import LoginButton from "./components/login-btn";
 import { useRouter } from "next/navigation";
 
@@ -29,11 +28,7 @@ export default function SidebarDefault({
 
   const { isSidebar, toggleSidebar } = useSidebar();
 
-  const currentPath = usePathname();
-
   const router = useRouter();
-
-  const [isLogout, setIsLogout] = useState(false);
 
   return (
     <aside
@@ -111,24 +106,22 @@ export default function SidebarDefault({
               }
             />
 
-            {user !== null && (
-              <SidebarMenu
-                path="/subscribe-blogs"
-                shortTitle={
-                  <div className="flex items-center justify-center">
+            <SidebarMenu
+              path="/subscribe-blogs"
+              shortTitle={
+                <div className="flex items-center justify-center">
+                  <FaRegStar size={24} />
+                </div>
+              }
+              longTitle={
+                <div className="flex items-stretch justify-start gap-10">
+                  <div className="w-[10%]">
                     <FaRegStar size={24} />
                   </div>
-                }
-                longTitle={
-                  <div className="flex items-stretch justify-start gap-10">
-                    <div className="w-[10%]">
-                      <FaRegStar size={24} />
-                    </div>
-                    <div className="w-[90%]">{t("subscribe-blogs")}</div>
-                  </div>
-                }
-              />
-            )}
+                  <div className="w-[90%]">{t("subscribe-blogs")}</div>
+                </div>
+              }
+            />
           </div>
 
           {/* Bottom */}
