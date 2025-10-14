@@ -42,7 +42,7 @@ export default function HomepageDefault({
         isSidebar ? "pl-65" : "pl-25"
       } transition-all relative`}
     >
-      <div className="mb-5">
+      <div>
         <div
           onClick={() => {
             router.push("/blogs");
@@ -69,7 +69,7 @@ export default function HomepageDefault({
         )}
       </div>
 
-      <div className="mb-5">
+      <div>
         <div
           onClick={() => {
             if (user !== null) {
@@ -102,7 +102,7 @@ export default function HomepageDefault({
         )}
       </div>
 
-      <div className="mb-5">
+      <div>
         <div
           onClick={() => {
             router.push("/blogs");
@@ -129,7 +129,7 @@ export default function HomepageDefault({
         )}
       </div>
 
-      <div className="mb-5">
+      <div>
         <div
           onClick={() => {
             if (user !== null) {

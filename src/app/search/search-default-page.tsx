@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { useSidebar } from "../../../hooks/sidebar";
 import { useTranslation } from "react-i18next";
 import {
@@ -11,7 +11,7 @@ import {
 } from "../../../interfaces/strapi.interface";
 import BlogCard from "@/components/blogs/blog-card";
 import SubscribeBlogCard from "@/components/subscribe-blogs/subscribe-blog-card";
-import CategoryMenu from "@/components/category-menu";
+import { useSearchParams } from "next/navigation";
 
 export default function SearchDefaultPage({
   blogs,
@@ -26,10 +26,36 @@ export default function SearchDefaultPage({
 
   const { isSidebar } = useSidebar();
 
+  const params = useSearchParams();
+
+  const query = params.get("query")?.toLowerCase() || "";
+  const categories = params.getAll("category");
+
   const allBlogs = [
     ...blogs.map((blog) => ({ ...blog, type: "blog" })),
     ...subscribeBlogs.map((subBlog) => ({ ...subBlog, type: "subscribe" })),
   ];
+
+  const selectedCategories = params.getAll("category");
+
+  const filteredBlogs = useMemo(() => {
+    const selectedCategories = params.getAll("category");
+
+    return allBlogs.filter((item) => {
+      const matchQuery =
+        !query ||
+        item.title?.toLowerCase().includes(query) ||
+        item.description?.toLowerCase().includes(query);
+
+      const matchCategory =
+        selectedCategories.length === 0 ||
+        selectedCategories.every((selectedCat) =>
+          item.categories?.some((cat: ICategory) => cat.title === selectedCat)
+        );
+
+      return matchQuery && matchCategory;
+    });
+  }, [allBlogs, query, params]);
 
   return (
     <main
@@ -37,14 +63,24 @@ export default function SearchDefaultPage({
         isSidebar ? "pl-65" : "pl-25"
       } transition-all scrollbar-hide`}
     >
-      {allBlogs && allBlogs.length > 0 ? (
+      {filteredBlogs && filteredBlogs.length > 0 ? (
         <section className="w-full lg:px-10 lg:pt-10 md:px-0 md:pt-10 pb-3">
           <div className="flex flex-wrap gap-5 items-center justify-center">
-            {allBlogs.map((item: any) =>
+            {filteredBlogs.map((item: any) =>
               item.type === "blog" ? (
-                <BlogCard key={item.id} blog={item} user={user} />
+                <BlogCard
+                  key={item.id}
+                  blog={item}
+                  user={user}
+                  selectedCategories={selectedCategories}
+                />
               ) : (
-                <SubscribeBlogCard key={item.id} subBlog={item} user={user} />
+                <SubscribeBlogCard
+                  key={item.id}
+                  subBlog={item}
+                  user={user}
+                  selectedCategories={selectedCategories}
+                />
               )
             )}
           </div>

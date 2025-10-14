@@ -9,9 +9,11 @@ import { useRouter } from "next/navigation";
 export default function BlogCard({
   blog,
   user,
+  selectedCategories = [],
 }: {
   blog: IBlog;
   user: IUser | null;
+  selectedCategories?: string[];
 }) {
   // console.log(user?.id, ":user?.id");
   // console.log(blog.author?.id, ":blog.author?.id");
@@ -79,7 +81,12 @@ export default function BlogCard({
             <div className="flex flex-wrap 2xl:h-21 xl:h-16 lg:h-10 md:h-9 h-9 justify-start items-end gap-1 overflow-x-auto">
               {blog.categories.map((cat: ICategory, index: number) => {
                 return (
-                  <CategoryTag key={index} title={cat.title} textSize="base" />
+                  <CategoryTag
+                    key={index}
+                    title={cat.title}
+                    textSize="base"
+                    selectedCategories={selectedCategories}
+                  />
                 );
               })}
             </div>

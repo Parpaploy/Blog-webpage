@@ -14,9 +14,11 @@ import Star from "./star";
 export default function SubscribeBlogCard({
   subBlog,
   user,
+  selectedCategories = [],
 }: {
   subBlog: ISubscribeBlog;
   user: IUser | null;
+  selectedCategories?: string[];
 }) {
   const router = useRouter();
 
@@ -88,7 +90,12 @@ export default function SubscribeBlogCard({
             <div className="flex flex-wrap 2xl:h-21 xl:h-16 lg:h-10 md:h-9 h-9 justify-start items-end gap-1 overflow-x-auto">
               {subBlog.categories.map((cat: ICategory, index: number) => {
                 return (
-                  <CategoryTag key={index} title={cat.title} textSize="base" />
+                  <CategoryTag
+                    key={index}
+                    title={cat.title}
+                    textSize="base"
+                    selectedCategories={selectedCategories}
+                  />
                 );
               })}
             </div>
