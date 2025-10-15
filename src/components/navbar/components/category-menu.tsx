@@ -5,13 +5,20 @@ function CategoryMenu({
   handleCategoryClick,
   catTitle,
   selectedCategories,
+  loadingCategories,
+  isSearching,
+  isResetting,
 }: {
   title: string;
   handleCategoryClick: (catTitle: string) => void;
   catTitle: string;
   selectedCategories: string[];
+  loadingCategories: string[];
+  isSearching: boolean;
+  isResetting: boolean;
 }) {
   const isSelected = selectedCategories.includes(catTitle);
+  const isLoading = loadingCategories.includes(catTitle);
 
   return (
     <div
@@ -21,9 +28,23 @@ function CategoryMenu({
           isSelected
             ? "bg-white/90 text-black/80"
             : "text-white/80 bg-white/10 hover:bg-white/30 hover:text-white/90"
+        }
+            
+        ${
+          !isResetting && !isSearching ? "" : "opacity-60 pointer-events-none"
         }`}
     >
-      {title}
+      {isLoading ? (
+        <div
+          className={`w-5 h-5 border-2 rounded-full animate-spin ${
+            isSelected
+              ? "border-black/30 border-t-black"
+              : "border-white/30 border-t-white"
+          }`}
+        />
+      ) : (
+        title
+      )}
     </div>
   );
 }

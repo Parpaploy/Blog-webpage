@@ -47,7 +47,7 @@ export default function LogoutButton({
           </span>
         ) : (
           <span className="flex justify-center">
-            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
           </span>
         )
       ) : isSidebar ? (
