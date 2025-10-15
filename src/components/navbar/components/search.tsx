@@ -49,8 +49,19 @@ function Search({
     router.push(`/search?${search.toString()}`);
   };
 
+  const isQueryUnchanged = () => {
+    const currentQuery = params.get("query") || "";
+    const currentCategories = params.getAll("category").sort();
+    const newCategories = [...selectedCategories].sort();
+
+    return (
+      query.trim() === currentQuery.trim() &&
+      JSON.stringify(currentCategories) === JSON.stringify(newCategories)
+    );
+  };
+
   const handleSearch = () => {
-    if (query.trim() === "") return;
+    if (query.trim() === "" || isQueryUnchanged()) return;
     updateSearchParams(query, undefined, "search");
   };
 
@@ -82,6 +93,29 @@ function Search({
 
   return (
     <div className="w-[35%] flex gap-3 h-10 relative">
+      <div
+        className={`flex w-10 items-center justify-center h-full transition-all backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl px-2 py-1 cursor-pointer
+          ${canHover ? (isOpenCat ? "" : "") : ""}
+              ${
+                isOpenCat
+                  ? "bg-white/30 text-white/90"
+                  : "bg-white/10 hover:bg-white/30 text-white/80 hover:text-white/90"
+              }`}
+        onClick={(e) => {
+          e.currentTarget.blur();
+          setIsOpenCat(!isOpenCat);
+          setCanHover(false);
+        }}
+        onMouseEnter={() => canHover && setIsHover(true)}
+        onMouseLeave={() => {
+          setIsHover(false);
+          setCanHover(true);
+        }}
+        onMouseUp={() => setTimeout(() => setCanHover(false), 0)}
+      >
+        {isOpenCat ? <IoIosArrowUp size={24} /> : <IoIosArrowDown size={24} />}
+      </div>
+
       <div className="h-full flex-1">
         <input
           type="text"
@@ -100,13 +134,13 @@ function Search({
         />
       </div>
 
-      {/* ปุ่ม Search */}
       <div
         className={`flex w-12 items-center justify-center h-full transition-all bg-white/10 hover:bg-white/30 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl px-2 py-1 cursor-pointer ${
           isSearching ||
           isResetting ||
           loadingCategories.length > 0 ||
-          query.trim() === ""
+          query.trim() === "" ||
+          isQueryUnchanged()
             ? "opacity-60 pointer-events-none"
             : ""
         }`}
@@ -119,7 +153,6 @@ function Search({
         )}
       </div>
 
-      {/* ปุ่ม Reset */}
       <button
         onClick={handleReset}
         className={`group flex w-10 items-center justify-center h-full transition-all bg-white/10 hover:bg-white/30 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl px-2 py-1 cursor-pointer ${
@@ -141,34 +174,9 @@ function Search({
         />
       </button>
 
-      {/* ปุ่ม Category */}
-      <div
-        className={`cursor-pointer transition-all text-center flex items-center justify-center text-white/80 absolute top-11 left-1/2 -translate-x-1/2
-          ${
-            canHover
-              ? isOpenCat
-                ? "hover:-translate-y-1"
-                : "hover:translate-y-1"
-              : ""
-          }`}
-        onClick={(e) => {
-          e.currentTarget.blur();
-          setIsOpenCat(!isOpenCat);
-          setCanHover(false);
-        }}
-        onMouseEnter={() => canHover && setIsHover(true)}
-        onMouseLeave={() => {
-          setIsHover(false);
-          setCanHover(true);
-        }}
-        onMouseUp={() => setTimeout(() => setCanHover(false), 0)}
-      >
-        {isOpenCat ? <IoIosArrowUp size={48} /> : <IoIosArrowDown size={48} />}
-      </div>
-
       {isOpenCat && (
         <div
-          className={`w-full flex flex-wrap gap-3 items-center justify-center absolute top-25 left-1/2 -translate-x-1/2 transition-all duration-300
+          className={`w-full flex flex-wrap gap-3 items-center justify-center absolute top-15 left-1/2 -translate-x-1/2 transition-all duration-300
             ${
               isHover && canHover
                 ? "-translate-y-1 opacity-50"

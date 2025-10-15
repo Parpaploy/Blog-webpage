@@ -1,6 +1,5 @@
 "use client";
-
-import React, { useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { useSidebar } from "../../../hooks/sidebar";
 import { useTranslation } from "react-i18next";
 import {
@@ -12,6 +11,7 @@ import {
 import BlogCard from "@/components/blogs/blog-card";
 import SubscribeBlogCard from "@/components/subscribe-blogs/subscribe-blog-card";
 import { useSearchParams } from "next/navigation";
+import GlobalLoading from "../loading";
 
 export default function SearchDefaultPage({
   blogs,
@@ -23,47 +23,53 @@ export default function SearchDefaultPage({
   user: IUser | null;
 }) {
   const { t } = useTranslation("search");
-
   const { isSidebar } = useSidebar();
-
   const params = useSearchParams();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [filteredBlogs, setFilteredBlogs] = useState<any[]>([]);
 
   const query = params.get("query")?.toLowerCase() || "";
-  const categories = params.getAll("category");
+  const selectedCategories = params.getAll("category");
 
   const allBlogs = [
     ...blogs.map((blog) => ({ ...blog, type: "blog" })),
     ...subscribeBlogs.map((subBlog) => ({ ...subBlog, type: "subscribe" })),
   ];
 
-  const selectedCategories = params.getAll("category");
+  useEffect(() => {
+    setIsLoading(true);
 
-  const filteredBlogs = useMemo(() => {
-    const selectedCategories = params.getAll("category");
+    const timer = setTimeout(() => {
+      const filtered = allBlogs.filter((item) => {
+        const matchQuery =
+          !query ||
+          item.title?.toLowerCase().includes(query) ||
+          item.description?.toLowerCase().includes(query);
 
-    return allBlogs.filter((item) => {
-      const matchQuery =
-        !query ||
-        item.title?.toLowerCase().includes(query) ||
-        item.description?.toLowerCase().includes(query);
+        const matchCategory =
+          selectedCategories.length === 0 ||
+          selectedCategories.every((selectedCat) =>
+            item.categories?.some((cat: ICategory) => cat.title === selectedCat)
+          );
 
-      const matchCategory =
-        selectedCategories.length === 0 ||
-        selectedCategories.every((selectedCat) =>
-          item.categories?.some((cat: ICategory) => cat.title === selectedCat)
-        );
+        return matchQuery && matchCategory;
+      });
 
-      return matchQuery && matchCategory;
-    });
-  }, [allBlogs, query, params]);
+      setFilteredBlogs(filtered);
+      setIsLoading(false);
+    }, 3000);
 
+    return () => clearTimeout(timer);
+  }, [params.toString()]);
   return (
     <main
       className={`w-full h-full overflow-y-auto 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] text-white/80 ${
         isSidebar ? "pl-65" : "pl-25"
       } transition-all scrollbar-hide`}
     >
-      {filteredBlogs && filteredBlogs.length > 0 ? (
+      {isLoading ? (
+        <GlobalLoading />
+      ) : filteredBlogs && filteredBlogs.length > 0 ? (
         <section className="w-full lg:px-10 lg:pt-10 md:px-0 md:pt-10 pb-3">
           <div className="flex flex-wrap gap-5 items-center justify-center">
             {filteredBlogs.map((item: any) =>
