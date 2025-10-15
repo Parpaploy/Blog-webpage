@@ -35,7 +35,7 @@ export default function SubscribeBlogDetailPage({
 
   if (!subBlog) {
     return (
-      <div className="w-full h-full flex items-center justify-center text-white">
+      <div className="w-screen h-full flex items-center justify-center text-white">
         <GlobalLoading />
       </div>
     );
@@ -57,7 +57,11 @@ export default function SubscribeBlogDetailPage({
         <div className="w-full h-130 rounded-2xl overflow-hidden">
           <img
             className="w-full h-full object-cover"
-            src={`${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${subBlog.thumbnail.formats.large?.url}`}
+            src={
+              subBlog.thumbnail?.formats?.large?.url
+                ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${subBlog.thumbnail.formats.large?.url}`
+                : "https://mom-neuroscience.com/wp-content/uploads/2021/06/no-image.jpg"
+            }
           />
         </div>
         <div className="w-full flex justify-between items-start my-3">

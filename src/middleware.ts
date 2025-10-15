@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function middleware(request: NextRequest) {
   try {
     const token = request.cookies.get("token")?.value;
-    console.log("🔑 Middleware token:", token);
+    //console.log("🔑 Middleware token:", token);
 
     if (!token) {
       console.log("❌ No token found, redirecting...");
@@ -26,7 +26,7 @@ export async function middleware(request: NextRequest) {
       return res;
     }
     const user = await response.json();
-    console.log("✅ User from Strapi:", user);
+    //console.log("✅ User from Strapi:", user);
 
     const res = NextResponse.next();
 

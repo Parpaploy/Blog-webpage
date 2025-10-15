@@ -65,14 +65,14 @@ export default function SearchDefaultPage({
   }, [params.toString()]);
   return (
     <main
-      className={`w-full h-full overflow-y-auto 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] text-white/80 ${
+      className={`w-screen h-full overflow-y-auto 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] text-white/80 ${
         isSidebar ? "pl-65" : "pl-25"
       } transition-all scrollbar-hide relative`}
     >
       {isLoading ? (
         <GlobalLoading />
       ) : filteredBlogs && filteredBlogs.length > 0 ? (
-        <section className="w-full lg:px-10 lg:pt-10 md:px-0 md:pt-10 pb-3">
+        <section className="w-full lg:px-10 lg:pt-5 md:px-0 md:pt-5 pb-3">
           <div className="flex flex-wrap gap-5 items-center justify-center">
             {filteredBlogs.map((item: any) =>
               item.type === "blog" ? (

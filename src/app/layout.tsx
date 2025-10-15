@@ -15,6 +15,9 @@ const ibm = IBM_Plex_Sans_Thai({
 export const metadata: Metadata = {
   title: "Blog",
   description: "Sample blog website",
+  icons: {
+    icon: "/icon.svg?v=1",
+  },
 };
 
 export default function RootLayout({
@@ -28,6 +31,10 @@ export default function RootLayout({
         className={`${ibm.className}  antialiased`}
         style={{
           backgroundImage: "url('/assets/placeholders/Image 4064x2704.jpg')",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed",
         }}
       >
         <I18nProvider>

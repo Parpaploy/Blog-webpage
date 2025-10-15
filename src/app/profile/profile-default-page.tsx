@@ -138,7 +138,7 @@ export default function ProfileDefaultPage({ user }: IUserProps) {
 
   return (
     <main
-      className={`w-full h-full overflow-y-auto 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] ${
+      className={`w-screen h-full overflow-y-auto 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] ${
         isSidebar ? "pl-65" : "pl-25"
       } transition-all`}
     >
@@ -242,7 +242,11 @@ export default function ProfileDefaultPage({ user }: IUserProps) {
 
           <button
             type="submit"
-            className="cursor-pointer text-white/80 w-full px-3 py-2 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl transition-all disabled:opacity-50"
+            className={`${
+              isLogout || isSaving
+                ? "opacity-50 cursor-not-allowed"
+                : "cursor-pointer hover:bg-white/30 hover:text-white/90"
+            } text-white/80 w-full px-3 py-2 bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl transition-all disabled:opacity-50`}
             disabled={isSaving}
           >
             {isSaving ? t("saving") : t("saveChanges")}
@@ -250,7 +254,11 @@ export default function ProfileDefaultPage({ user }: IUserProps) {
         </form>
 
         <button
-          className="cursor-pointer max-w-sm text-white/80 w-full px-3 py-2 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl transition-all disabled:opacity-50"
+          className={`max-w-sm text-white/80 w-full px-3 py-2 ${
+            isLogout || isSaving
+              ? "opacity-50 cursor-not-allowed"
+              : "cursor-pointer hover:bg-white/30 hover:text-white/90"
+          } bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl transition-all disabled:opacity-50`}
           disabled={isLogout}
           onClick={async () => {
             setIsLogout(true);

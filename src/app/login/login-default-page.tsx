@@ -16,10 +16,13 @@ export default function LoginDefaultPage() {
     null
   );
   const [loading, setLoading] = useState(false);
+  const [loginSuccess, setLoginSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (loading) return;
+
+    if (loading || loginSuccess) return;
     setLoading(true);
     setMessageKeys([]);
     setMessageType(null);
@@ -29,22 +32,23 @@ export default function LoginDefaultPage() {
       const result = await Login(formData);
 
       if (result?.success) {
+        setLoginSuccess(true);
         router.push("/subscribe-blogs");
       } else {
         setMessageKeys(["loginFailed"]);
         setMessageType("error");
+        setLoading(false);
       }
     } catch (err) {
       setMessageKeys(["unexpectedError"]);
       setMessageType("error");
-    } finally {
       setLoading(false);
     }
   };
 
   return (
     <main
-      className={`w-full h-full 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] ${
+      className={`w-screen h-full 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] ${
         isSidebar ? "pl-65" : "pl-25"
       } transition-all`}
     >
@@ -93,7 +97,9 @@ export default function LoginDefaultPage() {
             onClick={() => {
               router.push("/forgot-password");
             }}
-            className="cursor-pointer text-blue-400/80 underline hover:text-white/80 transition-all text-end"
+            className={`text-blue-400/80 underline ${
+              !loading && "hover:text-white/80 cursor-pointer"
+            } transition-all text-end`}
           >
             {t("forgotPassword")}
           </div>
@@ -101,7 +107,11 @@ export default function LoginDefaultPage() {
 
         <button
           type="submit"
-          className="cursor-pointer text-white/80 w-full px-3 py-2 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl transition-all"
+          className={`text-white/80 w-full px-3 py-2 ${
+            !loading
+              ? "hover:bg-white/30 hover:text-white/90 cursor-pointer"
+              : "opacity-50 cursor-not-allowed"
+          }  bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl transition-all`}
           disabled={loading}
         >
           {loading ? t("loading") : t("loginButton")}
@@ -113,7 +123,9 @@ export default function LoginDefaultPage() {
             onClick={() => {
               router.push("/signup");
             }}
-            className="underline cursor-pointer text-blue-400/80 hover:text-white/80 transition-all"
+            className={`underline text-blue-400/80 ${
+              !loading && "hover:text-white/80 cursor-pointer"
+            } transition-all`}
           >
             {t("signUp")}
           </div>

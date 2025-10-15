@@ -86,7 +86,7 @@ export default function ResetPasswordDefaultPage() {
 
   return (
     <main
-      className={`w-full h-full 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] relative ${
+      className={`w-screen h-full 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] relative ${
         isSidebar ? "pl-65" : "pl-25"
       } transition-all`}
     >

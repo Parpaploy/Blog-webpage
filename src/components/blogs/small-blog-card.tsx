@@ -41,7 +41,11 @@ export default function SmallBlogCard({
       <div className="lg:w-[45%] lg:h-full w-full h-[50%] rounded-r-2xl overflow-hidden">
         <img
           className="w-full h-full object-cover"
-          src={`${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${blog.thumbnail.formats.medium?.url}`}
+          src={
+            blog.thumbnail?.formats?.medium?.url
+              ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${blog.thumbnail.formats.medium?.url}`
+              : "https://mom-neuroscience.com/wp-content/uploads/2021/06/no-image.jpg"
+          }
           alt={blog.title + "'s tumbnail picture"}
         />
       </div>

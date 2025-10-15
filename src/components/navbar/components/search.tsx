@@ -99,9 +99,12 @@ function Search({
   };
 
   const handleReset = () => {
-    setQuery("");
-    setSelectedCategories([]);
-    setLoadingCategories([]);
+    setTimeout(() => {
+      setQuery("");
+      setSelectedCategories([]);
+      setLoadingCategories([]);
+    }, 4500);
+
     startTransition(() => {
       router.push(`/search`);
     });

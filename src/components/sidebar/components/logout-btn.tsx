@@ -21,6 +21,8 @@ export default function LogoutButton({
   const [isLogout, setIsLogout] = useState(false);
 
   const handleLogout = async () => {
+    if (isLogout) return;
+
     setIsLogout(true);
 
     const formData = new FormData();
@@ -36,20 +38,21 @@ export default function LogoutButton({
       type="button"
       onClick={handleLogout}
       disabled={isLogout}
-      className={`${
-        isSidebar ? "rounded-2xl w-full px-3" : "rounded-full w-10"
-      } p-2 cursor-pointer hover:bg-white/20 text-white/50 hover:text-white/70 bg-white/10 border border-white/30 border-l-0 shadow-lg transition-all h-10`}
+      className={`
+    ${isSidebar ? "rounded-2xl w-full px-3" : "rounded-full w-10"}
+    ${
+      !isLogout
+        ? "hover:bg-white/20 hover:text-white/90 cursor-pointer"
+        : "cursor-not-allowed opacity-50"
+    }
+    p-2 text-white/50 hover:text-white/70 bg-white/10 border border-white/30 border-l-0 shadow-lg transition-all h-10
+  `}
     >
       {isLogout ? (
-        isSidebar ? (
-          <span className="flex items-center gap-2">
-            <TbLogout size={20} /> {t("loggingOut")}
-          </span>
-        ) : (
-          <span className="flex justify-center">
-            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-          </span>
-        )
+        <span className="flex items-center justify-center gap-2">
+          <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+          {isSidebar && <span>{t("loggingOut")}</span>}
+        </span>
       ) : isSidebar ? (
         longTitle
       ) : (
