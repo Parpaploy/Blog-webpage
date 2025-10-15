@@ -1,4 +1,16 @@
+"use client";
+
 import React from "react";
+import { motion } from "framer-motion";
+
+const itemVariants = {
+  hidden: { opacity: 0, y: -10, transition: { duration: 0.2 } },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.3 },
+  },
+};
 
 function CategoryMenu({
   title,
@@ -6,38 +18,52 @@ function CategoryMenu({
   catTitle,
   selectedCategories,
   loadingCategories,
-  isSearching,
-  isResetting,
+  isDisable,
 }: {
   title: string;
   handleCategoryClick: (catTitle: string) => void;
   catTitle: string;
   selectedCategories: string[];
   loadingCategories: string[];
-  isSearching: boolean;
-  isResetting: boolean;
+  isDisable: boolean;
 }) {
   const isSelected = selectedCategories.includes(catTitle);
   const isLoading = loadingCategories.includes(catTitle);
+  const disabled = isDisable || isLoading;
+
+  const getButtonClasses = () => {
+    if (disabled) {
+      return isSelected
+        ? "bg-white/45 text-black/40 pointer-events-none"
+        : "bg-white/10 text-white/40 pointer-events-none";
+    }
+
+    return isSelected
+      ? "bg-white/90 text-black/80"
+      : "text-white/80 bg-white/10 hover:bg-white/30 hover:text-white/90";
+  };
 
   return (
-    <div
+    <motion.div
+      variants={itemVariants}
       onClick={() => handleCategoryClick(catTitle)}
-      className={`cursor-pointer text-center px-4 py-2 rounded-full transition-all backdrop-blur-sm border shadow-lg line-clamp-1 border-white/20
+      className={`cursor-pointer text-center px-4 py-2 rounded-full transition-colors backdrop-blur-sm border shadow-lg line-clamp-1 border-white/20
         ${
-          isSelected
+          isDisable || isLoading
+            ? `pointer-events-none ${
+                isSelected
+                  ? "bg-white/45 text-black/40"
+                  : "text-white/40 bg-white/5"
+              }`
+            : isSelected
             ? "bg-white/90 text-black/80"
             : "text-white/80 bg-white/10 hover:bg-white/30 hover:text-white/90"
-        }
-            
-        ${
-          !isResetting && !isSearching ? "" : "opacity-60 pointer-events-none"
         }`}
     >
       {isLoading ? (
         <div
           className={`w-5 h-5 border-2 rounded-full animate-spin ${
-            isSelected
+            isSelected && !disabled
               ? "border-black/30 border-t-black"
               : "border-white/30 border-t-white"
           }`}
@@ -45,7 +71,7 @@ function CategoryMenu({
       ) : (
         title
       )}
-    </div>
+    </motion.div>
   );
 }
 

@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import { useSidebar } from "../../../hooks/sidebar";
 import { useTranslation } from "react-i18next";
@@ -12,6 +13,7 @@ import BlogCard from "@/components/blogs/blog-card";
 import SubscribeBlogCard from "@/components/subscribe-blogs/subscribe-blog-card";
 import { useSearchParams } from "next/navigation";
 import GlobalLoading from "../loading";
+import AddButton from "@/components/add-btn";
 
 export default function SearchDefaultPage({
   blogs,
@@ -65,7 +67,7 @@ export default function SearchDefaultPage({
     <main
       className={`w-full h-full overflow-y-auto 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] text-white/80 ${
         isSidebar ? "pl-65" : "pl-25"
-      } transition-all scrollbar-hide`}
+      } transition-all scrollbar-hide relative`}
     >
       {isLoading ? (
         <GlobalLoading />
@@ -96,6 +98,8 @@ export default function SearchDefaultPage({
           No Blogs found
         </section>
       )}
+
+      <AddButton />
     </main>
   );
 }

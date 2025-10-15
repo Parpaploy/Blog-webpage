@@ -5,6 +5,7 @@ import { IBlog, IUser } from "../../../interfaces/strapi.interface";
 import BlogCard from "../../components/blogs/blog-card";
 import { useTranslation } from "react-i18next";
 import { useSidebar } from "../../../hooks/sidebar";
+import AddButton from "@/components/add-btn";
 
 export default function BlogsDefaultPage({
   blogs,
@@ -23,7 +24,7 @@ export default function BlogsDefaultPage({
     <main
       className={`w-full h-full overflow-y-auto 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] text-white/80 ${
         isSidebar ? "pl-65" : "pl-25"
-      } transition-all scrollbar-hide`}
+      } transition-all scrollbar-hide relative`}
     >
       <h1 className="text-2xl font-bold">{t("title")}</h1>
 
@@ -40,6 +41,8 @@ export default function BlogsDefaultPage({
           No Blogs found
         </section>
       )}
+
+      <AddButton />
     </main>
   );
 }
