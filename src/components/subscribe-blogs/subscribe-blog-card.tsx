@@ -10,15 +10,18 @@ import { FormatDate } from "../../../utils/format-date";
 import CategoryTag from "../category-tag";
 import { useRouter } from "next/navigation";
 import Star from "./star";
+import HighlightText from "../highlight";
 
 export default function SubscribeBlogCard({
   subBlog,
   user,
   selectedCategories = [],
+  query,
 }: {
   subBlog: ISubscribeBlog;
   user: IUser | null;
   selectedCategories?: string[];
+  query?: string;
 }) {
   const router = useRouter();
 
@@ -53,14 +56,14 @@ export default function SubscribeBlogCard({
       <div className="w-full h-[50%] flex flex-col justify-between items-start text-start px-5 py-3">
         <div className="w-full h-fit">
           <h2 className="font-bold xl:text-2xl text-xl line-clamp-1">
-            {subBlog.title}
+            <HighlightText text={subBlog.title} highlight={query} />
           </h2>
           <p className="font-medium xl:text-md text-sm text-[#bdbdbd]/70 line-clamp-1">
-            {subBlog.description}
+            <HighlightText text={subBlog.description} highlight={query} />
           </p>
 
           <div
-            className="w-fit max-w-full flex justify-start items-center gap-2"
+            className="w-fit max-w-full flex justify-start items-center gap-2 mt-1"
             onClick={goToUserBlogs}
           >
             <div className="xl:w-6 xl:h-6 w-5 h-5 overflow-hidden rounded-full">
@@ -75,13 +78,18 @@ export default function SubscribeBlogCard({
               />
             </div>
 
-            <p>{subBlog.author?.username}</p>
+            <p>
+              <HighlightText
+                text={subBlog.author?.username}
+                highlight={query}
+              />
+            </p>
           </div>
         </div>
 
         <div className="w-full flex flex-col gap-1">
           {subBlog.categories && subBlog.categories.length > 0 && (
-            <div className="flex flex-wrap 2xl:h-21 xl:h-16 lg:h-10 md:h-9 h-9 justify-start items-end gap-1 overflow-x-auto">
+            <div className="flex flex-wrap 2xl:h-20 xl:h-15 lg:h-9 md:h-7 h-6.5 justify-start items-end gap-1 overflow-x-auto">
               {subBlog.categories.map((cat: ICategory, index: number) => {
                 return (
                   <CategoryTag

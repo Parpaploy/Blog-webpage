@@ -2,7 +2,12 @@ import { cookies } from "next/headers";
 import { IUser } from "../../../interfaces/strapi.interface";
 import { Logout } from "../../../lib/auth";
 import NavbarDefault from "./navbar-default";
-import { fetchCategories, fetchUser } from "../../../lib/api";
+import {
+  fetchBlogs,
+  fetchCategories,
+  fetchSubscribeBlogs,
+  fetchUser,
+} from "../../../lib/api";
 
 export default async function Navbar() {
   const cookieStore = await cookies();
@@ -16,6 +21,9 @@ export default async function Navbar() {
 
   const categories = await fetchCategories();
 
+  const blogs = await fetchBlogs();
+  const subscribeBlogs = await fetchSubscribeBlogs();
+
   // console.log(userToShow, ":navbar user");
 
   return (
@@ -24,6 +32,8 @@ export default async function Navbar() {
       user={userToShow}
       Logout={Logout}
       categories={categories}
+      blogs={blogs}
+      subscribeBlogs={subscribeBlogs}
     />
   );
 }

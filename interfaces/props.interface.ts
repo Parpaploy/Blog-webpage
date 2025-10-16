@@ -13,3 +13,8 @@ export interface IRichTextEditorProps {
   content: any;
   onChange: (content: any) => void;
 }
+
+export interface IHighlightTextProps {
+  text?: string;
+  highlight?: string;
+}

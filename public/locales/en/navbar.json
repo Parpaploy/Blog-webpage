@@ -6,5 +6,10 @@
   "guest": "Guest",
 
   "manage": "Manage your profile",
-  "your-blogs": "All your blogs"
+  "your-blogs": "All your blogs",
+
+  "from": "From",
+  "author": "Author",
+  "title": "Blog's name",
+  "desc": "Description"
 }

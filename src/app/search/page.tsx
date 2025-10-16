@@ -1,15 +1,6 @@
 import React from "react";
-import {
-  ICategory,
-  ISubscribeBlog,
-  IUser,
-} from "../../../interfaces/strapi.interface";
-import {
-  fetchBlogs,
-  fetchCategories,
-  fetchSubscribeBlogs,
-  fetchUser,
-} from "../../../lib/api";
+import { ISubscribeBlog, IUser } from "../../../interfaces/strapi.interface";
+import { fetchBlogs, fetchSubscribeBlogs, fetchUser } from "../../../lib/api";
 import { cookies } from "next/headers";
 import SearchDefaultPage from "./search-default-page";
 

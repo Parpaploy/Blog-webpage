@@ -1,7 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { ICategory, IUser } from "../../../interfaces/strapi.interface";
+import {
+  IBlog,
+  ICategory,
+  ISubscribeBlog,
+  IUser,
+} from "../../../interfaces/strapi.interface";
 import { useTranslation } from "react-i18next";
 import LoginButton from "./components/login-btn";
 import { useSidebar } from "../../../hooks/sidebar";
@@ -16,11 +21,15 @@ export default function NavbarDefault({
   user,
   Logout,
   categories,
+  blogs,
+  subscribeBlogs,
 }: {
   isLoggedIn: boolean;
   user: IUser | null;
   Logout: (formData: FormData) => void | Promise<void>;
   categories: ICategory[];
+  blogs: IBlog[];
+  subscribeBlogs: ISubscribeBlog[];
 }) {
   const { t } = useTranslation("navbar");
 
@@ -59,6 +68,8 @@ export default function NavbarDefault({
                   setIsOpenCat={setIsOpenCat}
                   isHover={isHover}
                   setIsHover={setIsHover}
+                  blogs={blogs}
+                  subscribeBlogs={subscribeBlogs}
                 />
               )}
 
