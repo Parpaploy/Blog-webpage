@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation";
 export default function SignupDefaultPage() {
   const { t } = useTranslation("signup");
   const { isSidebar } = useSidebar();
-
   const router = useRouter();
 
   const [messageKeys, setMessageKeys] = useState<string[]>([]);
@@ -17,7 +16,8 @@ export default function SignupDefaultPage() {
     null
   );
   const [loading, setLoading] = useState(false);
-  const [resendLoading, setResendLoading] = useState(false);
+
+  const [submittedEmail, setSubmittedEmail] = useState("");
 
   const backendMessageMap: Record<string, string> = {
     "username already taken": "usernameTaken",
@@ -27,12 +27,12 @@ export default function SignupDefaultPage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (loading || resendLoading) return;
+    if (loading) return;
 
     setLoading(true);
     setMessageKeys([]);
     setMessageType(null);
+    setSubmittedEmail("");
 
     const formData = new FormData(e.currentTarget);
     const username = formData.get("username") as string;
@@ -65,6 +65,10 @@ export default function SignupDefaultPage() {
       if (user) {
         setMessageKeys(["signupSuccess"]);
         setMessageType("success");
+        setSubmittedEmail(email);
+
+        // router.push("/login?status=signup-success");
+        return;
       } else {
         setMessageKeys(["signupFailed"]);
         setMessageType("error");
@@ -80,46 +84,6 @@ export default function SignupDefaultPage() {
     }
 
     setLoading(false);
-  };
-
-  const handleResendLink = async () => {
-    if (loading || resendLoading) return;
-
-    setResendLoading(true);
-    setMessageKeys([]);
-    setMessageType(null);
-
-    const emailInput = (
-      document.querySelector('input[name="email"]') as HTMLInputElement
-    )?.value;
-
-    if (!emailInput) {
-      setMessageKeys(["emailRequired"]);
-      setMessageType("error");
-      setResendLoading(false);
-      return;
-    }
-
-    try {
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/auth/forgot-password`,
-        { email: emailInput }
-      );
-
-      if (res.status === 200) {
-        setMessageKeys(["resendSuccess"]);
-        setMessageType("success");
-      } else {
-        setMessageKeys(["resendFailed"]);
-        setMessageType("error");
-      }
-    } catch (err) {
-      console.error(err);
-      setMessageKeys(["resendFailed"]);
-      setMessageType("error");
-    } finally {
-      setResendLoading(false);
-    }
   };
 
   return (
@@ -155,7 +119,7 @@ export default function SignupDefaultPage() {
             required
             placeholder={t("usernamePlaceholder")}
             className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
-            disabled={loading || resendLoading}
+            disabled={loading}
           />
           <input
             name="email"
@@ -163,7 +127,7 @@ export default function SignupDefaultPage() {
             required
             placeholder={t("emailPlaceholder")}
             className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
-            disabled={loading || resendLoading}
+            disabled={loading}
           />
           <input
             name="password"
@@ -171,7 +135,7 @@ export default function SignupDefaultPage() {
             required
             placeholder={t("passwordPlaceholder")}
             className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
-            disabled={loading || resendLoading}
+            disabled={loading}
           />
           <input
             name="confirmPassword"
@@ -179,45 +143,34 @@ export default function SignupDefaultPage() {
             required
             placeholder={t("confirmPasswordPlaceholder")}
             className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
-            disabled={loading || resendLoading}
+            disabled={loading}
           />
         </div>
 
         <button
           type="submit"
           className={`text-white/80 w-full px-3 py-2 ${
-            !loading && !resendLoading
+            !loading
               ? "hover:bg-white/30 hover:text-white/90 cursor-pointer"
               : "opacity-50 cursor-not-allowed"
           } bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl transition-all`}
-          disabled={loading || resendLoading}
+          disabled={loading}
         >
           {loading ? t("loading") : t("title")}
         </button>
-
-        {messageType === "success" && (
-          <button
-            type="button"
-            onClick={handleResendLink}
-            className={`w-full px-3 py-2 mt-2 text-white/80 bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl transition-all ${
-              !loading && !resendLoading
-                ? "hover:bg-white/30 hover:text-white/90 cursor-pointer"
-                : "opacity-50 cursor-not-allowed"
-            }`}
-            disabled={loading || resendLoading}
-          >
-            {resendLoading ? t("resendLoading") : t("resendLink")}
-          </button>
-        )}
 
         <div className="flex gap-1 items-center justify-center text-white/80">
           {t("alreadyHaveAccount")}
           <div
             onClick={() => {
-              router.push("/login");
+              if (!loading) {
+                router.push("/login");
+              }
             }}
-            className={`underline text-blue-400/80 hover:text-white/80 transition-all ${
-              !loading && !resendLoading && "hover:text-white/80 cursor-pointer"
+            className={`underline text-blue-400/80 hover:text-white/80 transition-all cursor-default ${
+              !loading
+                ? "hover:text-white/80 cursor-pointer"
+                : "cursor-not-allowed"
             }`}
           >
             {t("login")}

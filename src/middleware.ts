@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
+  const loginUrl = new URL("/login", request.url);
+  loginUrl.searchParams.set("callbackUrl", request.nextUrl.pathname);
+
   try {
     const token = request.cookies.get("token")?.value;
-    //console.log("🔑 Middleware token:", token);
 
     if (!token) {
-      console.log("❌ No token found, redirecting...");
-      return NextResponse.redirect(new URL("/login", request.url));
+      console.log("❌ No token found, redirecting to:", loginUrl.toString());
+      return NextResponse.redirect(loginUrl);
     }
 
     const response = await fetch(
@@ -20,14 +22,13 @@ export async function middleware(request: NextRequest) {
     console.log("🌐 Strapi response status:", response.status);
 
     if (!response.ok) {
-      const res = NextResponse.redirect(new URL("/login", request.url));
+      const res = NextResponse.redirect(loginUrl);
       res.cookies.delete("token");
       res.cookies.delete("user");
       return res;
     }
-    const user = await response.json();
-    //console.log("✅ User from Strapi:", user);
 
+    const user = await response.json();
     const res = NextResponse.next();
 
     res.cookies.set("user", JSON.stringify(user), {
@@ -39,10 +40,14 @@ export async function middleware(request: NextRequest) {
     return res;
   } catch (error) {
     console.log("💥 Middleware error:", error);
-    return NextResponse.redirect(new URL("/login", request.url));
+
+    const res = NextResponse.redirect(loginUrl);
+    res.cookies.delete("token");
+    res.cookies.delete("user");
+    return res;
   }
 }
 
 export const config = {
-  matcher: ["/subscribe-blogs/:id", "/add-blog/:path*"],
+  matcher: ["/subscribe-blogs/:id", "/add-blog", "/add-blog/:path*"],
 };

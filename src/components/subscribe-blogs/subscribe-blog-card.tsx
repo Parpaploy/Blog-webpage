@@ -22,14 +22,6 @@ export default function SubscribeBlogCard({
 }) {
   const router = useRouter();
 
-  const handleClick = () => {
-    if (user) {
-      router.push(`/subscribe-blogs/${subBlog.documentId}`);
-    } else {
-      router.push("/login");
-    }
-  };
-
   const goToUserBlogs = (e: React.MouseEvent) => {
     e.stopPropagation();
 
@@ -42,7 +34,9 @@ export default function SubscribeBlogCard({
 
   return (
     <div
-      onClick={handleClick}
+      onClick={() => {
+        router.push(`/subscribe-blogs/${subBlog.documentId}`);
+      }}
       className="cursor-pointer 2xl:w-95 2xl:h-105 xl:w-85 xl:h-95 w-70 h-80 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg overflow-hidden relative"
     >
       <div className="w-full h-[50%] rounded-b-2xl overflow-hidden">

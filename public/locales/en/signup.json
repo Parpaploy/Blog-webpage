@@ -15,8 +15,6 @@
   "verifyInstruction": "Just click on the link in that email to complete your signup. If you don't see it, check your spam folder.",
   "verifyClose": "You can close this page",
   "verifyResendPrompt": "Still can't find the email? No problem.",
-  "resendButton": "Resend Verification Email",
-  "resendLoading": "Sending...",
   "errorTitle": "Error",
   "errorSubtitle": "Your email address could not be verified",
   "alreadyHaveAccount": "Already have an account?",

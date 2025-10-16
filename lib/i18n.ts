@@ -25,8 +25,8 @@ import forgotPasswordTh from "../public/locales/th/forgotPassword.json";
 import resetPasswordEn from "../public/locales/en/resetPassword.json";
 import resetPasswordTh from "../public/locales/th/resetPassword.json";
 
-import verificationEn from "../public/locales/en/verification.json";
-import verificationTh from "../public/locales/th/verification.json";
+import emailConfirmEn from "../public/locales/en/emailConfirm.json";
+import emailConfirmTh from "../public/locales/th/emailConfirm.json";
 
 import profileEn from "../public/locales/en/profile.json";
 import profileTh from "../public/locales/th/profile.json";
@@ -60,7 +60,7 @@ i18n.use(initReactI18next).init({
       login: loginTh,
       forgotPassword: forgotPasswordTh,
       resetPassword: resetPasswordTh,
-      verification: verificationTh,
+      emailConfirm: emailConfirmTh,
       profile: profileTh,
       yourBlog: yourBlogTh,
       userBlogs: userBlogsTh,
@@ -78,7 +78,7 @@ i18n.use(initReactI18next).init({
       login: loginEn,
       forgotPassword: forgotPasswordEn,
       resetPassword: resetPasswordEn,
-      verification: verificationEn,
+      emailConfirm: emailConfirmEn,
       profile: profileEn,
       yourBlog: yourBlogEn,
       userBlogs: userBlogsEn,

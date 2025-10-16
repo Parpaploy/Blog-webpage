@@ -1,0 +1,22 @@
+{
+  "status": {
+    "verifying": "Verifying your account...",
+    "successTitle": "Verification Successful!",
+    "successBody": "You can now close this page.",
+    "errorTitle": "An Error Occurred"
+  },
+  "error": {
+    "noToken": "Verification token not found or the link is invalid.",
+    "tokenInvalid": "Verification failed. The token may have expired or has already been used.",
+    "network": "Could not connect to the server."
+  },
+  "resend": {
+    "prompt": "If your link has expired, you can request a new one.",
+    "placeholder": "Enter your email here",
+    "button": "Resend Confirmation Link",
+    "buttonLoading": "Sending...",
+    "successMessage": "New link sent! Please check your email.",
+    "errorMessage": "Failed to send a new link. Please check the email and try again.",
+    "emailRequired": "Please enter your email."
+  }
+}

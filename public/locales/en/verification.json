@@ -1,8 +1,0 @@
-{
-  "loading": "Verifying your account...",
-  "success": "Your account has been successfully verified! Redirecting...",
-  "alreadyVerified": "This account has already been verified! Redirecting to login...",
-  "invalid": "Invalid or expired confirmation link",
-  "connectionError": "An error occurred while connecting",
-  "loginRedirect": "Redirecting to login..."
-}

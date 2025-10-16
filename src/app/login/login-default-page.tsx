@@ -3,13 +3,15 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSidebar } from "../../../hooks/sidebar";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Login } from "../../../lib/auth";
 
 export default function LoginDefaultPage() {
   const { t } = useTranslation("login");
   const { isSidebar } = useSidebar();
   const router = useRouter();
+
+  const searchParams = useSearchParams();
 
   const [messageKeys, setMessageKeys] = useState<string[]>([]);
   const [messageType, setMessageType] = useState<"success" | "error" | null>(
@@ -20,9 +22,8 @@ export default function LoginDefaultPage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (loading) return;
-
     if (loading || loginSuccess) return;
+
     setLoading(true);
     setMessageKeys([]);
     setMessageType(null);
@@ -33,7 +34,10 @@ export default function LoginDefaultPage() {
 
       if (result?.success) {
         setLoginSuccess(true);
-        router.push("/subscribe-blogs");
+
+        const callbackUrl = searchParams.get("callbackUrl") || "/";
+
+        router.push(callbackUrl);
       } else {
         setMessageKeys(["loginFailed"]);
         setMessageType("error");
@@ -95,10 +99,14 @@ export default function LoginDefaultPage() {
         <div className="w-full flex justify-end items-center -mt-4 -mb-0 pr-3">
           <div
             onClick={() => {
-              router.push("/forgot-password");
+              if (!loading) {
+                router.push("/forgot-password");
+              }
             }}
-            className={`text-blue-400/80 underline ${
-              !loading && "hover:text-white/80 cursor-pointer"
+            className={`text-blue-400/80 underline cursor-default ${
+              !loading
+                ? "hover:text-white/80 cursor-pointer"
+                : "cursor-not-allowed"
             } transition-all text-end`}
           >
             {t("forgotPassword")}
@@ -107,7 +115,7 @@ export default function LoginDefaultPage() {
 
         <button
           type="submit"
-          className={`text-white/80 w-full px-3 py-2 ${
+          className={`text-white/80 w-full px-3 py-2 cursor-default ${
             !loading
               ? "hover:bg-white/30 hover:text-white/90 cursor-pointer"
               : "opacity-50 cursor-not-allowed"
@@ -121,10 +129,14 @@ export default function LoginDefaultPage() {
           {t("noAccount")}
           <div
             onClick={() => {
-              router.push("/signup");
+              if (!loading) {
+                router.push("/signup");
+              }
             }}
-            className={`underline text-blue-400/80 ${
-              !loading && "hover:text-white/80 cursor-pointer"
+            className={`underline text-blue-400/80 cursor-default ${
+              !loading
+                ? "hover:text-white/80 cursor-pointer"
+                : "cursor-not-allowed"
             } transition-all`}
           >
             {t("signUp")}

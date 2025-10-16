@@ -223,9 +223,15 @@ export default function ProfileDefaultPage({ user }: IUserProps) {
           <div className="w-full flex justify-end items-center -mt-2.5 -mb-0 pr-3">
             <div
               onClick={() => {
-                router.push("/forgot-password");
+                if (!isSaving && !isLogout) {
+                  router.push("/forgot-password");
+                }
               }}
-              className="text-blue-400/80 underline cursor-pointer hover:text-white/80 transition-all text-end"
+              className={`${
+                !isSaving && !isLogout
+                  ? "cursor-pointer hover:text-white/80"
+                  : "cursor-not-allowed"
+              } cursor-default text-blue-400/80 underline transition-all text-end`}
             >
               {t("forgotPassword")}
             </div>
