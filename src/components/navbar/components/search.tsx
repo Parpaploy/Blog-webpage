@@ -242,29 +242,6 @@ function Search({
 
   return (
     <div className="w-[35%] flex gap-3 h-10 relative" ref={searchContainerRef}>
-      <div
-        className={`flex w-10 items-center justify-center h-full transition-all backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl px-2 py-1 cursor-pointer
-          ${canHover ? (isOpenCat ? "" : "") : ""}
-              ${
-                isOpenCat
-                  ? "bg-white/30 text-white/90"
-                  : "bg-white/10 hover:bg-white/30 text-white/80 hover:text-white/90"
-              }`}
-        onClick={(e) => {
-          e.currentTarget.blur();
-          setShowSuggestions(false);
-          setIsOpenCat(!isOpenCat);
-          setCanHover(false);
-        }}
-        onMouseEnter={() => canHover && setIsHover(true)}
-        onMouseLeave={() => {
-          setIsHover(false);
-          setCanHover(true);
-        }}
-        onMouseUp={() => setTimeout(() => setCanHover(false), 0)}
-      >
-        <BsFilter size={24} />
-      </div>
       <div className="h-full flex-1 relative">
         <input
           ref={inputRef}
@@ -342,8 +319,8 @@ function Search({
         </AnimatePresence>
       </div>
 
-      <div
-        className={`flex w-12 items-center justify-center h-full transition-all bg-white/10 hover:bg-white/30 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl px-2 py-1 cursor-pointer ${
+      <button
+        className={`flex w-10 items-center justify-center h-full transition-all bg-white/10 hover:bg-white/30 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl px-2 py-1 cursor-pointer ${
           isProcessing || query.trim() === "" || isQueryUnchanged()
             ? "opacity-60 pointer-events-none"
             : ""
@@ -355,7 +332,33 @@ function Search({
         ) : (
           <GoSearch size={20} />
         )}
-      </div>
+      </button>
+
+      <button
+        className={`flex w-10 items-center justify-center h-full transition-all backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl px-2 py-1 cursor-pointer
+          ${canHover ? (isOpenCat ? "" : "") : ""}
+              ${
+                isOpenCat
+                  ? "bg-white/30 text-white/90"
+                  : "bg-white/10 hover:bg-white/30 text-white/80 hover:text-white/90"
+              }
+                  ${!isProcessing ? "" : "opacity-60 pointer-events-none"}`}
+        onClick={(e) => {
+          e.currentTarget.blur();
+          setShowSuggestions(false);
+          setIsOpenCat(!isOpenCat);
+          setCanHover(false);
+        }}
+        onMouseEnter={() => canHover && setIsHover(true)}
+        onMouseLeave={() => {
+          setIsHover(false);
+          setCanHover(true);
+        }}
+        onMouseUp={() => setTimeout(() => setCanHover(false), 0)}
+      >
+        <BsFilter size={24} />
+      </button>
+
       <button
         onClick={handleReset}
         className={`group flex w-10 items-center justify-center h-full transition-all bg-white/10 hover:bg-white/30 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl px-2 py-1 cursor-pointer ${
