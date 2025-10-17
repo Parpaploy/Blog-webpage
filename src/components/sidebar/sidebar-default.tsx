@@ -43,7 +43,7 @@ export default function SidebarDefault({
             ? "rounded-l-[30px] rounded-r-lg p-1 pt-3 pb-2"
             : "rounded-full p-3"
         } 
-    bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg`}
+    bg-white/20 backdrop-blur-sm border border-white/30 shadow-md`}
       >
         <div className="relative z-10 w-full h-full flex flex-col justify-between items-center">
           {/* Top */}
@@ -148,7 +148,7 @@ export default function SidebarDefault({
               isSidebar ? "items-start w-full px-1" : "items-center"
             }`}
           >
-            <div className="w-full border-t-1 border-black/30 mb-3" />
+            <div className="w-full border-t-1 border-white/30 mb-3" />
 
             <div className="w-full">
               {user !== null ? (
@@ -183,7 +183,7 @@ export default function SidebarDefault({
       </main>
 
       <button
-        className={`absolute top-1/2 -translate-y-1/2 -right-[8px] h-10 px-0.5 text-center bg-white/40 hover:bg-white/50 backdrop-blur-sm border border-white/30 border-l-0 shadow-lg text-white rounded-r-lg z-[10] cursor-pointer transition-all duration-150`}
+        className={`absolute top-1/2 -translate-y-1/2 -right-[8px] h-10 px-0.5 text-center bg-white/40 hover:bg-white/50 backdrop-blur-sm border border-white/30 border-l-0 [box-shadow:5px_0px_12px_rgba(0,0,0,0.05)] text-white rounded-r-lg z-[10] cursor-pointer transition-all duration-150`}
         onClick={toggleSidebar}
       >
         {isSidebar ? <IoIosArrowBack /> : <IoIosArrowForward />}

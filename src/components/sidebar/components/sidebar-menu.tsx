@@ -27,7 +27,7 @@ export default function SidebarMenu({
       }}
       className={`${
         isSidebar ? "w-full" : "w-auto"
-      } group backdrop-blur-sm border border-white/30 border-l-0 border-r-0 shadow-lg p-2 transition-all relative
+      } group backdrop-blur-sm border border-white/30 border-l-0 border-r-0 shadow-md p-2 transition-all relative
                     ${isSidebar ? "rounded-2xl" : "rounded-full"} 
                     ${
                       isSidebar ? "w-full px-3 text-start" : "text-center w-11"
@@ -46,8 +46,8 @@ export default function SidebarMenu({
       <div
         className={`absolute w-1 h-full ${
           thisPath === path
-            ? "bg-white/60 backdrop-blur-sm border border-white/30 border-l-0 shadow-lg"
-            : "bg-transparent group-hover:bg-white/30 group-hover:backdrop-blur-sm group-hover:border group-hover:border-white/30 group-hover:border-l-0 group-hover:shadow-lg"
+            ? "bg-white/60 backdrop-blur-sm border border-white/30 border-l-0 shadow-md"
+            : "bg-transparent group-hover:bg-white/30 group-hover:backdrop-blur-sm group-hover:border group-hover:border-white/30 group-hover:border-l-0 group-hover:shadow-md"
         } top-0 ${
           isSidebar ? "right-0" : "-right-2"
         } rounded-4xl transition-all`}

@@ -149,7 +149,7 @@ export default function AddBlogDefaultPage({
                     setThumbnail(null);
                     setThumbnailPreview(null);
                   }}
-                  className="cursor-pointer absolute top-3 left-3 z-10 p-2 text-white/80 hover:bg-white/30 hover:text-white/90 bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl transition-all"
+                  className="cursor-pointer absolute top-3 left-3 z-10 p-2 text-white/80 hover:bg-white/30 hover:text-white/90 bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl transition-all"
                 >
                   <svg
                     className="w-5 h-5"
@@ -210,7 +210,7 @@ export default function AddBlogDefaultPage({
                 id="title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="w-full px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
+                className="w-full px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
                 placeholder={t("titlePlaceholder")}
                 required
               />
@@ -219,7 +219,7 @@ export default function AddBlogDefaultPage({
                 id="description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="flex-1 w-full px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-3xl focus:ring-2 focus:ring-white/30 focus:outline-none resize-none"
+                className="flex-1 w-full px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-3xl focus:ring-2 focus:ring-white/30 focus:outline-none resize-none"
                 placeholder={t("descriptionPlaceholder")}
               />
             </div>
@@ -229,9 +229,9 @@ export default function AddBlogDefaultPage({
               <label className="block text-sm font-medium text-white/80 mb-2">
                 {t("postType") || "ประเภทโพสต์"}
               </label>
-              <div className="relative inline-flex w-full p-1 bg-white/10 backdrop-blur-sm rounded-full border border-white/30 shadow-lg">
+              <div className="relative inline-flex w-full p-1 bg-white/10 backdrop-blur-sm rounded-full border border-white/30 shadow-md">
                 <div
-                  className={`absolute top-1 bottom-1 w-[calc(50%-0.5rem)] bg-gradient-to-r from-white/20 to-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-full transition-all duration-300 ease-in-out ${
+                  className={`absolute top-1 bottom-1 w-[calc(50%-0.5rem)] bg-gradient-to-r from-white/20 to-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-full transition-all duration-300 ease-in-out ${
                     postType === "free" ? "left-1" : "left-[calc(50%+0.25rem)]"
                   }`}
                 />
@@ -275,7 +275,7 @@ export default function AddBlogDefaultPage({
                   id="price"
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
-                  className="w-full px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none [&::-webkit-inner-spin-button]:opacity-100 [&::-webkit-outer-spin-button]:opacity-100 [&::-webkit-inner-spin-button]:cursor-pointer [&::-webkit-outer-spin-button]:cursor-pointer [&::-webkit-inner-spin-button]:brightness-0 [&::-webkit-inner-spin-button]:invert [&::-webkit-outer-spin-button]:brightness-0 [&::-webkit-outer-spin-button]:invert"
+                  className="w-full px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none [&::-webkit-inner-spin-button]:opacity-100 [&::-webkit-outer-spin-button]:opacity-100 [&::-webkit-inner-spin-button]:cursor-pointer [&::-webkit-outer-spin-button]:cursor-pointer [&::-webkit-inner-spin-button]:brightness-0 [&::-webkit-inner-spin-button]:invert [&::-webkit-outer-spin-button]:brightness-0 [&::-webkit-outer-spin-button]:invert"
                   placeholder={t("pricePlaceholder") || "เช่น 99"}
                   min="0"
                   step="0.01"
@@ -294,7 +294,7 @@ export default function AddBlogDefaultPage({
                   type="number"
                   id="price"
                   value="0"
-                  className="w-full px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none opacity-50 cursor-not-allowed"
+                  className="w-full px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none opacity-50 cursor-not-allowed"
                   disabled
                   readOnly
                 />
@@ -319,7 +319,7 @@ export default function AddBlogDefaultPage({
                             : [...prev, cat.id]
                         )
                       }
-                      className={`px-3 py-2 rounded-full border duration-200 transition-all shadow-lg ${
+                      className={`px-3 py-2 rounded-full border duration-200 transition-all shadow-md ${
                         isSelected
                           ? "cursor-pointer text-white/90 bg-white/40 backdrop-blur-sm border border-white/30"
                           : "cursor-pointer text-white/80 hover:text-white/90 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30"
@@ -348,7 +348,7 @@ export default function AddBlogDefaultPage({
           <button
             type="submit"
             disabled={isLoading}
-            className="mb-3 cursor-pointer text-white/80 hover:text-white/90 w-full px-3 py-2 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl transition-all disabled:bg-gray-500 disabled:cursor-not-allowed"
+            className="mb-3 cursor-pointer text-white/80 hover:text-white/90 w-full px-3 py-2 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl transition-all disabled:bg-gray-500 disabled:cursor-not-allowed"
           >
             {isLoading ? t("publishing") : t("publishPost")}
           </button>

@@ -136,7 +136,7 @@ export default function MenuBar({
   ];
 
   return (
-    <div className="rounded-4xl p-1 mb-1 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg space-x-2 z-50 text-white/90">
+    <div className="rounded-4xl p-1 mb-1 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md space-x-2 z-50 text-white/90">
       {Options.map((option, i) => (
         <Toggle
           key={i}
@@ -145,7 +145,7 @@ export default function MenuBar({
           className={`p-2 rounded-full transition-all cursor-pointer text-white/50
         ${
           option.pressed
-            ? "bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg data-[state=on]:bg-white/10 data-[state=on]:text-white"
+            ? "bg-white/10 backdrop-blur-sm border border-white/30 shadow-md data-[state=on]:bg-white/10 data-[state=on]:text-white"
             : "bg-transparent hover:bg-white/20 hover:text-white/80"
         }`}
         >

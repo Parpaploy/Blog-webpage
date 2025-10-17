@@ -22,7 +22,7 @@ export default function LoginButton({
             router.push("/login");
           }}
           type="submit"
-          className={`w-25 border border-white/30 border-l-0 backdrop-blur-sm shadow-lg rounded-full px-2 py-1 transition-all underline ${
+          className={`w-25 border border-white/30 border-l-0 backdrop-blur-sm shadow-md rounded-full px-2 py-1 transition-all underline ${
             currentPath === "/login"
               ? "text-white bg-white/40 cursor-default"
               : "bg-white/10 hover:bg-white/20 text-white/50 hover:text-white/70 cursor-pointer"

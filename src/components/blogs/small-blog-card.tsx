@@ -32,7 +32,7 @@ export default function SmallBlogCard({
       onClick={() => {
         router.push(`/blogs/${blog.documentId}`);
       }}
-      className={`cursor-pointer flex lg:flex-row flex-col lg:min-w-full min-w-60 max-w-60 lg:max-w-full rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg overflow-hidden transition-all ${
+      className={`cursor-pointer flex lg:flex-row flex-col lg:min-w-full min-w-60 max-w-60 lg:max-w-full rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 shadow-md overflow-hidden transition-all ${
         isSidebar
           ? "2xl:min-h-45 xl:min-h-35 lg:min-h-30 h-full 2xl:max-h-45 xl:max-h-35 lg:max-h-30"
           : "2xl:min-h-50 xl:min-h-40 lg:min-h-35 h-full 2xl:max-h-50 xl:max-h-40 lg:max-h-35"
@@ -60,26 +60,28 @@ export default function SmallBlogCard({
             {blog.description}
           </p>
 
-          <div
-            className="w-fit max-w-full flex justify-start items-center gap-2"
-            onClick={goToUserBlogs}
-          >
-            <div className="xl:w-6 xl:h-6 lg:w-4 lg:h-4 w-5 h-5 overflow-hidden rounded-full">
-              <img
-                className="w-full h-full object-cover"
-                src={
-                  blog.author?.profile?.formats?.small?.url
-                    ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${blog.author.profile.formats.small.url}`
-                    : "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1906669723.jpg"
-                }
-                alt={blog.author + "profile picture"}
-              />
-            </div>
+          {blog.author && (
+            <div
+              className="w-fit max-w-full flex justify-start items-center gap-2"
+              onClick={goToUserBlogs}
+            >
+              <div className="xl:w-6 xl:h-6 lg:w-4 lg:h-4 w-5 h-5 overflow-hidden rounded-full">
+                <img
+                  className="w-full h-full object-cover"
+                  src={
+                    blog.author?.profile?.formats?.small?.url
+                      ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${blog.author.profile.formats.small.url}`
+                      : "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1906669723.jpg"
+                  }
+                  alt={blog.author + "profile picture"}
+                />
+              </div>
 
-            <p className="xl:text-sm lg:text-xs text-sm">
-              {blog.author?.username}
-            </p>
-          </div>
+              <p className="xl:text-sm lg:text-xs text-sm">
+                {blog.author?.username}
+              </p>
+            </div>
+          )}
         </div>
 
         <div className="w-full space-y-1">

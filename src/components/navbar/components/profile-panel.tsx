@@ -15,7 +15,7 @@ function ProfilePanel({
   return (
     <>
       {toggle && (
-        <div className="absolute top-12 right-5 w-60 h-fit bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-lg overflow-hidden">
+        <div className="absolute top-12 right-5 w-60 h-fit bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-lg overflow-hidden">
           <ProfileMenu
             path="/profile"
             title={t("manage")}

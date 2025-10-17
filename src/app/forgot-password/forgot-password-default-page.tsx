@@ -88,14 +88,14 @@ export default function ForgotPasswordDefaultPage() {
             value={userEmail}
             onChange={(e) => setUserEmail(e.target.value)}
             placeholder={t("emailPlaceholder")}
-            className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
+            className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
             disabled={loading}
           />
         </div>
 
         <button
           type="submit"
-          className="cursor-pointer text-white/80 w-full px-3 py-2 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl transition-all disabled:opacity-50"
+          className="cursor-pointer text-white/80 w-full px-3 py-2 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl transition-all disabled:opacity-50"
           disabled={loading}
         >
           {loading ? t("sending") : t("submitButton")}

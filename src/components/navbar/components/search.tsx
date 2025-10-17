@@ -255,7 +255,7 @@ function Search({
               setShowSuggestions(true);
             }
           }}
-          className={`w-full h-full bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl px-4 py-1 focus:ring-2 focus:ring-white/30 focus:outline-none ${
+          className={`w-full h-full bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-4 py-1 focus:ring-2 focus:ring-white/30 focus:outline-none ${
             isPending ? "opacity-60 pointer-events-none" : ""
           }`}
           onKeyDown={(e) => {
@@ -271,7 +271,7 @@ function Search({
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.2 }}
-              className="absolute top-full left-0 right-0 mt-1 bg-white/10 backdrop-blur-md border border-white/30 rounded-2xl shadow-2xl overflow-hidden z-50"
+              className="absolute top-full left-0 right-0 mt-1 bg-white/10 backdrop-blur-md border border-white/30 rounded-2xl shadow-md overflow-hidden z-50"
             >
               <div>
                 {suggestions.map((suggestion, index) => (
@@ -320,7 +320,7 @@ function Search({
       </div>
 
       <button
-        className={`flex w-10 items-center justify-center h-full transition-all bg-white/10 hover:bg-white/30 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl px-2 py-1 cursor-pointer ${
+        className={`flex w-10 items-center justify-center h-full transition-all bg-white/10 hover:bg-white/30 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1 cursor-pointer ${
           isProcessing || query.trim() === "" || isQueryUnchanged()
             ? "opacity-60 pointer-events-none"
             : ""
@@ -335,7 +335,7 @@ function Search({
       </button>
 
       <button
-        className={`flex w-10 items-center justify-center h-full transition-all backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl px-2 py-1 cursor-pointer
+        className={`flex w-10 items-center justify-center h-full transition-all backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1 cursor-pointer
           ${canHover ? (isOpenCat ? "" : "") : ""}
               ${
                 isOpenCat
@@ -361,7 +361,7 @@ function Search({
 
       <button
         onClick={handleReset}
-        className={`group flex w-10 items-center justify-center h-full transition-all bg-white/10 hover:bg-white/30 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl px-2 py-1 cursor-pointer ${
+        className={`group flex w-10 items-center justify-center h-full transition-all bg-white/10 hover:bg-white/30 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1 cursor-pointer ${
           !isProcessing &&
           (query.trim() !== "" || selectedCategories.length > 0)
             ? ""
@@ -389,7 +389,7 @@ function Search({
               initial="hidden"
               animate="visible"
               exit="hidden"
-              className="py-3 w-full flex flex-wrap gap-3 items-center justify-center bg-white/10 backdrop-blur-md border border-white/30 rounded-4xl shadow-2xl"
+              className="py-3 w-full flex flex-wrap gap-3 items-center justify-center bg-white/10 backdrop-blur-md border border-white/30 rounded-4xl shadow-md"
             >
               {categories.map((cat: ICategory) => (
                 <CategoryMenu

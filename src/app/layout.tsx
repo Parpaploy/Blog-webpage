@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${ibm.className}  antialiased`}
+        className={`${ibm.className}  antialiased bg-fixed`}
         style={{
           backgroundImage: "url('/assets/placeholders/Image 4064x2704.jpg')",
           backgroundSize: "cover",

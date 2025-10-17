@@ -46,7 +46,7 @@ function CategoryMenu({
     <motion.div
       variants={itemVariants}
       onClick={() => handleCategoryClick(catTitle)}
-      className={`cursor-pointer text-center px-4 py-2 rounded-full transition-colors backdrop-blur-sm border shadow-lg line-clamp-1 border-white/20
+      className={`cursor-pointer text-center px-4 py-2 rounded-full transition-colors backdrop-blur-sm border shadow-md line-clamp-1 border-white/20
         ${
           isDisable || isLoading
             ? `pointer-events-none ${

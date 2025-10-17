@@ -118,7 +118,7 @@ export default function SignupDefaultPage() {
             type="text"
             required
             placeholder={t("usernamePlaceholder")}
-            className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
+            className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
             disabled={loading}
           />
           <input
@@ -126,7 +126,7 @@ export default function SignupDefaultPage() {
             type="email"
             required
             placeholder={t("emailPlaceholder")}
-            className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
+            className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
             disabled={loading}
           />
           <input
@@ -134,7 +134,7 @@ export default function SignupDefaultPage() {
             type="password"
             required
             placeholder={t("passwordPlaceholder")}
-            className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
+            className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
             disabled={loading}
           />
           <input
@@ -142,7 +142,7 @@ export default function SignupDefaultPage() {
             type="password"
             required
             placeholder={t("confirmPasswordPlaceholder")}
-            className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
+            className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
             disabled={loading}
           />
         </div>
@@ -153,7 +153,7 @@ export default function SignupDefaultPage() {
             !loading
               ? "hover:bg-white/30 hover:text-white/90 cursor-pointer"
               : "opacity-50 cursor-not-allowed"
-          } bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl transition-all`}
+          } bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl transition-all`}
           disabled={loading}
         >
           {loading ? t("loading") : t("title")}

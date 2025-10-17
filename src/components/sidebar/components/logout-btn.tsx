@@ -45,7 +45,7 @@ export default function LogoutButton({
         ? "hover:bg-white/20 hover:text-white/90 cursor-pointer"
         : "cursor-not-allowed opacity-50"
     }
-    p-2 text-white/50 hover:text-white/70 bg-white/10 border border-white/30 border-l-0 shadow-lg transition-all h-10
+    p-2 text-white/50 hover:text-white/70 bg-white/10 border border-white/30 border-l-0 shadow-md transition-all h-10
   `}
     >
       {isLogout ? (

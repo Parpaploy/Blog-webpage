@@ -33,7 +33,7 @@ export default function LoginButton({
             ${isSidebar ? "w-full" : "w-auto"} 
             ${
               isSidebar ? "rounded-2xl" : "rounded-full"
-            }  p-2 bg-white/10 border border-white/30 border-l-0 shadow-lg transition-all h-10 
+            }  p-2 bg-white/10 border border-white/30 border-l-0 shadow-md transition-all h-10 
             ${isSidebar ? "w-full px-3" : "w-10"} 
             ${
               currentPath === "/login"

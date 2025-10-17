@@ -40,7 +40,7 @@ export default function SubscribeBlogCard({
       onClick={() => {
         router.push(`/subscribe-blogs/${subBlog.documentId}`);
       }}
-      className="cursor-pointer 2xl:w-95 2xl:h-105 xl:w-85 xl:h-95 w-70 h-80 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg overflow-hidden relative"
+      className="cursor-pointer 2xl:w-95 2xl:h-105 xl:w-85 xl:h-95 w-70 h-80 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 shadow-md overflow-hidden relative"
     >
       <div className="w-full h-[50%] rounded-b-2xl overflow-hidden">
         <img
@@ -62,29 +62,31 @@ export default function SubscribeBlogCard({
             <HighlightText text={subBlog.description} highlight={query} />
           </p>
 
-          <div
-            className="w-fit max-w-full flex justify-start items-center gap-2 mt-1"
-            onClick={goToUserBlogs}
-          >
-            <div className="xl:w-6 xl:h-6 w-5 h-5 overflow-hidden rounded-full">
-              <img
-                className="w-full h-full object-cover"
-                src={
-                  subBlog.author?.profile?.formats?.small?.url
-                    ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${subBlog.author.profile.formats.small.url}`
-                    : "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1906669723.jpg"
-                }
-                alt={subBlog.author + "profile picture"}
-              />
-            </div>
+          {subBlog.author && (
+            <div
+              className="w-fit max-w-full flex justify-start items-center gap-2 mt-1"
+              onClick={goToUserBlogs}
+            >
+              <div className="xl:w-6 xl:h-6 w-5 h-5 overflow-hidden rounded-full">
+                <img
+                  className="w-full h-full object-cover"
+                  src={
+                    subBlog.author?.profile?.formats?.small?.url
+                      ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${subBlog.author.profile.formats.small.url}`
+                      : "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1906669723.jpg"
+                  }
+                  alt={subBlog.author + "profile picture"}
+                />
+              </div>
 
-            <p>
-              <HighlightText
-                text={subBlog.author?.username}
-                highlight={query}
-              />
-            </p>
-          </div>
+              <p>
+                <HighlightText
+                  text={subBlog.author?.username}
+                  highlight={query}
+                />
+              </p>
+            </div>
+          )}
         </div>
 
         <div className="w-full flex flex-col gap-1">

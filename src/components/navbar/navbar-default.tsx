@@ -57,7 +57,7 @@ export default function NavbarDefault({
         <div className="w-full h-full flex justify-between items-start text-white/70">
           {user !== null ? (
             <>
-              <div className="font-semibold text-lg bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl px-2 py-1 cursor-default">
+              <div className="font-semibold text-lg bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1 cursor-default">
                 {t("hello")} {user.username}
               </div>
 
@@ -80,7 +80,7 @@ export default function NavbarDefault({
                   onClick={() => {
                     setIsToggle(!isToggle);
                   }}
-                  className="cursor-pointer w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg"
+                  className="cursor-pointer w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 shadow-md"
                 >
                   <img
                     className="w-full h-full rounded-full overflow-hidden object-cover aspect-square opacity-80"
@@ -96,7 +96,7 @@ export default function NavbarDefault({
             </>
           ) : (
             <>
-              <p className="font-semibold text-lg bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl px-2 py-1">
+              <p className="font-semibold text-lg bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1">
                 {t("guest")}
               </p>
 

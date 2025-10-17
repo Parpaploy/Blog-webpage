@@ -156,7 +156,7 @@ export default function ProfileDefaultPage({ user }: IUserProps) {
                 : "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1906669723.jpg"
             }
             alt="profile preview"
-            className="w-full h-full object-cover rounded-full bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg transition-all duration-200 group-hover:brightness-70 opacity-85"
+            className="w-full h-full object-cover rounded-full bg-white/10 backdrop-blur-sm border border-white/30 shadow-md transition-all duration-200 group-hover:brightness-70 opacity-85"
           />
           <input
             id="profile"
@@ -168,7 +168,7 @@ export default function ProfileDefaultPage({ user }: IUserProps) {
           />
           <label
             htmlFor="profile"
-            className="absolute bottom-0 right-0 bg-white/30 backdrop-blur-sm border border-white/30 shadow-lg text-white text-xs p-2 rounded-full cursor-pointer group-hover:bg-white/10 transition-all"
+            className="absolute bottom-0 right-0 bg-white/30 backdrop-blur-sm border border-white/30 shadow-md text-white text-xs p-2 rounded-full cursor-pointer group-hover:bg-white/10 transition-all"
           >
             <FiEdit3 size={18} />
           </label>
@@ -198,7 +198,7 @@ export default function ProfileDefaultPage({ user }: IUserProps) {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder={t("username")}
-            className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
+            className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
             disabled={isSaving}
           />
 
@@ -207,7 +207,7 @@ export default function ProfileDefaultPage({ user }: IUserProps) {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder={t("email")}
-            className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
+            className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
             disabled={isSaving}
           />
 
@@ -216,7 +216,7 @@ export default function ProfileDefaultPage({ user }: IUserProps) {
             value={currentPassword}
             onChange={(e) => setCurrentPassword(e.target.value)}
             placeholder={t("currentPassword")}
-            className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
+            className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
             disabled={isSaving}
           />
 
@@ -242,7 +242,7 @@ export default function ProfileDefaultPage({ user }: IUserProps) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder={t("newPassword")}
-            className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
+            className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
             disabled={isSaving}
           />
 
@@ -252,7 +252,7 @@ export default function ProfileDefaultPage({ user }: IUserProps) {
               isLogout || isSaving
                 ? "opacity-50 cursor-not-allowed"
                 : "cursor-pointer hover:bg-white/30 hover:text-white/90"
-            } text-white/80 w-full px-3 py-2 bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl transition-all disabled:opacity-50`}
+            } text-white/80 w-full px-3 py-2 bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl transition-all disabled:opacity-50`}
             disabled={isSaving}
           >
             {isSaving ? t("saving") : t("saveChanges")}
@@ -264,7 +264,7 @@ export default function ProfileDefaultPage({ user }: IUserProps) {
             isLogout || isSaving
               ? "opacity-50 cursor-not-allowed"
               : "cursor-pointer hover:bg-white/30 hover:text-white/90"
-          } bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg rounded-4xl transition-all disabled:opacity-50`}
+          } bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl transition-all disabled:opacity-50`}
           disabled={isLogout}
           onClick={async () => {
             setIsLogout(true);

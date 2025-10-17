@@ -37,7 +37,7 @@ export default function BlogCard({
       onClick={() => {
         router.push(`/blogs/${blog.documentId}`);
       }}
-      className="cursor-pointer 2xl:w-95 2xl:h-105 xl:w-85 xl:h-95 w-70 h-80 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg overflow-hidden"
+      className="cursor-pointer 2xl:w-95 2xl:h-105 xl:w-85 xl:h-95 w-70 h-80 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 shadow-md overflow-hidden"
     >
       <div className="w-full h-[50%] rounded-b-2xl overflow-hidden">
         <img
@@ -59,31 +59,33 @@ export default function BlogCard({
             <HighlightText text={blog.description} highlight={query} />
           </p>
 
-          <div
-            className="w-fit max-w-full flex justify-start items-center gap-2 mt-1"
-            onClick={goToUserBlogs}
-          >
-            <div className="xl:w-6 xl:h-6 w-5 h-5 overflow-hidden rounded-full">
-              <img
-                className="w-full h-full object-cover"
-                src={
-                  blog.author?.profile?.formats?.small?.url
-                    ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${blog.author.profile.formats.small.url}`
-                    : "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1906669723.jpg"
-                }
-                alt={blog.author + "profile picture"}
-              />
-            </div>
+          {blog.author && (
+            <div
+              className="w-fit max-w-full flex justify-start items-center gap-2 mt-1"
+              onClick={goToUserBlogs}
+            >
+              <div className="xl:w-6 xl:h-6 w-5 h-5 overflow-hidden rounded-full">
+                <img
+                  className="w-full h-full object-cover"
+                  src={
+                    blog.author?.profile?.formats?.small?.url
+                      ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${blog.author.profile.formats.small.url}`
+                      : "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1906669723.jpg"
+                  }
+                  alt={blog.author + "profile picture"}
+                />
+              </div>
 
-            <p>
-              <HighlightText text={blog.author?.username} highlight={query} />
-            </p>
-          </div>
+              <p>
+                <HighlightText text={blog.author?.username} highlight={query} />
+              </p>
+            </div>
+          )}
         </div>
 
         <div className="w-full flex flex-col gap-1">
           {blog.categories && blog.categories.length > 0 && (
-            <div className="flex flex-wrap 2xl:h-20 xl:h-15 lg:h-9 md:h-7 h-6.5 justify-start items-end gap-1 overflow-x-auto">
+            <div className="flex flex-wrap 2xl:h-20 xl:h-15 lg:h-9 md:h-7 h-6.5 justify-start items-end gap-1 overflow-x-auto pb-0.5">
               {blog.categories.map((cat: ICategory, index: number) => {
                 return (
                   <CategoryTag

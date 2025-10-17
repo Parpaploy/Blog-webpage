@@ -1,23 +1,52 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 export default function LanguageSwitcher() {
   const { i18n } = useTranslation();
+  const [hasMounted, setHasMounted] = useState(false);
 
-  const [isThai, setIsThai] = useState(true);
+  const [isThai, setIsThai] = useState(() => {
+    if (typeof window !== "undefined") {
+      const savedLang = localStorage.getItem("language");
+      return savedLang ? savedLang === "th" : true;
+    }
+    return true;
+  });
+
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (hasMounted) {
+      const savedLang = localStorage.getItem("language") || "th";
+      if (i18n.language !== savedLang) {
+        i18n.changeLanguage(savedLang);
+      }
+    }
+  }, [hasMounted, i18n]);
 
   const toggleLang = () => {
     setLoading(true);
 
     setTimeout(() => {
-      i18n.changeLanguage(isThai ? "en" : "th");
+      const newLang = isThai ? "en" : "th";
+      i18n.changeLanguage(newLang);
       setIsThai(!isThai);
+      localStorage.setItem("language", newLang);
       setLoading(false);
     }, 500);
   };
+
+  if (!hasMounted) {
+    return (
+      <div className="w-20 h-10 rounded-full bg-white/5 animate-pulse"></div>
+    );
+  }
 
   return (
     <>
@@ -34,12 +63,12 @@ export default function LanguageSwitcher() {
 
       <button
         onClick={toggleLang}
-        className="w-20 h-10 rounded-full relative overflow-hidden flex items-center justify-center bg-white/10 backdrop-blur-xs border border-white/30 shadow-lg cursor-pointer"
+        className="w-20 h-10 rounded-full relative overflow-hidden flex items-center justify-center bg-white/10 backdrop-blur-xs border border-white/30 shadow-md cursor-pointer"
         disabled={loading}
       >
         {loading && (
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
           </div>
         )}
 
@@ -54,7 +83,7 @@ export default function LanguageSwitcher() {
               transform: isThai ? "translateX(0)" : "translateX(40px)",
             }}
           >
-            <div className="w-6 h-6 bg-white/20 border border-white/30 shadow-lg rounded-full overflow-hidden">
+            <div className="w-6 h-6 bg-white/20 border border-white/30 shadow-md rounded-full overflow-hidden">
               <img
                 src={
                   isThai

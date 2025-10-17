@@ -36,7 +36,7 @@ export default function YourBlogsDefaultPage({
     <main
       className={`w-screen h-full overflow-y-auto 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] text-white/80 ${
         isSidebar ? "pl-65" : "pl-25"
-      } transition-all pb-3`}
+      } transition-all`}
     >
       <div
         onClick={() => {
@@ -49,7 +49,7 @@ export default function YourBlogsDefaultPage({
 
       {userBlogs && userBlogs.length > 0 ? (
         <section className="w-full h-auto overflow-y-auto py-3 scrollbar-hide">
-          <div className="inline-flex min-w-full gap-5 items-center justify-start overflow-x-auto">
+          <div className="inline-flex min-w-full gap-5 items-center justify-start overflow-x-auto pb-3">
             {userBlogs.map((blog, index: number) => (
               <BlogCard key={blog.id} blog={blog} user={user} />
             ))}
@@ -72,7 +72,7 @@ export default function YourBlogsDefaultPage({
 
       {userSubscribeBlogs && userSubscribeBlogs.length > 0 ? (
         <section className="w-full h-auto overflow-y-auto pt-3 scrollbar-hide">
-          <div className="inline-flex min-w-full gap-5 items-center justify-start overflow-x-auto">
+          <div className="inline-flex min-w-full gap-5 items-center justify-start overflow-x-auto pb-3">
             {userSubscribeBlogs.map((subBlog, index: number) => (
               <SubscribeBlogCard
                 key={subBlog.id}

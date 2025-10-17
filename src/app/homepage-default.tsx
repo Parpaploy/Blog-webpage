@@ -47,14 +47,14 @@ export default function HomepageDefault({
           onClick={() => {
             router.push("/blogs");
           }}
-          className="cursor-pointer text-2xl font-bold"
+          className="w-fit cursor-pointer text-2xl font-bold"
         >
           {t("highlight_blog_title")}
         </div>
 
         {highlight.blogs && highlight.blogs.length > 0 ? (
           <section className="w-full h-auto overflow-y-auto py-3 scrollbar-hide pr-5">
-            <div className="inline-flex min-w-full gap-5 items-center justify-start overflow-x-auto">
+            <div className="inline-flex min-w-full gap-5 items-center justify-start overflow-x-auto pb-3">
               {highlight.blogs.map((blog, index: number) => (
                 <BlogCard key={blog.id} blog={blog} user={user} />
               ))}
@@ -83,7 +83,7 @@ export default function HomepageDefault({
 
         {highlight.subscribe_blogs && highlight.subscribe_blogs.length > 0 ? (
           <section className="w-full h-auto overflow-y-auto py-3 scrollbar-hide overflow-x-auto pr-5">
-            <div className="inline-flex min-w-full gap-5 items-center justify-start">
+            <div className="inline-flex min-w-full gap-5 items-center justify-start pb-3">
               {highlight.subscribe_blogs.map((subBlog, index: number) => (
                 <SubscribeBlogCard
                   key={subBlog.id}
@@ -107,14 +107,14 @@ export default function HomepageDefault({
           onClick={() => {
             router.push("/blogs");
           }}
-          className="cursor-pointer text-2xl font-bold"
+          className="cursor-pointer text-2xl font-bold w-fit"
         >
           {t("blog_title")}
         </div>
 
         {blogs && blogs.length > 0 ? (
           <section className="w-full h-auto overflow-y-auto py-3 scrollbar-hide pr-5">
-            <div className="inline-flex min-w-full gap-5 items-center justify-start overflow-x-auto">
+            <div className="inline-flex min-w-full gap-5 items-center justify-start overflow-x-auto pb-3">
               {blogs.map((blog, index: number) => (
                 <BlogCard key={blog.id} blog={blog} user={user} />
               ))}
