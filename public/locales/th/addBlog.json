@@ -1,3 +1,32 @@
 {
-  "hello": "สวัสดี"
+  "createNewPost": "สร้างบล็อกใหม่",
+  "uploadFile": "คลิกเพื่ออัปโหลด",
+  "orDragAndDrop": "หรือลากและวาง",
+  "titlePlaceholder": "ชื่อบล็อก...",
+  "descriptionPlaceholder": "ใส่คำอธิบายสั้นๆ สำหรับบล็อก...",
+  "postType": "ประเภทบล็อก",
+  "free": "ฟรี",
+  "paid": "สมัครสมาชิก",
+  "price": "ราคา (บาท)",
+  "pricePlaceholder": "เช่น 99",
+  "categories": "หมวดหมู่",
+  "publishing": "กำลังโพสต์...",
+  "publishPost": "โพสต์",
+
+  "status": {
+    "submitting": "กำลังโพสต์บล็อกของคุณ...",
+    "successTitle": "สำเร็จ!",
+    "successBody": "โพสต์บล็อกของคุณถูกโพสต์แล้ว",
+    "successButton": "ดูบล็อกของฉัน",
+    "errorTitle": "ส่งข้อมูลไม่สำเร็จ",
+    "errorButton": "ลองอีกครั้ง"
+  },
+
+  "errors": {
+    "required": "กรุณากรอกข้อมูล '{{field}}'",
+    "string": {
+      "max": "'{{field}}' ต้องมีความยาวไม่เกิน {{limit}} ตัวอักษร"
+    },
+    "unknown": "เกิดข้อผิดพลาดที่ไม่รู้จัก กรุณาลองใหม่อีกครั้ง"
+  }
 }

@@ -4,3 +4,5 @@ export type Suggestion = {
   text: string;
   type: "title" | "author" | "description";
 };
+
+export type SubmissionStatus = "submitting" | "success" | "error" | null;

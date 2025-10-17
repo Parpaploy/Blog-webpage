@@ -2,7 +2,7 @@ import React from "react";
 import AddBlogDefaultPage from "./add-blog-default-page";
 import { cookies } from "next/headers";
 import { IUser } from "../../../interfaces/strapi.interface";
-import { fetchCategories, fetchUser } from "../../../lib/api";
+import { fetchBlogSetting, fetchCategories, fetchUser } from "../../../lib/api";
 
 export default async function AddBlogPage() {
   const cookieStore = await cookies();
@@ -17,11 +17,14 @@ export default async function AddBlogPage() {
 
   const token = cookieStore.get("token")?.value;
 
+  const blogSetting = await fetchBlogSetting();
+
   return (
     <AddBlogDefaultPage
       user={userToShow}
       categories={categories}
       token={token}
+      blogSetting={blogSetting}
     />
   );
 }

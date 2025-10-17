@@ -1,3 +1,32 @@
 {
-  "hello": "Hello"
+  "createNewPost": "Create New Blog",
+  "uploadFile": "Click to upload",
+  "orDragAndDrop": "or drag and drop",
+  "titlePlaceholder": "Blog title...",
+  "descriptionPlaceholder": "A short description for your blog...",
+  "postType": "Blog Type",
+  "free": "Free",
+  "paid": "Subscribe",
+  "price": "Price (THB)",
+  "pricePlaceholder": "e.g., 99",
+  "categories": "Categories",
+  "publishing": "Publishing...",
+  "publishPost": "Publish Post",
+
+  "status": {
+    "submitting": "Publishing your blog...",
+    "successTitle": "Success!",
+    "successBody": "Your blog has been published successfully.",
+    "successButton": "View My Blogs",
+    "errorTitle": "Submission Failed",
+    "errorButton": "Try Again"
+  },
+
+  "errors": {
+    "required": "{{field}} is required.",
+    "string": {
+      "max": "{{field}} must be at most {{limit}} characters."
+    },
+    "unknown": "An unknown error occurred. Please try again."
+  }
 }

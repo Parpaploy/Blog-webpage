@@ -9,7 +9,7 @@ import UserBlogsDefaultPage from "./user-blogs-default-page";
 import { IBlog, ISubscribeBlog } from "../../../../interfaces/strapi.interface";
 
 export default async function UserBlogs({ params }: any) {
-  const { id } = params;
+  const { id } = await params;
 
   const cookieStore = await cookies();
   const userCookie = cookieStore.get("user")?.value;

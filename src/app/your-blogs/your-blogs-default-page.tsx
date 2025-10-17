@@ -34,7 +34,7 @@ export default function YourBlogsDefaultPage({
 
   return (
     <main
-      className={`w-screen h-full overflow-y-auto 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] text-white/80 ${
+      className={`w-screen h-full overflow-y-auto 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] text-white/80 scrollbar-hide ${
         isSidebar ? "pl-65" : "pl-25"
       } transition-all`}
     >
@@ -53,6 +53,8 @@ export default function YourBlogsDefaultPage({
             {userBlogs.map((blog, index: number) => (
               <BlogCard key={blog.id} blog={blog} user={user} />
             ))}
+
+            <div className="min-w-0.5 max-w-0.5 h-full" />
           </div>
         </section>
       ) : (
@@ -80,6 +82,8 @@ export default function YourBlogsDefaultPage({
                 user={user}
               />
             ))}
+
+            <div className="min-w-0.5 max-w-0.5 h-full" />
           </div>
         </section>
       ) : (

@@ -18,3 +18,10 @@ export interface IHighlightTextProps {
   text?: string;
   highlight?: string;
 }
+
+export interface ISubmissionStatusModalProps {
+  status: "submitting" | "success" | "error" | null;
+  error: string | null;
+  onSuccessRedirect: () => void;
+  onClose: () => void;
+}

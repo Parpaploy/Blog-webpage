@@ -93,3 +93,7 @@ export interface IHighlight {
   blogs: IBlog[];
   subscribe_blogs: ISubscribeBlog[];
 }
+
+export interface IBlogSetting {
+  descriptionMaxLength: number;
+}
