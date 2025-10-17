@@ -28,7 +28,7 @@ export default function HomepageDefault({
 }) {
   // console.log(blogs, ":blogs");
   // console.log(subscribeBlogs, ":subscribe blogs");
-  console.log(highlight, ":Highlight");
+  // console.log(highlight, ":Highlight");
 
   const { t } = useTranslation("home");
 

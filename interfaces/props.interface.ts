@@ -1,5 +1,12 @@
 import { ReactNode } from "react";
-import { IUser } from "./strapi.interface";
+import {
+  IBlog,
+  IBlogSetting,
+  ICategory,
+  ISubscribeBlog,
+  IUser,
+} from "./strapi.interface";
+import { SubmissionStatus } from "../types/ui.type";
 
 export interface Ii18nProps {
   children: ReactNode;

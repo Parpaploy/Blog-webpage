@@ -11,6 +11,7 @@ import CategoryTag from "../category-tag";
 import { useRouter } from "next/navigation";
 import Star from "./star";
 import HighlightText from "../highlight";
+import { FiEdit3 } from "react-icons/fi";
 
 export default function SubscribeBlogCard({
   subBlog,
@@ -42,6 +43,19 @@ export default function SubscribeBlogCard({
       }}
       className="cursor-pointer 2xl:w-95 2xl:h-105 xl:w-85 xl:h-95 w-70 h-80 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 shadow-md overflow-hidden relative"
     >
+      {user && user?.documentId == subBlog.author?.documentId && (
+        <button
+          className="transition-all cursor-pointer absolute top-12 left-2 rounded-full bg-white/10 hover:bg-white/30 text-white/80 hover:text-white/90 border border-white/30 z-20 p-2 backdrop-blur-sm shadow-md"
+          onClick={(e) => {
+            e.stopPropagation();
+            //console.log(subBlog.author.documentId, user.documentId, "au + u");
+            router.push(`/edit-subscribe-blog/${subBlog.documentId}`);
+          }}
+        >
+          <FiEdit3 />
+        </button>
+      )}
+
       <div className="w-full h-[50%] rounded-b-2xl overflow-hidden">
         <img
           className="w-full h-full object-cover"

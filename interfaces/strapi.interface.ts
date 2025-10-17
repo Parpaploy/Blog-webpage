@@ -78,7 +78,25 @@ export interface ICreateBlogParams {
   price?: number;
 }
 
+export interface IUpdateBlogParams {
+  title: string;
+  description: string;
+  detail: any;
+  authorId: number;
+  categories: number[];
+  thumbnail?: File;
+  token: string;
+  endpoint?: string;
+  price?: number;
+}
+
 export interface ICreateBlogResponse {
+  success: boolean;
+  data?: any;
+  error?: string;
+}
+
+export interface IUpdateBlogResponse {
   success: boolean;
   data?: any;
   error?: string;

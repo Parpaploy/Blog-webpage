@@ -2,95 +2,93 @@
 
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSidebar } from "../../../hooks/sidebar";
+import { useRouter } from "next/navigation";
+import { useSidebar } from "../../../../hooks/sidebar";
 import RichTextEditor from "@/components/rich-text-editor";
+import SubmissionStatusModal from "@/components/add-blogs/submission-status-modal";
 import {
+  IBlog,
   IBlogSetting,
   ICategory,
+  ISubscribeBlog,
   IUser,
-} from "../../../interfaces/strapi.interface";
-import { createBlog } from "../../../lib/apis/blog-uploader";
-import { useRouter } from "next/navigation";
-import SubmissionStatusModal from "@/components/add-blogs/submission-status-modal";
-import { SubmissionStatus } from "../../../types/ui.type";
+} from "../../../../interfaces/strapi.interface";
+import { SubmissionStatus } from "../../../../types/ui.type";
+import { updateSubscribeBlog } from "../../../../lib/apis/blog-uploader";
 
-export default function AddBlogDefaultPage({
+export default function EditSubscribeBlogDefaultPage({
   user,
   categories,
   token,
   blogSetting,
+  initialBlogData,
 }: {
   user: IUser | null;
   categories: ICategory[] | null;
   token: string | undefined;
   blogSetting: IBlogSetting;
+  initialBlogData: ISubscribeBlog;
 }) {
-  const { t } = useTranslation("addBlog");
+  const { t } = useTranslation("editBlog");
   const { isSidebar } = useSidebar();
   const router = useRouter();
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [category, setCategory] = useState<number[]>([]);
+  const [title, setTitle] = useState(initialBlogData.title);
+  const [description, setDescription] = useState(initialBlogData.description);
+  const [category, setCategory] = useState<number[]>(
+    initialBlogData.categories.map((c) => c.id)
+  );
   const [thumbnail, setThumbnail] = useState<File | null>(null);
-  const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
-  const [postContent, setPostContent] = useState<any>({
-    type: "doc",
-    content: [],
-  });
-  const [postType, setPostType] = useState<"free" | "price">("free");
-  const [price, setPrice] = useState("");
+  const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(
+    () => {
+      const mediumUrl = initialBlogData.thumbnail?.formats?.medium?.url;
+      const originalUrl = initialBlogData.thumbnail?.url;
+      const baseUrl = process.env.NEXT_PUBLIC_STRAPI_BASE_URL;
 
+      if (mediumUrl) return `${baseUrl}${mediumUrl}`;
+      if (originalUrl) return `${baseUrl}${originalUrl}`;
+      return null;
+    }
+  );
+
+  const parseInitialContent = () => {
+    try {
+      if (initialBlogData.detail) {
+        return typeof initialBlogData.detail === "string"
+          ? JSON.parse(initialBlogData.detail)
+          : initialBlogData.detail;
+      }
+    } catch (e) {
+      console.error("Failed to parse initial content:", e);
+    }
+    return { type: "doc", content: [] };
+  };
+
+  const [postContent, setPostContent] = useState<any>(parseInitialContent());
+  const [price, setPrice] = useState(() => {
+    const raw = initialBlogData.price?.trim() || "";
+    if (!raw) return "";
+    const num = parseFloat(raw.replace(",", ""));
+    return !isNaN(num) ? num.toString() : "";
+  });
   const [submissionStatus, setSubmissionStatus] =
     useState<SubmissionStatus>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const onContentChange = (content: any) => {
-    setPostContent(content);
-  };
+  const onContentChange = (content: any) => setPostContent(content);
 
   const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       setThumbnail(file);
-      const previewUrl = URL.createObjectURL(file);
-      setThumbnailPreview(previewUrl);
-
-      return () => URL.revokeObjectURL(previewUrl);
+      setThumbnailPreview(URL.createObjectURL(file));
     }
-  };
-
-  const resetForm = () => {
-    setTitle("");
-    setDescription("");
-    setCategory([]);
-    setThumbnail(null);
-    setThumbnailPreview(null);
-    setPostContent({ type: "doc", content: [] });
-    setPostType("free");
-    setPrice("");
   };
 
   const translateBackendError = (
     message: string | null | undefined
   ): string => {
     if (!message) return t("errors.unknown");
-
-    const maxLengthMatch = message.match(
-      /(\w+) must be at most (\d+) characters/
-    );
-    if (maxLengthMatch) {
-      const field = maxLengthMatch[1];
-      const limit = maxLengthMatch[2];
-      return t("errors.string.max", { field, limit });
-    }
-
-    const requiredMatch = message.match(/(\w+) is a required field/);
-    if (requiredMatch) {
-      const field = requiredMatch[1];
-      return t("errors.required", { field });
-    }
-
     return message;
   };
 
@@ -99,56 +97,49 @@ export default function AddBlogDefaultPage({
     setSubmissionStatus("submitting");
     setError(null);
 
-    if (!thumbnail || !title || !user?.id || !token) {
-      setError("Missing required fields. Please check title and thumbnail.");
+    if (!title || !user?.id || !token) {
+      setError(t("errors.missingTitle", "Title is required."));
       setSubmissionStatus("error");
       return;
     }
 
-    if (postType === "price" && (!price || parseFloat(price) <= 0)) {
-      setError("Please enter a valid price for paid content.");
+    if (!price || parseFloat(price) <= 0) {
+      setError(t("errors.invalidPrice", "A valid price is required."));
       setSubmissionStatus("error");
       return;
     }
-
-    const endpoint =
-      postType === "free" ? "/api/blogs" : "/api/subscribe-blogs";
 
     try {
-      const result = await createBlog({
+      const result = await updateSubscribeBlog({
+        blogId: initialBlogData.documentId,
+        authorId: initialBlogData.author?.id!,
         title,
         description,
         detail: postContent,
-        authorId: user.id,
         categories: category,
-        thumbnail,
         token,
-        endpoint,
-        ...(postType === "price" && { price: parseFloat(price) }),
+        price: parseFloat(price),
+        ...(thumbnail ? { thumbnail: thumbnail as File } : {}),
       });
 
-      if (result.success) {
-        setSubmissionStatus("success");
-      } else {
-        const translatedMessage = translateBackendError(result.error);
-        setError(translatedMessage);
+      if (result.success) setSubmissionStatus("success");
+      else {
+        setError(translateBackendError(result.error));
         setSubmissionStatus("error");
       }
     } catch (e: any) {
-      setError(e.message || "An unexpected error occurred.");
+      setError(e.message || t("errors.unknown"));
       setSubmissionStatus("error");
     }
   };
 
   const handleSuccessRedirect = () => {
-    resetForm();
     setSubmissionStatus(null);
     router.push("/your-blogs");
+    router.refresh();
   };
 
-  const handleCloseModal = () => {
-    setSubmissionStatus(null);
-  };
+  const handleCloseModal = () => setSubmissionStatus(null);
 
   return (
     <>
@@ -157,12 +148,15 @@ export default function AddBlogDefaultPage({
           isSidebar ? "pl-65" : "pl-25"
         } transition-all`}
       >
-        <section className="max-w-3xl mx-auto h-full px-3 pb-10">
+        <section className="max-w-3xl mx-auto h-full">
           <form
             onSubmit={handleSubmit}
             className="h-full w-full space-y-6 text-white/80"
           >
-            <h1 className="text-3xl font-bold mb-4">{t("createNewPost")}</h1>
+            <h1 className="text-3xl font-bold mb-4">
+              {t("editPost", "Edit Post")}
+            </h1>
+
             <div className="w-full flex flex-col md:flex-row gap-4">
               <input
                 type="file"
@@ -259,104 +253,71 @@ export default function AddBlogDefaultPage({
                     id="description"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    maxLength={blogSetting.descriptionMaxLength}
+                    maxLength={blogSetting?.descriptionMaxLength}
                     className="h-full w-full rounded-3xl border border-white/30 bg-white/10 px-5 py-4 pb-8 shadow-md backdrop-blur-sm resize-none focus:outline-none focus:ring-2 focus:ring-white/30"
                     placeholder={t("descriptionPlaceholder")}
                   />
-
-                  <div
-                    className={`absolute bottom-3 right-5 text-xs transition-colors ${
-                      description.length >= blogSetting.descriptionMaxLength
-                        ? "text-red-400 font-semibold"
-                        : "text-white/50"
-                    }`}
-                  >
-                    {description.length}/{blogSetting.descriptionMaxLength}
-                  </div>
+                  {blogSetting?.descriptionMaxLength && (
+                    <div
+                      className={`absolute bottom-3 right-5 text-xs transition-colors ${
+                        description.length >= blogSetting.descriptionMaxLength
+                          ? "text-red-400 font-semibold"
+                          : "text-white/50"
+                      }`}
+                    >
+                      {description.length}/{blogSetting.descriptionMaxLength}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
+              <div className="opacity-60 cursor-not-allowed">
                 <label className="block text-sm font-medium text-white/80 mb-2">
                   {t("postType")}
                 </label>
                 <div className="relative inline-flex w-full p-1 bg-white/10 backdrop-blur-sm rounded-full border border-white/30 shadow-md">
                   <div
-                    className={`absolute top-1 bottom-1 w-[calc(50%-0.5rem)] bg-gradient-to-r from-white/20 to-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-full transition-all duration-300 ease-in-out ${
-                      postType === "free"
-                        ? "left-1"
-                        : "left-[calc(50%+0.25rem)]"
-                    }`}
+                    className={`absolute top-1 bottom-1 w-[calc(50%-0.5rem)] bg-gradient-to-r from-white/20 to-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-full transition-all duration-300 ease-in-out left-[calc(50%+0.25rem)]`}
                   />
                   <button
                     type="button"
-                    onClick={() => setPostType("free")}
-                    className={`relative z-10 flex-1 px-4 py-2 rounded-full transition-all duration-200 ${
-                      postType === "free"
-                        ? "text-white font-medium"
-                        : "text-white/60 hover:text-white/90 hover:bg-white/10 cursor-pointer"
-                    }`}
+                    disabled
+                    className="relative z-10 flex-1 px-4 py-2 rounded-full transition-all duration-200 text-white/60"
                   >
                     {t("free")}
                   </button>
                   <button
                     type="button"
-                    onClick={() => setPostType("price")}
-                    className={`relative z-10 flex-1 px-4 py-2 rounded-full transition-all duration-200 ${
-                      postType === "price"
-                        ? "text-white font-medium"
-                        : "text-white/60 hover:text-white/90 hover:bg-white/10 cursor-pointer"
-                    }`}
+                    disabled
+                    className="relative z-10 flex-1 px-4 py-2 rounded-full transition-all duration-200 text-white font-medium"
                   >
                     {t("paid")}
                   </button>
                 </div>
-                <p className="text-xs text-red-400/80 mt-2 pl-1">
-                  {t("cannotChangeType")}
-                </p>
               </div>
 
-              {postType === "price" ? (
-                <div>
-                  <label
-                    htmlFor="price"
-                    className="block text-sm font-medium text-gray-300 mb-2"
-                  >
-                    {t("price")}
-                    <span className="text-red-400/80 ml-1">*</span>
-                  </label>
-                  <input
-                    type="number"
-                    id="price"
-                    value={price}
-                    onChange={(e) => setPrice(e.target.value)}
-                    className="w-full px-5 py-2.5 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none [&::-webkit-inner-spin-button]:opacity-100 [&::-webkit-outer-spin-button]:opacity-100 [&::-webkit-inner-spin-button]:cursor-pointer [&::-webkit-outer-spin-button]:cursor-pointer [&::-webkit-inner-spin-button]:brightness-0 [&::-webkit-inner-spin-button]:invert [&::-webkit-outer-spin-button]:brightness-0 [&::-webkit-outer-spin-button]:invert"
-                    placeholder={t("pricePlaceholder")}
-                    min="0"
-                    step="0.01"
-                    required={postType === "price"}
-                  />
-                </div>
-              ) : (
-                <div>
-                  <label
-                    htmlFor="price"
-                    className="block text-sm font-medium text-gray-300 mb-2"
-                  >
-                    {t("price")}
-                  </label>
-                  <input
-                    type="number"
-                    id="price-disabled"
-                    value="0"
-                    className="w-full px-5 py-2.5 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none opacity-50 cursor-not-allowed"
-                    disabled
-                    readOnly
-                  />
-                </div>
-              )}
+              <div>
+                <label
+                  htmlFor="price"
+                  className="block text-sm font-medium text-gray-300 mb-2"
+                >
+                  {t("price")}
+                  <span className="text-red-400/80 ml-1">*</span>
+                </label>
+                <input
+                  type="number"
+                  id="price"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  className="w-full px-5 py-2.5 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none [&::-webkit-inner-spin-button]:opacity-100 [&::-webkit-outer-spin-button]:opacity-100 [&::-webkit-inner-spin-button]:cursor-pointer [&::-webkit-outer-spin-button]:cursor-pointer [&::-webkit-inner-spin-button]:brightness-0 [&::-webkit-inner-spin-button]:invert [&::-webkit-outer-spin-button]:brightness-0 [&::-webkit-outer-spin-button]:invert"
+                  placeholder={t("pricePlaceholder")}
+                  min="0"
+                  step="0.01"
+                  required
+                />
+              </div>
 
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -402,8 +363,8 @@ export default function AddBlogDefaultPage({
               className="mb-3 cursor-pointer text-white/80 hover:text-white/90 w-full px-3 py-3 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl transition-all disabled:bg-gray-600 disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {submissionStatus === "submitting"
-                ? t("publishing")
-                : t("publishPost")}
+                ? t("updating", "Updating...")
+                : t("updatePost", "Update Post")}
             </button>
           </form>
         </section>

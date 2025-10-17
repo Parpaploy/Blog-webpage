@@ -1,5 +1,5 @@
 {
-  "createNewPost": "Create New Blog",
+  "editPost": "Edit Blog",
   "uploadFile": "Click to upload",
   "orDragAndDrop": "or drag and drop",
   "titlePlaceholder": "Blog title...",
@@ -10,14 +10,13 @@
   "price": "Price (THB)",
   "pricePlaceholder": "e.g., 99",
   "categories": "Categories",
-  "publishing": "Publishing...",
-  "publishPost": "Publish Blog",
-  "cannotChangeType": "* Cannot change blog type after creation",
+  "publishing": "Editing...",
+  "publishPost": "Edit",
 
   "status": {
-    "submitting": "Publishing your blog...",
+    "submitting": "Editing your blog...",
     "successTitle": "Success!",
-    "successBody": "Your blog has been published successfully.",
+    "successBody": "Your blog has been edited successfully.",
     "successButton": "View My Blogs",
     "errorTitle": "Submission Failed",
     "errorButton": "Try Again"

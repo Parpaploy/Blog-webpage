@@ -1,5 +1,5 @@
 {
-  "createNewPost": "สร้างบล็อกใหม่",
+  "editPost": "แก้ไขบล็อก",
   "uploadFile": "คลิกเพื่ออัปโหลด",
   "orDragAndDrop": "หรือลากและวาง",
   "titlePlaceholder": "ชื่อบล็อก...",
@@ -10,14 +10,13 @@
   "price": "ราคา (บาท)",
   "pricePlaceholder": "เช่น 99",
   "categories": "หมวดหมู่",
-  "publishing": "กำลังโพสต์...",
-  "publishPost": "โพสต์",
-  "cannotChangeType": "* ไม่สามรถเปลี่ยนประเภทบล็อกภายหลังการสร้างได้",
+  "publishing": "กำลังแก้ไข...",
+  "publishPost": "แก้ไข",
 
   "status": {
-    "submitting": "กำลังโพสต์บล็อกของคุณ...",
+    "submitting": "กำลังแก้ไขบล็อกของคุณ...",
     "successTitle": "สำเร็จ!",
-    "successBody": "โพสต์บล็อกของคุณถูกโพสต์แล้ว",
+    "successBody": "บล็อกของคุณถูกแก้ไขแล้ว",
     "successButton": "ดูบล็อกของฉัน",
     "errorTitle": "ส่งข้อมูลไม่สำเร็จ",
     "errorButton": "ลองอีกครั้ง"

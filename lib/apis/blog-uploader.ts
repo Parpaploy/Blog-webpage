@@ -1,6 +1,8 @@
 import {
   ICreateBlogParams,
   ICreateBlogResponse,
+  IUpdateBlogParams,
+  IUpdateBlogResponse,
 } from "../../interfaces/strapi.interface";
 
 export async function createBlog({
@@ -58,9 +60,6 @@ export async function createBlog({
       blogData.data.price = String(price);
     }
 
-    // console.log("Posting to endpoint:", endpoint);
-    // console.log("Blog data:", blogData);
-
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${endpoint}`,
       {
@@ -93,7 +92,7 @@ export async function createBlog({
   }
 }
 
-export async function updateBlog({
+export async function updateFreeBlog({
   blogId,
   title,
   description,
@@ -101,30 +100,26 @@ export async function updateBlog({
   categories,
   thumbnail,
   token,
-}: ICreateBlogParams & { blogId: number }): Promise<ICreateBlogResponse> {
+}: IUpdateBlogParams & { blogId: string }): Promise<IUpdateBlogResponse> {
   try {
-    let thumbnailId: number | undefined;
+    let thumbnailId: string | undefined;
 
     if (thumbnail) {
-      const uploadFormData = new FormData();
-      uploadFormData.append("files", thumbnail);
+      const formData = new FormData();
+      formData.append("files", thumbnail);
 
-      const uploadResponse = await fetch(
+      const uploadRes = await fetch(
         `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/upload`,
         {
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: uploadFormData,
+          headers: { Authorization: `Bearer ${token}` },
+          body: formData,
         }
       );
 
-      if (!uploadResponse.ok) {
-        throw new Error("Failed to upload thumbnail");
-      }
+      if (!uploadRes.ok) throw new Error("Failed to upload new thumbnail");
 
-      const uploadedFiles = await uploadResponse.json();
+      const uploadedFiles = await uploadRes.json();
       thumbnailId = uploadedFiles[0]?.id;
     }
 
@@ -140,38 +135,121 @@ export async function updateBlog({
       },
     };
 
-    if (thumbnailId) {
-      blogData.data.thumbnail = thumbnailId;
-    }
+    if (thumbnailId) blogData.data.thumbnail = thumbnailId;
 
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/blogs/${blogId}`,
-      {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(blogData),
+    const url = `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/blogs/${blogId}`;
+
+    const res = await fetch(url, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(blogData),
+    });
+
+    if (!res.ok) {
+      const errText = await res.text();
+      let errDetails: any = {};
+      try {
+        errDetails = JSON.parse(errText);
+      } catch {
+        errDetails = { message: errText };
       }
-    );
-
-    if (!response.ok) {
-      const errorDetails = await response.json();
-      throw new Error(errorDetails.error?.message || "Failed to update post");
+      throw new Error(
+        errDetails.error?.message ||
+          errDetails.message ||
+          "Failed to update free blog"
+      );
     }
 
-    const result = await response.json();
-    return {
-      success: true,
-      data: result,
-    };
+    const result = await res.json();
+    return { success: true, data: result };
   } catch (error: any) {
-    console.error("Failed to update blog:", error);
-    return {
-      success: false,
-      error: error.message || "An unexpected error occurred",
+    console.error("updateFreeBlog failed:", error);
+    return { success: false, error: error.message || "Unexpected error" };
+  }
+}
+
+export async function updateSubscribeBlog({
+  blogId,
+  title,
+  description,
+  detail,
+  categories,
+  thumbnail,
+  price,
+  token,
+}: IUpdateBlogParams & { blogId: string }): Promise<IUpdateBlogResponse> {
+  try {
+    let thumbnailId: string | undefined;
+
+    if (thumbnail) {
+      const formData = new FormData();
+      formData.append("files", thumbnail);
+
+      const uploadRes = await fetch(
+        `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/upload`,
+        {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+          body: formData,
+        }
+      );
+
+      if (!uploadRes.ok) throw new Error("Failed to upload new thumbnail");
+
+      const uploadedFiles = await uploadRes.json();
+      thumbnailId = uploadedFiles[0]?.id;
+    }
+
+    const detailString =
+      detail && Object.keys(detail).length > 0 ? JSON.stringify(detail) : null;
+
+    const blogData: any = {
+      data: {
+        title,
+        description,
+        detail: detailString,
+        categories,
+      },
     };
+
+    if (thumbnailId) blogData.data.thumbnail = thumbnailId;
+    if (price !== undefined && price !== null)
+      blogData.data.price = String(price);
+
+    const url = `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/subscribe-blogs/${blogId}`;
+
+    const res = await fetch(url, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(blogData),
+    });
+
+    if (!res.ok) {
+      const errText = await res.text();
+      let errDetails: any = {};
+      try {
+        errDetails = JSON.parse(errText);
+      } catch {
+        errDetails = { message: errText };
+      }
+      throw new Error(
+        errDetails.error?.message ||
+          errDetails.message ||
+          "Failed to update subscribe blog"
+      );
+    }
+
+    const result = await res.json();
+    return { success: true, data: result };
+  } catch (error: any) {
+    console.error("updateSubscribeBlog failed:", error);
+    return { success: false, error: error.message || "Unexpected error" };
   }
 }
 

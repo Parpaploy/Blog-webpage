@@ -46,6 +46,23 @@ export const fetchBlogsByID = async (id: string) => {
   }
 };
 
+export const fetchBlogsByDocumentId = async (documentId: string) => {
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/blogs?filters[documentId][$eq]=${documentId}&populate=*`
+    );
+
+    if (response.data.data && response.data.data.length > 0) {
+      return response.data.data[0];
+    }
+
+    return null;
+  } catch (error) {
+    console.log("error fetching blog:", error);
+    return null;
+  }
+};
+
 export const fetchBlogsUserByID = async (id: string) => {
   try {
     const response = await axios.get(
@@ -97,6 +114,35 @@ export const fetchSubscribeBlogsByID = async (id: string) => {
     return response.data.data;
   } catch (error) {
     console.log("error:", error);
+  }
+};
+
+export const fetchSubscribeBlogsByDocumentId = async (documentId: string) => {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
+
+    if (!token) {
+      console.log("Cannot fetch subscribe blog: No token found.");
+      return null;
+    }
+
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/subscribe-blogs?filters[documentId][$eq]=${documentId}&populate=*`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.data.data && response.data.data.length > 0) {
+      return response.data.data[0];
+    }
+    return null;
+  } catch (error) {
+    console.error("Error fetching subscribe blog:", error);
+    return null;
   }
 };
 
