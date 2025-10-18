@@ -5,6 +5,21 @@ import React from "react";
 export function FormatRichText(content: any) {
   if (!content || !content.content) return null;
 
+  const DEFAULT_IMAGE_URL =
+    "https://mom-neuroscience.com/wp-content/uploads/2021/06/no-image.jpg";
+
+  const handleImageError = (
+    e: React.SyntheticEvent<HTMLImageElement, Event>
+  ) => {
+    const target = e.currentTarget;
+
+    if (target.src !== DEFAULT_IMAGE_URL) {
+      target.src = DEFAULT_IMAGE_URL;
+
+      target.onerror = null;
+    }
+  };
+
   const renderNode = (node: any, index: number): React.ReactNode => {
     switch (node.type) {
       case "paragraph":
@@ -101,14 +116,15 @@ export function FormatRichText(content: any) {
         return (
           <span key={index} style={wrapperStyles}>
             <img
-              src={node.attrs.src}
-              alt={node.attrs.alt || ""}
+              src={node.attrs.src || DEFAULT_IMAGE_URL}
+              alt={node.attrs.alt || "Image failed to load"}
               className="max-w-full rounded-xl shadow-md"
               style={{
                 width: width ? `${width}px` : "auto",
                 height: "auto",
                 display: "block",
               }}
+              onError={handleImageError}
             />
           </span>
         );
