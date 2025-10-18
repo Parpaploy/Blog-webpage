@@ -149,31 +149,34 @@ function Search({
       return;
     }
 
-    const allBlogs = [...blogs, ...subscribeBlogs];
-    let relevantBlogs;
-
-    if (selectedCategories.length >= 2) {
-      relevantBlogs = allBlogs.filter((blog) => {
-        const blogCategoryTitles = new Set(
-          blog.categories?.map((cat) => cat.title)
-        );
-        return selectedCategories.every((selectedCat) =>
-          blogCategoryTitles.has(selectedCat)
-        );
-      });
-    } else if (selectedCategories.length === 1) {
-      relevantBlogs = allBlogs.filter((blog) =>
-        blog.categories?.some((cat) => selectedCategories.includes(cat.title))
-      );
-    } else {
-      relevantBlogs = allBlogs;
-    }
-
     const queryLower = searchQuery.toLowerCase();
     const suggestionMap = new Map<string, Suggestion>();
 
+    const allEntries = [
+      ...blogs.map((b) => ({ ...b, type: "blog" })),
+      ...subscribeBlogs.map((s) => ({ ...s, type: "subscribe" })),
+    ];
+
+    let sourceBlogs = allEntries;
+    if (currentType !== "all") {
+      sourceBlogs = allEntries.filter((entry) => entry.type === currentType);
+    }
+
+    const relevantBlogs =
+      selectedCategories.length > 0
+        ? sourceBlogs.filter((blog) => {
+            const blogCategoryTitles = new Set(
+              blog.categories?.map((cat) => cat.title) ?? []
+            );
+            return selectedCategories.every((selectedCat) =>
+              blogCategoryTitles.has(selectedCat)
+            );
+          })
+        : sourceBlogs;
+
     relevantBlogs.forEach((blog) => {
       if (suggestionMap.size >= 10) return;
+
       if (
         blog.title?.toLowerCase().includes(queryLower) &&
         !suggestionMap.has(blog.title.toLowerCase())
@@ -183,6 +186,7 @@ function Search({
           type: "title",
         });
       }
+
       if (
         blog.author?.username?.toLowerCase().includes(queryLower) &&
         !suggestionMap.has(blog.author.username.toLowerCase())
@@ -192,6 +196,7 @@ function Search({
           type: "author",
         });
       }
+
       if (blog.description?.toLowerCase().includes(queryLower)) {
         const wordsRegex = new RegExp(`\\b(\\w*${queryLower}\\w*)\\b`, "gi");
         const matches = blog.description.match(wordsRegex);
@@ -280,7 +285,7 @@ function Search({
   };
 
   const handleSearch = () => {
-    if (query.trim() === "" || isQueryUnchanged()) return;
+    if (isQueryUnchanged()) return;
     setShowSuggestions(false);
 
     const newParams = new URLSearchParams(params.toString());
@@ -437,7 +442,7 @@ function Search({
       {/* Search */}
       <button
         className={`flex w-10 items-center justify-center h-full transition-all bg-white/10 hover:bg-white/30 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1 cursor-pointer ${
-          isProcessing || query.trim() === "" || isQueryUnchanged()
+          isProcessing || isQueryUnchanged()
             ? "opacity-60 pointer-events-none"
             : ""
         }`}

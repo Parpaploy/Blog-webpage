@@ -49,13 +49,13 @@ export default function SearchDefaultPage({
   const queryLower = query.toLowerCase();
 
   const allBlogs: BlogEntry[] = [
-    ...blogs.map((blog) => ({
+    ...(blogs || []).map((blog) => ({
       ...blog,
       type: "blog" as const,
       sortPrice: 0,
     })),
 
-    ...subscribeBlogs.map((subBlog) => ({
+    ...(subscribeBlogs || []).map((subBlog) => ({
       ...subBlog,
       type: "subscribe" as const,
       sortPrice: parseFloat(subBlog.price) || 0,
