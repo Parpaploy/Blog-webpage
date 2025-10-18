@@ -42,6 +42,17 @@ export default function NavbarDefault({
   const [isOpenFilter, setIsOpenFilter] = useState<boolean>(false);
   const [isHover, setIsHover] = useState<boolean>(false);
 
+  const defaultProfileUrl =
+    "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1906669723.jpg";
+
+  const handleImageError = (
+    e: React.SyntheticEvent<HTMLImageElement, Event>
+  ) => {
+    e.currentTarget.src = defaultProfileUrl;
+
+    e.currentTarget.onerror = null;
+  };
+
   useEffect(() => {
     setIsToggle(false);
   }, [pathname]);
@@ -81,15 +92,16 @@ export default function NavbarDefault({
                   onClick={() => {
                     setIsToggle(!isToggle);
                   }}
-                  className="cursor-pointer w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 shadow-md"
+                  className="cursor-pointer w-10 h-10 rounded-full border border-white/30 shadow-md"
                 >
                   <img
-                    className="w-full h-full rounded-full overflow-hidden object-cover aspect-square opacity-80"
+                    className="w-full h-full rounded-full overflow-hidden object-cover aspect-square opacity-95"
                     src={
                       user?.profile?.formats?.small?.url
                         ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${user.profile.formats.small.url}`
-                        : "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1906669723.jpg"
+                        : defaultProfileUrl
                     }
+                    onError={handleImageError}
                     alt={(user?.username || "Guest") + " profile picture"}
                   />
                 </div>

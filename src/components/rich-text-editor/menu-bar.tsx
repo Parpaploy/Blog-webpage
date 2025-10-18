@@ -31,13 +31,11 @@ export default function MenuBar({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageUpload = async (file: File) => {
-    // สร้างชื่อไฟล์ใหม่ที่ปลอดภัย (ใช้ timestamp + random string)
     const timestamp = Date.now();
     const randomStr = Math.random().toString(36).substring(2, 8);
     const fileExtension = file.name.split(".").pop() || "jpg";
     const safeFileName = `image_${timestamp}_${randomStr}.${fileExtension}`;
 
-    // สร้าง File object ใหม่ด้วยชื่อที่ปลอดภัย
     const renamedFile = new File([file], safeFileName, { type: file.type });
 
     const formData = new FormData();
@@ -55,7 +53,6 @@ export default function MenuBar({
         }
       );
 
-      // เช็ค response status ก่อน
       if (!res.ok) {
         const errorText = await res.text();
         let errorData;
@@ -98,13 +95,11 @@ export default function MenuBar({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // เช็คขนาดไฟล์ (ไม่เกิน 10MB)
       if (file.size > 10 * 1024 * 1024) {
         alert("ไฟล์มีขนาดใหญ่เกินไป (สูงสุด 10MB)");
         return;
       }
 
-      // เช็ค MIME type
       if (!file.type.startsWith("image/")) {
         alert("กรุณาเลือกไฟล์รูปภาพเท่านั้น");
         return;

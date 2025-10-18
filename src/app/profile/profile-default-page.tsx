@@ -33,6 +33,9 @@ export default function ProfileDefaultPage({ user }: IUserProps) {
   const { t } = useTranslation("profile");
   const { isSidebar } = useSidebar();
 
+  const defaultProfileUrl =
+    "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1906669723.jpg";
+
   useEffect(() => {
     if (user?.profile?.formats?.small?.url) {
       setPreview(
@@ -40,6 +43,15 @@ export default function ProfileDefaultPage({ user }: IUserProps) {
       );
     }
   }, [user]);
+
+  const handleImageError = (
+    e: React.SyntheticEvent<HTMLImageElement, Event>
+  ) => {
+    if (e.currentTarget.src !== defaultProfileUrl) {
+      e.currentTarget.src = defaultProfileUrl;
+      e.currentTarget.onerror = null;
+    }
+  };
 
   const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
@@ -153,10 +165,11 @@ export default function ProfileDefaultPage({ user }: IUserProps) {
                 ? preview
                 : user?.profile?.formats?.small?.url
                 ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${user.profile.formats.small.url}`
-                : "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1906669723.jpg"
+                : defaultProfileUrl
             }
             alt="profile preview"
-            className="w-full h-full object-cover rounded-full bg-white/10 backdrop-blur-sm border border-white/30 shadow-md transition-all duration-200 group-hover:brightness-70 opacity-85"
+            className="w-full h-full object-cover rounded-full bg-white/10 backdrop-blur-sm border border-white/30 shadow-md transition-all duration-200 group-hover:brightness-70 opacity-95"
+            onError={handleImageError}
           />
           <input
             id="profile"
