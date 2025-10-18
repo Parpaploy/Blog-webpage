@@ -18,6 +18,11 @@
     "alphabetical": "ตัวอักษร",
     "price": "ราคา"
   },
+  "filter": {
+    "all": "ทั้งหมด",
+    "free": "ฟรี",
+    "subscribe": "สมัครสมาชิก"
+  },
 
   "thai": "ไทย",
   "english": "อังกฤษ"

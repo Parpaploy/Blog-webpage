@@ -18,6 +18,11 @@
     "alphabetical": "Alphabetical",
     "price": "Price"
   },
+  "filter": {
+    "all": "All",
+    "free": "Free",
+    "subscribe": "Subscribe"
+  },
 
   "thai": "Th",
   "english": "Eng"

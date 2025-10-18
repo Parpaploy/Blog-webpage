@@ -173,6 +173,8 @@ export default function SearchDefaultPage({
     const timer = setTimeout(() => {
       const sortBy = params.get("sortBy") || "latest";
 
+      const type = params.get("type") || "all";
+
       const filtered = allBlogs.filter((item) => {
         const matchQuery =
           !queryLower ||
@@ -186,7 +188,9 @@ export default function SearchDefaultPage({
             item.categories?.some((cat: ICategory) => cat.title === selectedCat)
           );
 
-        return matchQuery && matchCategory;
+        const matchType = type === "all" || item.type === type;
+
+        return matchQuery && matchCategory && matchType;
       });
 
       const sorted = filtered.sort((a, b) => {
