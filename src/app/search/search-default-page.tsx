@@ -20,6 +20,8 @@ import {
 } from "../../../lib/apis/blog-uploader";
 import DeleteSubscribeBlogPanel from "@/components/delete-subscribe-blog-panel";
 import DeleteFreeBlogPanel from "@/components/delete-free-blog-panel";
+import { TFunction } from "i18next";
+import { BlogEntry } from "../../../types/logic.type";
 
 export default function SearchDefaultPage({
   blogs,
@@ -32,7 +34,7 @@ export default function SearchDefaultPage({
   user: IUser | null;
   token: string | undefined;
 }) {
-  const { t } = useTranslation("search");
+  const { t } = useTranslation(["search", "blogs", "subscribeBlogs"]);
 
   const { isSidebar } = useSidebar();
 
@@ -40,20 +42,27 @@ export default function SearchDefaultPage({
 
   const params = useSearchParams();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  //const [filteredBlogs, setFilteredBlogs] = useState<any[]>([]);
 
-  // const query = params.get("query")?.toLowerCase() || "";
   const selectedCategories = params.getAll("category");
 
   const query = params.get("query") || "";
   const queryLower = query.toLowerCase();
 
-  const allBlogs = [
-    ...blogs.map((blog) => ({ ...blog, type: "blog" })),
-    ...subscribeBlogs.map((subBlog) => ({ ...subBlog, type: "subscribe" })),
+  const allBlogs: BlogEntry[] = [
+    ...blogs.map((blog) => ({
+      ...blog,
+      type: "blog" as const,
+      sortPrice: 0,
+    })),
+
+    ...subscribeBlogs.map((subBlog) => ({
+      ...subBlog,
+      type: "subscribe" as const,
+      sortPrice: parseFloat(subBlog.price) || 0,
+    })),
   ];
 
-  const [filteredBlogs, setFilteredBlogs] = useState<any[]>(allBlogs);
+  const [filteredBlogs, setFilteredBlogs] = useState<BlogEntry[]>(allBlogs);
 
   const [isPending, startTransition] = useTransition();
 
@@ -162,6 +171,8 @@ export default function SearchDefaultPage({
     setIsLoading(true);
 
     const timer = setTimeout(() => {
+      const sortBy = params.get("sortBy") || "latest";
+
       const filtered = allBlogs.filter((item) => {
         const matchQuery =
           !queryLower ||
@@ -178,7 +189,23 @@ export default function SearchDefaultPage({
         return matchQuery && matchCategory;
       });
 
-      setFilteredBlogs(filtered);
+      const sorted = filtered.sort((a, b) => {
+        switch (sortBy) {
+          case "alphabetical":
+            return a.title.localeCompare(b.title);
+
+          case "price":
+            return b.sortPrice - a.sortPrice;
+
+          case "latest":
+          default:
+            return (
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            );
+        }
+      });
+
+      setFilteredBlogs(sorted);
       setIsLoading(false);
     }, 500);
 
@@ -203,7 +230,7 @@ export default function SearchDefaultPage({
             {filteredBlogs && filteredBlogs.length > 0 ? (
               <section className="w-full lg:px-10 lg:pt-5 md:px-0 md:pt-5 pb-3">
                 <div className="flex flex-wrap gap-5 items-center justify-center">
-                  {filteredBlogs.map((item: any) =>
+                  {filteredBlogs.map((item: BlogEntry) =>
                     item.type === "blog" ? (
                       <BlogCard
                         key={item.id}

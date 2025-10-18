@@ -1,10 +1,10 @@
 {
   "blog_title": "บล็อกทั้งหมด",
   "subscribe_blog_title": "บล็อกที่ต้องสมัครสมาชิกทั้งหมด",
-  "highlight_blog_title": "บล็อกยอดนิยม",
-  "highlight_subscribe_blog_title": "บล็อกที่ต้องสมัครสมาชิกยอดนิยม",
+  "highlight_blog_title": "บล็อกแนะนำ",
+  "highlight_subscribe_blog_title": "บล็อกที่ต้องสมัครสมาชิกแนะนำ",
   "no_blog_found": "ยังไม่มีบล็อก",
   "no_subscribe_blog_found": "ยังไม่มีบล็อกที่ต้องสมัครสมาชิก",
-  "no_pop_blog_found": "ยังไม่มีบล็อกล็อกยอดนิยม",
-  "no_pop_subscribe_blog_found": "ยังไม่มีบล็อกที่ต้องสมัครสมาชิกยอดนิยม"
+  "no_pop_blog_found": "ยังไม่มีบล็อกล็อกแนะนำ",
+  "no_pop_subscribe_blog_found": "ยังไม่มีบล็อกที่ต้องสมัครสมาชิกแนะนำ"
 }

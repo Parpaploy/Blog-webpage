@@ -12,7 +12,7 @@ import LoginButton from "./components/login-btn";
 import { useSidebar } from "../../../hooks/sidebar";
 import SignupButton from "./components/signup-btn";
 import LanguageSwitcher from "./components/language-switcher";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import ProfilePanel from "./components/profile-panel";
 import Search from "./components/search";
 
@@ -35,12 +35,11 @@ export default function NavbarDefault({
 
   const { isSidebar } = useSidebar();
 
-  const router = useRouter();
-
   const pathname = usePathname();
 
   const [isToggle, setIsToggle] = useState<boolean>(false);
   const [isOpenCat, setIsOpenCat] = useState<boolean>(false);
+  const [isOpenFilter, setIsOpenFilter] = useState<boolean>(false);
   const [isHover, setIsHover] = useState<boolean>(false);
 
   useEffect(() => {
@@ -70,6 +69,8 @@ export default function NavbarDefault({
                   setIsHover={setIsHover}
                   blogs={blogs}
                   subscribeBlogs={subscribeBlogs}
+                  isOpenFilter={isOpenFilter}
+                  setIsOpenFilter={setIsOpenFilter}
                 />
               )}
 

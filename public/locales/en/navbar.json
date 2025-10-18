@@ -13,6 +13,11 @@
   "author": "Author",
   "title": "Blog's name",
   "desc": "Description",
+  "sort": {
+    "latest": "Latest",
+    "alphabetical": "Alphabetical",
+    "price": "Price"
+  },
 
   "thai": "Th",
   "english": "Eng"

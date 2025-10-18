@@ -14,6 +14,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Suggestion } from "../../../../types/ui.type";
 import { useTranslation } from "react-i18next";
 import { BsFilter } from "react-icons/bs";
+import { BiCategory } from "react-icons/bi";
+import { BsSortUp, BsSortDown } from "react-icons/bs";
 
 function Search({
   isOpenCat,
@@ -23,9 +25,13 @@ function Search({
   categories,
   blogs,
   subscribeBlogs,
+  isOpenFilter,
+  setIsOpenFilter,
 }: {
   isOpenCat: boolean;
   setIsOpenCat: (isOpenCat: boolean) => void;
+  isOpenFilter: boolean;
+  setIsOpenFilter: (isOpenCat: boolean) => void;
   isHover: boolean;
   setIsHover: (isHover: boolean) => void;
   categories: ICategory[];
@@ -56,12 +62,33 @@ function Search({
   const isProcessing = isPending || isSearching || loadingCategories.length > 0;
   const isDisable = isPending || isSearching;
 
+  const currentSort = params.get("sortBy") || "latest";
+  const defaultDir = currentSort === "alphabetical" ? "asc" : "desc";
+  const currentDir = params.get("sortDir") || defaultDir;
+
+  const sortOptions = [
+    {
+      key: "latest",
+      asc: t("sort.latest"),
+      desc: t("sort.latest"),
+    },
+    {
+      key: "alphabetical",
+      asc: t("sort.alphabetical"),
+      desc: t("sort.alphabetical"),
+    },
+    {
+      key: "price",
+      asc: t("sort.price"),
+      desc: t("sort.price"),
+    },
+  ];
+
   const menuContainerVariants = {
     hidden: {
       opacity: 0,
       y: -10,
       transition: {
-        // when: "afterChildren",
         staggerChildren: 0.05,
         staggerDirection: -1,
       },
@@ -74,6 +101,27 @@ function Search({
         staggerChildren: 0.05,
       },
     },
+  };
+
+  const handleSortChange = (sortKey: string) => {
+    setIsOpenFilter(false);
+    let newSort = sortKey;
+    let newDir = "";
+
+    if (sortKey === currentSort) {
+      newDir = currentDir === "asc" ? "desc" : "asc";
+    } else {
+      newSort = sortKey;
+      newDir = sortKey === "alphabetical" ? "asc" : "desc";
+    }
+
+    const newParams = new URLSearchParams(params.toString());
+    newParams.set("sortBy", newSort);
+    newParams.set("sortDir", newDir);
+
+    startTransition(() => {
+      router.push(`/search?${newParams.toString()}`);
+    });
   };
 
   const generateSuggestions = (searchQuery: string) => {
@@ -162,6 +210,7 @@ function Search({
     }, 200);
     return () => clearTimeout(timeoutId);
   }, [query, selectedCategories]);
+
   const handleSuggestionClick = (suggestion: Suggestion) => {
     setQuery(suggestion.text);
     setShowSuggestions(false);
@@ -188,11 +237,16 @@ function Search({
     newCategories?: string[],
     type: "search" | "category" = "search"
   ) => {
-    const search = new URLSearchParams();
+    const search = new URLSearchParams(params.toString());
     const finalQuery = newQuery ?? params.get("query") ?? "";
     const finalCategories = newCategories ?? params.getAll("category");
+
     if (finalQuery.trim() !== "") search.set("query", finalQuery);
+    else search.delete("query");
+
+    search.delete("category");
     finalCategories.forEach((c) => search.append("category", c));
+
     if (type === "search") setIsSearching(true);
     router.push(`/search?${search.toString()}`);
   };
@@ -210,7 +264,19 @@ function Search({
   const handleSearch = () => {
     if (query.trim() === "" || isQueryUnchanged()) return;
     setShowSuggestions(false);
-    updateSearchParams(query, undefined, "search");
+
+    const newParams = new URLSearchParams(params.toString());
+    if (query.trim() !== "") {
+      newParams.set("query", query);
+    } else {
+      newParams.delete("query");
+    }
+
+    newParams.delete("category");
+    selectedCategories.forEach((c) => newParams.append("category", c));
+
+    setIsSearching(true);
+    router.push(`/search?${newParams.toString()}`);
   };
 
   const handleCategoryClick = (cat: string) => {
@@ -223,13 +289,16 @@ function Search({
   };
 
   const handleReset = () => {
+    setIsOpenCat(false);
+    setIsOpenFilter(false);
+
     setTimeout(() => {
       setQuery("");
       setSelectedCategories([]);
       setLoadingCategories([]);
       setSuggestions([]);
       setShowSuggestions(false);
-    }, 4500);
+    }, 3000);
     startTransition(() => {
       router.push(`/search`);
     });
@@ -242,6 +311,33 @@ function Search({
 
   return (
     <div className="w-[35%] flex gap-3 h-10 relative" ref={searchContainerRef}>
+      {/* Category */}
+      <button
+        className={`flex w-10 items-center justify-center h-full transition-all backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1 cursor-pointer
+              ${
+                isOpenCat
+                  ? "bg-white/30 text-white/90"
+                  : "bg-white/10 hover:bg-white/30 text-white/60 hover:text-white/80"
+              }
+                  ${!isProcessing ? "" : "opacity-60 pointer-events-none"}`}
+        onClick={(e) => {
+          e.currentTarget.blur();
+          setShowSuggestions(false);
+          setIsOpenFilter(false);
+          setIsOpenCat(!isOpenCat);
+          setCanHover(false);
+        }}
+        onMouseEnter={() => canHover && setIsHover(true)}
+        onMouseLeave={() => {
+          setIsHover(false);
+          setCanHover(true);
+        }}
+        onMouseUp={() => setTimeout(() => setCanHover(false), 0)}
+      >
+        <BiCategory size={24} />
+      </button>
+
+      {/* Input */}
       <div className="h-full flex-1 relative">
         <input
           ref={inputRef}
@@ -251,6 +347,7 @@ function Search({
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => {
             setIsOpenCat(false);
+            setIsOpenFilter(false);
             if (query.trim().length >= 2 && suggestions.length > 0) {
               setShowSuggestions(true);
             }
@@ -319,6 +416,7 @@ function Search({
         </AnimatePresence>
       </div>
 
+      {/* Search */}
       <button
         className={`flex w-10 items-center justify-center h-full transition-all bg-white/10 hover:bg-white/30 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1 cursor-pointer ${
           isProcessing || query.trim() === "" || isQueryUnchanged()
@@ -334,36 +432,88 @@ function Search({
         )}
       </button>
 
-      <button
-        className={`flex w-10 items-center justify-center h-full transition-all backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1 cursor-pointer
-          ${canHover ? (isOpenCat ? "" : "") : ""}
-              ${
-                isOpenCat
-                  ? "bg-white/30 text-white/90"
-                  : "bg-white/10 hover:bg-white/30 text-white/80 hover:text-white/90"
-              }
-                  ${!isProcessing ? "" : "opacity-60 pointer-events-none"}`}
-        onClick={(e) => {
-          e.currentTarget.blur();
-          setShowSuggestions(false);
-          setIsOpenCat(!isOpenCat);
-          setCanHover(false);
-        }}
-        onMouseEnter={() => canHover && setIsHover(true)}
-        onMouseLeave={() => {
-          setIsHover(false);
-          setCanHover(true);
-        }}
-        onMouseUp={() => setTimeout(() => setCanHover(false), 0)}
-      >
-        <BsFilter size={24} />
-      </button>
+      {/* Filter */}
+      <div className="relative">
+        <button
+          className={`flex w-10 items-center justify-center h-full transition-all backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1 cursor-pointer
+                ${
+                  isOpenFilter
+                    ? "bg-white/30 text-white/90"
+                    : "bg-white/10 hover:bg-white/30 text-white/80 hover:text-white/90"
+                }
+                    ${!isProcessing ? "" : "opacity-60 pointer-events-none"}`}
+          onClick={(e) => {
+            e.currentTarget.blur();
+            setShowSuggestions(false);
+            setIsOpenCat(false);
+            setIsOpenFilter(!isOpenFilter);
+            setCanHover(false);
+          }}
+        >
+          <BsFilter size={24} />
+        </button>
 
+        <AnimatePresence>
+          {isOpenFilter && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className="absolute top-12 right-0 w-52 h-fit bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-lg overflow-hidden z-50"
+            >
+              {sortOptions.map((option, index) => {
+                const isActive = currentSort === option.key;
+
+                const label = isActive
+                  ? currentDir === "asc"
+                    ? option.asc
+                    : option.desc
+                  : option.key === "alphabetical"
+                  ? option.asc
+                  : option.desc;
+
+                return (
+                  <div
+                    key={option.key}
+                    onClick={() => handleSortChange(option.key)}
+                    className={`text-md transition-all px-3 py-2.5 flex items-center justify-between cursor-pointer ${
+                      isActive
+                        ? "text-white bg-white/40 font-semibold"
+                        : "text-white/80 hover:bg-white/30 hover:text-white/90"
+                    } ${
+                      index < sortOptions.length - 1
+                        ? "border-b border-white/30"
+                        : ""
+                    }`}
+                  >
+                    <span>{label}</span>
+
+                    {isActive && (
+                      <span className="ml-2">
+                        {currentDir === "asc" ? (
+                          <BsSortUp size={18} />
+                        ) : (
+                          <BsSortDown size={18} />
+                        )}
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Reset */}
       <button
         onClick={handleReset}
         className={`group flex w-10 items-center justify-center h-full transition-all bg-white/10 hover:bg-white/30 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1 cursor-pointer ${
           !isProcessing &&
-          (query.trim() !== "" || selectedCategories.length > 0)
+          (query.trim() !== "" ||
+            selectedCategories.length > 0 ||
+            params.get("sortBy"))
             ? ""
             : "opacity-60 pointer-events-none"
         }`}
