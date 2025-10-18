@@ -3,6 +3,38 @@
 import { cookies } from "next/headers";
 import { ResetRequestResult, UpdateData } from "../../interfaces/cms";
 
+async function deleteMedia(mediaId: string, token: string): Promise<boolean> {
+  try {
+    console.log(`🗑️ Attempting to delete profile picture ID: ${mediaId}`);
+
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/upload/files/${mediaId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(
+        `❌ Failed to delete media ${mediaId}:`,
+        response.status,
+        errorText
+      );
+      return false;
+    }
+
+    console.log(`✅ Successfully deleted profile picture ID: ${mediaId}`);
+    return true;
+  } catch (error) {
+    console.error("❌ Exception while deleting media:", error);
+    return false;
+  }
+}
+
 /**
  * @param file
  */
@@ -17,6 +49,24 @@ export async function uploadProfilePicture(file: File) {
   if (!token || !user) throw new Error("Please log in again");
 
   try {
+    console.log("🔍 Fetching current user profile...");
+    const currentUserRes = await fetch(
+      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/users/me?populate=profile`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    let oldProfileId: string | null = null;
+    if (currentUserRes.ok) {
+      const currentUser = await currentUserRes.json();
+      oldProfileId = currentUser?.profile?.id || null;
+      //console.log("📸 Old profile picture ID:", oldProfileId);
+    }
+
+    //console.log("📤 Uploading new profile picture...");
     const formData = new FormData();
     formData.append("files", file);
     formData.append("ref", "plugin::users-permissions.user");
@@ -40,6 +90,7 @@ export async function uploadProfilePicture(file: File) {
     }
 
     const uploaded = await res.json();
+    //console.log("✅ New profile picture uploaded:", uploaded[0]?.id);
 
     const userRes = await fetch(
       `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/users/me?populate=profile`,
@@ -56,7 +107,6 @@ export async function uploadProfilePicture(file: File) {
     }
 
     const updatedUser = await userRes.json();
-    // console.log("updatedUser", updatedUser);
 
     cookieStore.set("user", JSON.stringify(updatedUser), {
       httpOnly: false,
@@ -65,6 +115,16 @@ export async function uploadProfilePicture(file: File) {
       path: "/",
       maxAge: 60 * 60 * 24,
     });
+
+    if (oldProfileId && uploaded[0]?.id && oldProfileId !== uploaded[0].id) {
+      //console.log("🗑️ Deleting old profile picture...");
+
+      setTimeout(async () => {
+        await deleteMedia(oldProfileId, token);
+      }, 1000);
+    } else {
+      //console.log("⚠️ No old profile picture to delete");
+    }
 
     return { uploaded, updatedUser };
   } catch (err) {

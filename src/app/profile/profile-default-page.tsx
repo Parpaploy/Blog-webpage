@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   updateUserProfile,
   uploadProfilePicture,
@@ -43,6 +43,17 @@ export default function ProfileDefaultPage({ user }: IUserProps) {
       );
     }
   }, [user]);
+
+  const hasChanges = useMemo(() => {
+    const usernameChanged = username !== (user?.username || "");
+    const emailChanged = email !== (user?.email || "");
+    const hasNewPassword = password.trim() !== "";
+    const hasNewProfilePicture = file !== null;
+
+    return (
+      usernameChanged || emailChanged || hasNewPassword || hasNewProfilePicture
+    );
+  }, [username, email, password, file, user]);
 
   const handleImageError = (
     e: React.SyntheticEvent<HTMLImageElement, Event>
@@ -125,6 +136,7 @@ export default function ProfileDefaultPage({ user }: IUserProps) {
         setMessageType("success");
         setPassword("");
         setCurrentPassword("");
+        setFile(null);
         router.refresh();
       } else {
         setMessageKeys(["noChanges"]);
@@ -178,10 +190,15 @@ export default function ProfileDefaultPage({ user }: IUserProps) {
             accept="image/*"
             onChange={handleChangeFile}
             className="hidden"
+            disabled={isSaving || isLogout}
           />
           <label
             htmlFor="profile"
-            className="absolute bottom-0 right-0 bg-white/30 backdrop-blur-sm border border-white/30 shadow-md text-white text-xs p-2 rounded-full cursor-pointer group-hover:bg-white/10 transition-all"
+            className={`absolute bottom-0 right-0 bg-white/30 backdrop-blur-sm border border-white/30 shadow-md text-white text-xs p-2 rounded-full ${
+              isSaving || isLogout
+                ? "cursor-not-allowed opacity-50"
+                : "cursor-pointer group-hover:bg-white/10"
+            } transition-all`}
           >
             <FiEdit3 size={18} />
           </label>
@@ -212,7 +229,7 @@ export default function ProfileDefaultPage({ user }: IUserProps) {
             onChange={(e) => setUsername(e.target.value)}
             placeholder={t("username")}
             className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
-            disabled={isSaving}
+            disabled={isSaving || isLogout}
           />
 
           <input
@@ -221,7 +238,7 @@ export default function ProfileDefaultPage({ user }: IUserProps) {
             onChange={(e) => setEmail(e.target.value)}
             placeholder={t("email")}
             className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
-            disabled={isSaving}
+            disabled={isSaving || isLogout}
           />
 
           <input
@@ -230,7 +247,7 @@ export default function ProfileDefaultPage({ user }: IUserProps) {
             onChange={(e) => setCurrentPassword(e.target.value)}
             placeholder={t("currentPassword")}
             className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
-            disabled={isSaving}
+            disabled={isSaving || isLogout}
           />
 
           <div className="w-full flex justify-end items-center -mt-2.5 -mb-0 pr-3">
@@ -243,8 +260,8 @@ export default function ProfileDefaultPage({ user }: IUserProps) {
               className={`${
                 !isSaving && !isLogout
                   ? "cursor-pointer hover:text-white/80"
-                  : "cursor-not-allowed"
-              } cursor-default text-blue-400/80 underline transition-all text-end`}
+                  : "cursor-not-allowed opacity-50"
+              } text-blue-400/80 underline transition-all text-end`}
             >
               {t("forgotPassword")}
             </div>
@@ -256,17 +273,17 @@ export default function ProfileDefaultPage({ user }: IUserProps) {
             onChange={(e) => setPassword(e.target.value)}
             placeholder={t("newPassword")}
             className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
-            disabled={isSaving}
+            disabled={isSaving || isLogout}
           />
 
           <button
             type="submit"
             className={`${
-              isLogout || isSaving
+              isLogout || isSaving || !hasChanges
                 ? "opacity-50 cursor-not-allowed"
                 : "cursor-pointer hover:bg-white/30 hover:text-white/90"
-            } text-white/80 w-full px-3 py-2 bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl transition-all disabled:opacity-50`}
-            disabled={isSaving}
+            } text-white/80 w-full px-3 py-2 bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl transition-all`}
+            disabled={isSaving || isLogout || !hasChanges}
           >
             {isSaving ? t("saving") : t("saveChanges")}
           </button>
@@ -277,8 +294,8 @@ export default function ProfileDefaultPage({ user }: IUserProps) {
             isLogout || isSaving
               ? "opacity-50 cursor-not-allowed"
               : "cursor-pointer hover:bg-white/30 hover:text-white/90"
-          } bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl transition-all disabled:opacity-50`}
-          disabled={isLogout}
+          } bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl transition-all`}
+          disabled={isLogout || isSaving}
           onClick={async () => {
             setIsLogout(true);
             await Logout();
