@@ -32,11 +32,14 @@ export default async function UserBlogs({ params }: any) {
     (sub: ISubscribeBlog) => sub.author?.id.toString() === id
   );
 
+  const token = cookieStore.get("token")?.value;
+
   return (
     <UserBlogsDefaultPage
       userBlogs={userBlogs}
       userSubscribeBlogs={userSubscribeBlogs}
       user={userToShow}
+      token={token}
     />
   );
 }

@@ -16,10 +16,13 @@ export default async function SubscribeBlogs() {
 
   const userToShow = fetchedUser || initialUser;
 
+  const token = cookieStore.get("token")?.value;
+
   return (
     <SubscribeBlogsDefaultPage
       subscribeBlogs={subscribeBlogs}
       user={userToShow}
+      token={token}
     />
   );
 }

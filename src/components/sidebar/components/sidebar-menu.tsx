@@ -23,7 +23,9 @@ export default function SidebarMenu({
     <button
       type="submit"
       onClick={() => {
-        router.push(path);
+        if (thisPath !== path) {
+          router.push(path);
+        }
       }}
       className={`${
         isSidebar ? "w-full" : "w-auto"

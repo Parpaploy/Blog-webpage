@@ -15,5 +15,7 @@ export default async function Blogs() {
 
   const userToShow = fetchedUser || initialUser;
 
-  return <BlogsDefaultPage blogs={blogs} user={userToShow} />;
+  const token = cookieStore.get("token")?.value;
+
+  return <BlogsDefaultPage blogs={blogs} user={userToShow} token={token} />;
 }

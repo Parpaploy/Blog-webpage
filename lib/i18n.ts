@@ -31,8 +31,8 @@ import emailConfirmTh from "../public/locales/th/emailConfirm.json";
 import profileEn from "../public/locales/en/profile.json";
 import profileTh from "../public/locales/th/profile.json";
 
-import yourBlogEn from "../public/locales/en/your-blogs.json";
-import yourBlogTh from "../public/locales/th/your-blogs.json";
+import yourBlogEn from "../public/locales/en/yourBlogs.json";
+import yourBlogTh from "../public/locales/th/yourBlogs.json";
 
 import userBlogsEn from "../public/locales/en/userBlogs.json";
 import userBlogsTh from "../public/locales/th/userBlogs.json";
@@ -65,7 +65,7 @@ i18n.use(initReactI18next).init({
       resetPassword: resetPasswordTh,
       emailConfirm: emailConfirmTh,
       profile: profileTh,
-      yourBlog: yourBlogTh,
+      yourBlogs: yourBlogTh,
       userBlogs: userBlogsTh,
       search: searchTh,
       blogs: blogsTh,
@@ -84,7 +84,7 @@ i18n.use(initReactI18next).init({
       resetPassword: resetPasswordEn,
       emailConfirm: emailConfirmEn,
       profile: profileEn,
-      yourBlog: yourBlogEn,
+      yourBlogs: yourBlogEn,
       userBlogs: userBlogsEn,
       search: searchEn,
       blogs: blogsEn,

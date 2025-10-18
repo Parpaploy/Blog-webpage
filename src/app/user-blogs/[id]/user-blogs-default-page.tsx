@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import {
   IBlog,
   ISubscribeBlog,
@@ -16,10 +16,12 @@ export default function UserBlogsDefaultPage({
   user,
   userBlogs,
   userSubscribeBlogs,
+  token,
 }: {
   user: IUser | null;
   userBlogs: IBlog[];
   userSubscribeBlogs: ISubscribeBlog[];
+  token: string | undefined;
 }) {
   const { t } = useTranslation("userBlogs");
 
@@ -27,14 +29,11 @@ export default function UserBlogsDefaultPage({
 
   const router = useRouter();
 
-  // console.log(user?.id, ":user id");
-  // console.log(userBlogs[0]?.author.id, ":user blog id");
-
   return (
     <main
       className={`w-screen h-full overflow-y-auto 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] text-white/80 scrollbar-hide ${
         isSidebar ? "pl-65" : "pl-25"
-      } transition-all`}
+      } transition-all relative`}
     >
       <div
         onClick={() => {
@@ -45,6 +44,8 @@ export default function UserBlogsDefaultPage({
         {t("blog_title", {
           username: userBlogs[0]?.author.username
             ? userBlogs[0].author.username
+            : userSubscribeBlogs[0]?.author.username
+            ? userSubscribeBlogs[0]?.author.username
             : t("no_username"),
         })}
       </div>
@@ -74,6 +75,8 @@ export default function UserBlogsDefaultPage({
         {t("subscribe_blog_title", {
           username: userSubscribeBlogs[0]?.author.username
             ? userSubscribeBlogs[0].author.username
+            : userBlogs[0]?.author.username
+            ? userBlogs[0]?.author.username
             : t("no_username"),
         })}
       </div>

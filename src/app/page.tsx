@@ -21,6 +21,8 @@ export default async function Homepage() {
   const blogs = await fetchBlogs();
   const subscribeBlogs = await fetchSubscribeBlogs();
 
+  const token = cookieStore.get("token")?.value;
+
   // console.log(highlight, ":Highlight");
 
   return (
@@ -29,6 +31,7 @@ export default async function Homepage() {
       blogs={blogs}
       subscribeBlogs={subscribeBlogs}
       highlight={highlight}
+      token={token}
     />
   );
 }

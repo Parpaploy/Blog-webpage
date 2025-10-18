@@ -29,6 +29,9 @@ export default function RichTextEditor({
       Image.configure({
         inline: false,
         allowBase64: true,
+        HTMLAttributes: {
+          class: "rounded-xl max-w-full h-auto",
+        },
       }),
     ],
     content: content,

@@ -253,12 +253,12 @@ export async function updateSubscribeBlog({
   }
 }
 
-export async function deleteBlog(
-  blogId: number,
+export async function deleteFreeBlog(
+  blogId: string,
   token: string
 ): Promise<ICreateBlogResponse> {
   try {
-    const response = await fetch(
+    const deleteResponse = await fetch(
       `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/blogs/${blogId}`,
       {
         method: "DELETE",
@@ -268,16 +268,116 @@ export async function deleteBlog(
       }
     );
 
-    if (!response.ok) {
-      const errorDetails = await response.json();
-      throw new Error(errorDetails.error?.message || "Failed to delete post");
+    if (!deleteResponse.ok) {
+      const contentType = deleteResponse.headers.get("content-type");
+      let errorMessage = "Failed to delete post";
+
+      if (contentType && contentType.includes("application/json")) {
+        try {
+          const errorDetails = await deleteResponse.json();
+          errorMessage =
+            errorDetails.error?.message || errorDetails.message || errorMessage;
+        } catch (e) {
+          const errorText = await deleteResponse.text();
+          errorMessage = errorText || errorMessage;
+        }
+      } else {
+        const errorText = await deleteResponse.text();
+        errorMessage =
+          errorText ||
+          `HTTP ${deleteResponse.status}: ${deleteResponse.statusText}`;
+      }
+
+      throw new Error(errorMessage);
     }
 
-    const result = await response.json();
+    const contentType = deleteResponse.headers.get("content-type");
+    let result = null;
+
+    if (contentType && contentType.includes("application/json")) {
+      const text = await deleteResponse.text();
+      if (text) {
+        try {
+          result = JSON.parse(text);
+        } catch (e) {
+          console.warn("Could not parse response as JSON:", text);
+          result = { message: "Deleted successfully" };
+        }
+      } else {
+        result = { message: "Deleted successfully" };
+      }
+    } else {
+      result = { message: "Deleted successfully" };
+    }
+
+    return { success: true, data: result };
+  } catch (error: any) {
+    console.error("Failed to delete blog:", error);
     return {
-      success: true,
-      data: result,
+      success: false,
+      error: error.message || "An unexpected error occurred",
     };
+  }
+}
+
+export async function deleteSubscribeBlog(
+  blogId: string,
+  token: string
+): Promise<ICreateBlogResponse> {
+  try {
+    const deleteResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/subscribe-blogs/${blogId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (!deleteResponse.ok) {
+      const contentType = deleteResponse.headers.get("content-type");
+      let errorMessage = "Failed to delete post";
+
+      if (contentType && contentType.includes("application/json")) {
+        try {
+          const errorDetails = await deleteResponse.json();
+          errorMessage =
+            errorDetails.error?.message || errorDetails.message || errorMessage;
+        } catch (e) {
+          const errorText = await deleteResponse.text();
+          errorMessage = errorText || errorMessage;
+        }
+      } else {
+        const errorText = await deleteResponse.text();
+        errorMessage =
+          errorText ||
+          `HTTP ${deleteResponse.status}: ${deleteResponse.statusText}`;
+      }
+
+      throw new Error(errorMessage);
+    }
+
+    const contentType = deleteResponse.headers.get("content-type");
+    let result = null;
+
+    if (contentType && contentType.includes("application/json")) {
+      const text = await deleteResponse.text();
+      if (text) {
+        try {
+          result = JSON.parse(text);
+        } catch (e) {
+          console.warn("Could not parse response as JSON:", text);
+          result = { message: "Deleted successfully" };
+        }
+      } else {
+        result = { message: "Deleted successfully" };
+      }
+    } else {
+      result = { message: "Deleted successfully" };
+    }
+
+    return { success: true, data: result };
   } catch (error: any) {
     console.error("Failed to delete blog:", error);
     return {

@@ -16,11 +16,14 @@ export default async function SearchPage() {
 
   const userToShow = fetchedUser || initialUser;
 
+  const token = cookieStore.get("token")?.value;
+
   return (
     <SearchDefaultPage
       blogs={blogs}
       subscribeBlogs={subscribeBlogs}
       user={userToShow}
+      token={token}
     />
   );
 }

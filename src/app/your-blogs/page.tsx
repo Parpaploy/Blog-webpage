@@ -20,11 +20,14 @@ export default async function YourBlogs() {
 
   const userToShow = fetchedUser || initialUser;
 
+  const token = cookieStore.get("token")?.value;
+
   return (
     <YourBlogsDefaultPage
       blogs={blogs}
       subscribeBlogs={subBlogs}
       user={userToShow}
+      token={token}
     />
   );
 }
