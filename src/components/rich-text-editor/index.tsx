@@ -1,12 +1,11 @@
 "use client";
-
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import React from "react";
 import MenuBar from "./menu-bar";
 import TextAlign from "@tiptap/extension-text-align";
 import Highlight from "@tiptap/extension-highlight";
-import Image from "@tiptap/extension-image";
+import { ResizableImage } from "./resizable-image";
 import { IRichTextEditorProps } from "../../../interfaces/props.interface";
 
 export default function RichTextEditor({
@@ -26,12 +25,9 @@ export default function RichTextEditor({
       }),
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       Highlight,
-      Image.configure({
-        inline: false,
+      ResizableImage.configure({
+        inline: true,
         allowBase64: true,
-        HTMLAttributes: {
-          class: "rounded-xl max-w-full h-auto",
-        },
       }),
     ],
     content: content,
@@ -49,6 +45,21 @@ export default function RichTextEditor({
 
   return (
     <div className="w-full">
+      <style jsx global>{`
+        .ProseMirror p {
+          margin: 0;
+          line-height: 1.6;
+        }
+
+        .ProseMirror p + p {
+          margin-top: 0.5em;
+        }
+
+        .ProseMirror ul,
+        .ProseMirror ol {
+          overflow: auto;
+        }
+      `}</style>
       <MenuBar token={token} editor={editor} />
       <EditorContent editor={editor} />
     </div>

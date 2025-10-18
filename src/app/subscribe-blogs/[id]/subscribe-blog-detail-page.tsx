@@ -68,7 +68,7 @@ export default function SubscribeBlogDetailPage({
           <div className="w-full flex justify-start items-center gap-3">
             <div className="w-10 h-10 rounded-full overflow-hidden">
               <img
-                className="w-full h-full"
+                className="w-full h-full object-cover"
                 src={
                   subBlogUser.author?.profile?.formats?.small?.url
                     ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${subBlogUser.author.profile.formats.small.url}`
@@ -89,12 +89,11 @@ export default function SubscribeBlogDetailPage({
         {FormatRichText(subBlog?.detail)}
       </section>
 
-      <div className="lg:w-[1px] w-[95%] bg-white/30 lg:h-[95%] h-[1px] lg:mb-0 mb-3 mx-auto lg:my-auto" />
+      <div className="lg:w-[1px] w-[95%] bg-white/30 lg:h-[95%] h-[1px] lg:mb-0 mb-3 mx-auto lg:self-center" />
 
       {/* Other blogs */}
       <section className="lg:w-[30%] w-full lg:h-full h-[30%] flex flex-col lg:pl-8 pl-0 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] pt-0">
         <h1 className="text-3xl font-bold text-start mb-3">
-          {/* {t("more", { username: subBlog.author?.username })} */}
           {t("more", { username: subBlog.author?.username })}
         </h1>
 
@@ -112,9 +111,9 @@ export default function SubscribeBlogDetailPage({
               })}
             </div>
           ) : (
-            <p className="text-white/50 text-sm">
-              No other blogs from this author yet.
-            </p>
+            <div className="w-full min-h-full flex justify-center items-center text-white/50 text-sm text-center">
+              {t("no_more")}
+            </div>
           )}
         </div>
       </section>

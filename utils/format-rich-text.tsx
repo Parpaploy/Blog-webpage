@@ -9,7 +9,11 @@ export function FormatRichText(content: any) {
     switch (node.type) {
       case "paragraph":
         return (
-          <p key={index} className="mb-2">
+          <p
+            key={index}
+            className="mb-2"
+            style={{ textAlign: node.attrs?.textAlign || "left" }}
+          >
             {node.content?.map((child: any, i: number) => renderNode(child, i))}
           </p>
         );
@@ -31,6 +35,7 @@ export function FormatRichText(content: any) {
           {
             key: index,
             className: headingClasses[level as keyof typeof headingClasses],
+            style: { textAlign: node.attrs?.textAlign || "left" },
           },
           node.content?.map((child: any, i: number) => renderNode(child, i))
         );
@@ -75,15 +80,39 @@ export function FormatRichText(content: any) {
         return <React.Fragment key={index}>{text}</React.Fragment>;
 
       case "image":
+      case "resizableImage": {
+        const width = node.attrs.width;
+        const isSmall = width && width < 600;
+
+        const wrapperStyles: React.CSSProperties = {
+          margin: "1rem 0",
+        };
+
+        if (isSmall) {
+          wrapperStyles.float = "left";
+          wrapperStyles.margin = "4px 16px 8px 0";
+          wrapperStyles.display = "inline-block";
+        } else {
+          wrapperStyles.display = "flex";
+          wrapperStyles.justifyContent = "center";
+          wrapperStyles.clear = "both";
+        }
+
         return (
-          <div key={index} className="my-4 flex justify-center">
+          <span key={index} style={wrapperStyles}>
             <img
               src={node.attrs.src}
               alt={node.attrs.alt || ""}
               className="max-w-full rounded-xl shadow-md"
+              style={{
+                width: width ? `${width}px` : "auto",
+                height: "auto",
+                display: "block",
+              }}
             />
-          </div>
+          </span>
         );
+      }
 
       case "bulletList":
         return (

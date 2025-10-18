@@ -1,5 +1,6 @@
 {
   "title": "Subscribe blogs",
 
-  "more": "More from {{username}}"
+  "more": "More from {{username}}",
+  "no_more": "No other blogs from this author yet"
 }
