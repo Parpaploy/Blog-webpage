@@ -31,8 +31,17 @@ export default function MenuBar({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageUpload = async (file: File) => {
+    // สร้างชื่อไฟล์ใหม่ที่ปลอดภัย (ใช้ timestamp + random string)
+    const timestamp = Date.now();
+    const randomStr = Math.random().toString(36).substring(2, 8);
+    const fileExtension = file.name.split(".").pop() || "jpg";
+    const safeFileName = `image_${timestamp}_${randomStr}.${fileExtension}`;
+
+    // สร้าง File object ใหม่ด้วยชื่อที่ปลอดภัย
+    const renamedFile = new File([file], safeFileName, { type: file.type });
+
     const formData = new FormData();
-    formData.append("files", file);
+    formData.append("files", renamedFile);
 
     try {
       const res = await fetch(
@@ -46,6 +55,24 @@ export default function MenuBar({
         }
       );
 
+      // เช็ค response status ก่อน
+      if (!res.ok) {
+        const errorText = await res.text();
+        let errorData;
+        try {
+          errorData = JSON.parse(errorText);
+        } catch {
+          errorData = { message: errorText };
+        }
+        console.error("Upload error:", errorData);
+        alert(
+          `อัปโหลดไม่สำเร็จ: ${
+            errorData.error?.message || errorData.message || "Unknown error"
+          }`
+        );
+        return;
+      }
+
       const data = await res.json();
       const imageUrl = data[0]?.url
         ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${data[0].url}`
@@ -54,11 +81,13 @@ export default function MenuBar({
       if (imageUrl) {
         editor.chain().focus().setImage({ src: imageUrl }).run();
       } else {
-        alert("อัปโหลดไม่สำเร็จ");
+        alert("อัปโหลดไม่สำเร็จ: ไม่พบ URL ของรูปภาพ");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Upload failed:", error);
-      alert("เกิดข้อผิดพลาดขณะอัปโหลดรูปภาพ");
+      alert(
+        `เกิดข้อผิดพลาดขณะอัปโหลดรูปภาพ: ${error.message || "Unknown error"}`
+      );
     }
   };
 
@@ -68,7 +97,21 @@ export default function MenuBar({
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) handleImageUpload(file);
+    if (file) {
+      // เช็คขนาดไฟล์ (ไม่เกิน 10MB)
+      if (file.size > 10 * 1024 * 1024) {
+        alert("ไฟล์มีขนาดใหญ่เกินไป (สูงสุด 10MB)");
+        return;
+      }
+
+      // เช็ค MIME type
+      if (!file.type.startsWith("image/")) {
+        alert("กรุณาเลือกไฟล์รูปภาพเท่านั้น");
+        return;
+      }
+
+      handleImageUpload(file);
+    }
   };
 
   const Options = [
