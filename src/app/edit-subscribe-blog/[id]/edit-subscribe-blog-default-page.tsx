@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
 import { useSidebar } from "../../../../hooks/sidebar";
 import RichTextEditor from "@/components/rich-text-editor";
-import SubmissionStatusModal from "@/components/add-blogs/submission-status-modal";
+import SubmissionStatusModal from "@/components/edit-blogs/submission-status-modal";
 import {
   IBlog,
   IBlogSetting,
@@ -137,6 +137,11 @@ export default function EditSubscribeBlogDefaultPage({
     setSubmissionStatus(null);
     router.push("/your-blogs");
     router.refresh();
+  };
+
+  const handleGoHome = () => {
+    setSubmissionStatus(null);
+    router.push("/");
   };
 
   const handleCloseModal = () => setSubmissionStatus(null);
@@ -375,6 +380,7 @@ export default function EditSubscribeBlogDefaultPage({
         error={error}
         onSuccessRedirect={handleSuccessRedirect}
         onClose={handleCloseModal}
+        onGoHome={handleGoHome}
       />
     </>
   );

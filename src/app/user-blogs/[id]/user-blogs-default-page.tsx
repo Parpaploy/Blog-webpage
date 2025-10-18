@@ -11,6 +11,7 @@ import { useSidebar } from "../../../../hooks/sidebar";
 import BlogCard from "../../../components/blogs/blog-card";
 import SubscribeBlogCard from "@/components/subscribe-blogs/subscribe-blog-card";
 import { useRouter } from "next/navigation";
+import AddButton from "@/components/add-btn";
 
 export default function UserBlogsDefaultPage({
   user,
@@ -62,7 +63,7 @@ export default function UserBlogsDefaultPage({
         </section>
       ) : (
         <section className="text-center w-full h-80 flex items-center justify-center">
-          No Blogs found
+          {t("no_blog_found")}
         </section>
       )}
 
@@ -97,9 +98,11 @@ export default function UserBlogsDefaultPage({
         </section>
       ) : (
         <section className="text-center w-full h-80 flex items-center justify-center">
-          No subscribe blogs found
+          {t("no_subscribe_blog_found")}
         </section>
       )}
+
+      <AddButton />
     </main>
   );
 }

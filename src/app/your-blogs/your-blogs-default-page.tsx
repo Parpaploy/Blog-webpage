@@ -18,6 +18,7 @@ import {
   deleteSubscribeBlog,
 } from "../../../lib/apis/blog-uploader";
 import GlobalLoading from "../loading";
+import AddButton from "@/components/add-btn";
 
 export default function YourBlogsDefaultPage({
   blogs,
@@ -176,7 +177,7 @@ export default function YourBlogsDefaultPage({
             </section>
           ) : (
             <section className="text-center w-full h-80 flex items-center justify-center">
-              No Blogs found
+              {t("no_blog_found")}
             </section>
           )}
 
@@ -208,7 +209,7 @@ export default function YourBlogsDefaultPage({
             </section>
           ) : (
             <section className="text-center w-full h-80 flex items-center justify-center">
-              No subscribe blogs found
+              {t("no_subscribe_blog_found")}
             </section>
           )}
 
@@ -219,6 +220,7 @@ export default function YourBlogsDefaultPage({
               status={freeDeleteStatus}
               error={deleteError}
               onSuccess={handleFreeDeleteSuccess}
+              isRefreshing={isPending}
             />
           )}
 
@@ -229,10 +231,13 @@ export default function YourBlogsDefaultPage({
               status={subscribeDeleteStatus}
               error={deleteError}
               onSuccess={handleSubscribeDeleteSuccess}
+              isRefreshing={isPending}
             />
           )}
         </>
       )}
+
+      <AddButton />
     </main>
   );
 }

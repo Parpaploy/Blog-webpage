@@ -120,6 +120,7 @@ export default function BlogsDefaultPage({
               status={deleteStatus}
               error={deleteError}
               onSuccess={handleDeleteSuccess}
+              isRefreshing={isPending}
             />
           )}
         </>

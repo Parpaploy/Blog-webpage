@@ -2,5 +2,9 @@
   "blog_title": "All blogs",
   "subscribe_blog_title": "All subscribe blogs",
   "highlight_blog_title": "Popular blogs",
-  "highlight_subscribe_blog_title": "Popular subscribe blogs"
+  "highlight_subscribe_blog_title": "Popular subscribe blogs",
+  "no_blog_found": "No blogs yet",
+  "no_subscribe_blog_found": "No subscribe blogs yet",
+  "no_pop_blog_found": "No popular blogs yet",
+  "no_pop_subscribe_blog_found": "No popular subscribe blogs yet"
 }

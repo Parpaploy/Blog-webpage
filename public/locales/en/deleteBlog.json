@@ -1,0 +1,18 @@
+{
+  "confirm_message_free": "Are you sure you want to delete this blog?",
+  "confirm_message_subscribe": "Are you sure you want to delete this subscribe blog?",
+  "cancel_button": "Cancel",
+  "delete_button": "Delete",
+  "deleting_message_free": "Deleting...",
+  "deleting_message_subscribe": "Deleting...",
+  "refreshing_message": "Refreshing...",
+  "success_title": "Deleted Successfully",
+  "success_message_free": "Your blog has been deleted successfully.",
+  "success_message_subscribe": "Your subscribe blog has been deleted successfully.",
+  "ok_button": "OK",
+  "error_title": "Delete Failed",
+  "error_default_message_free": "An error occurred while deleting the blog.",
+  "error_default_message_subscribe": "An error occurred while deleting the subscribe blog.",
+  "close_button": "Close",
+  "homeButton": "Back to homepage"
+}

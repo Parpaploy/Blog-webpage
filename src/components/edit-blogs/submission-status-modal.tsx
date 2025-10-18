@@ -40,15 +40,6 @@ export default function SubmissionStatusModal({
             </p>
             <p className="mt-2 text-white/80">{t("status.successBody")}</p>
 
-            {onCreateAnother && (
-              <button
-                onClick={onCreateAnother}
-                className="cursor-pointer mt-6 text-white/80 w-full px-3 py-2 hover:bg-white/30 hover:text-white/90 bg-white/20 border border-white/30 shadow-md rounded-4xl transition-all"
-              >
-                {t("status.createAnotherButton")}
-              </button>
-            )}
-
             <button
               onClick={onSuccessRedirect}
               className={`cursor-pointer ${

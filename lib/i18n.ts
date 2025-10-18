@@ -52,6 +52,9 @@ import addBlogTh from "../public/locales/th/addBlog.json";
 import editBlogEn from "../public/locales/en/editBlog.json";
 import editBlogTh from "../public/locales/th/editBlog.json";
 
+import deleteBlogEn from "../public/locales/en/deleteBlog.json";
+import deleteBlogTh from "../public/locales/th/deleteBlog.json";
+
 i18n.use(initReactI18next).init({
   resources: {
     th: {
@@ -72,6 +75,7 @@ i18n.use(initReactI18next).init({
       subscribeBlogs: subscribeBlogsTh,
       addBlog: addBlogTh,
       editBlog: editBlogTh,
+      deleteBlog: deleteBlogTh,
     },
     en: {
       template: templateEn,
@@ -91,10 +95,11 @@ i18n.use(initReactI18next).init({
       subscribeBlogs: subscribeBlogsEn,
       addBlog: addBlogEn,
       editBlog: editBlogEn,
+      deleteBlog: deleteBlogEn,
     },
   },
-  lng: "th",
-  fallbackLng: "en",
+  lng: "en",
+  fallbackLng: "th",
   defaultNS: "home",
   interpolation: { escapeValue: false },
 });

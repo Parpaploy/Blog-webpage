@@ -1,6 +1,11 @@
 {
   "title": "Blogs",
+  "no_blog_found": "No blogs yet",
 
   "more": "More from {{username}}",
-  "no_more": "No other blogs from this author yet"
+  "no_more": "No other blogs from this author yet",
+
+  "author_profile": "Author Profile",
+  "edit": "Edit",
+  "delete": "Delete"
 }

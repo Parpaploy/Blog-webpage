@@ -182,7 +182,7 @@ export default function HomepageDefault({
                 </section>
               ) : (
                 <section className="text-center w-full h-80 flex items-center justify-center">
-                  No Blogs found
+                  {t("no_pop_blog_found")}
                 </section>
               )}
             </div>
@@ -219,7 +219,7 @@ export default function HomepageDefault({
                 </section>
               ) : (
                 <section className="text-center w-full h-80 flex items-center justify-center">
-                  No Subscribe blogs found
+                  {t("no_pop_subscribe_blog_found")}
                 </section>
               )}
             </div>
@@ -253,7 +253,7 @@ export default function HomepageDefault({
                 </section>
               ) : (
                 <section className="text-center w-full h-80 flex items-center justify-center">
-                  No Blogs found
+                  {t("no_blog_found")}
                 </section>
               )}
             </div>
@@ -289,7 +289,7 @@ export default function HomepageDefault({
                 </section>
               ) : (
                 <section className="text-center w-full h-80 flex items-center justify-center">
-                  No Subscribe blogs found
+                  {t("no_subscribe_blog_found")}
                 </section>
               )}
             </div>
@@ -303,6 +303,7 @@ export default function HomepageDefault({
                 status={freeDeleteStatus}
                 error={deleteError}
                 onSuccess={handleFreeDeleteSuccess}
+                isRefreshing={isPending}
               />
             )}
 
@@ -313,6 +314,7 @@ export default function HomepageDefault({
                 status={subscribeDeleteStatus}
                 error={deleteError}
                 onSuccess={handleSubscribeDeleteSuccess}
+                isRefreshing={isPending}
               />
             )}
           </>

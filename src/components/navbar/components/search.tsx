@@ -246,7 +246,7 @@ function Search({
         <input
           ref={inputRef}
           type="text"
-          placeholder="Search..."
+          placeholder={t("searchPlaceholder")}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => {

@@ -31,4 +31,6 @@ export interface ISubmissionStatusModalProps {
   error: string | null;
   onSuccessRedirect: () => void;
   onClose: () => void;
+  onCreateAnother?: () => void;
+  onGoHome: () => void;
 }

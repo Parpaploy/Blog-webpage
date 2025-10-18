@@ -8,8 +8,12 @@
   "manage": "Manage your profile",
   "your-blogs": "All your blogs",
 
+  "searchPlaceholder": "Search...",
   "from": "From",
   "author": "Author",
   "title": "Blog's name",
-  "desc": "Description"
+  "desc": "Description",
+
+  "thai": "Th",
+  "english": "Eng"
 }

@@ -45,6 +45,8 @@ export default function AddBlogDefaultPage({
     useState<SubmissionStatus>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const [editorKey, setEditorKey] = useState(0);
+
   const onContentChange = (content: any) => {
     setPostContent(content);
   };
@@ -69,6 +71,7 @@ export default function AddBlogDefaultPage({
     setPostContent({ type: "doc", content: [] });
     setPostType("free");
     setPrice("");
+    setEditorKey((prevKey) => prevKey + 1);
   };
 
   const translateBackendError = (
@@ -100,13 +103,13 @@ export default function AddBlogDefaultPage({
     setError(null);
 
     if (!thumbnail || !title || !user?.id || !token) {
-      setError("Missing required fields. Please check title and thumbnail.");
+      setError(t("errors.missingFields"));
       setSubmissionStatus("error");
       return;
     }
 
     if (postType === "price" && (!price || parseFloat(price) <= 0)) {
-      setError("Please enter a valid price for paid content.");
+      setError(t("errors.invalidPrice"));
       setSubmissionStatus("error");
       return;
     }
@@ -135,7 +138,7 @@ export default function AddBlogDefaultPage({
         setSubmissionStatus("error");
       }
     } catch (e: any) {
-      setError(e.message || "An unexpected error occurred.");
+      setError(e.message || t("errors.unknown"));
       setSubmissionStatus("error");
     }
   };
@@ -144,6 +147,17 @@ export default function AddBlogDefaultPage({
     resetForm();
     setSubmissionStatus(null);
     router.push("/your-blogs");
+  };
+
+  const handleCreateAnother = () => {
+    resetForm();
+    setSubmissionStatus(null);
+  };
+
+  const handleGoHome = () => {
+    resetForm();
+    setSubmissionStatus(null);
+    router.push("/");
   };
 
   const handleCloseModal = () => {
@@ -391,6 +405,7 @@ export default function AddBlogDefaultPage({
             </div>
 
             <RichTextEditor
+              key={editorKey}
               content={postContent}
               onChange={onContentChange}
               token={token}
@@ -414,6 +429,8 @@ export default function AddBlogDefaultPage({
         error={error}
         onSuccessRedirect={handleSuccessRedirect}
         onClose={handleCloseModal}
+        onCreateAnother={handleCreateAnother}
+        onGoHome={handleGoHome}
       />
     </>
   );

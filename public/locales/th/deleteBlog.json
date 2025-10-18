@@ -1,0 +1,18 @@
+{
+  "confirm_message_free": "คุณแน่ใจหรือไม่ว่าต้องการลบบล็อกนี้?",
+  "confirm_message_subscribe": "คุณแน่ใจหรือไม่ว่าต้องการลบบล็อกที่ต้องสมัครสมาชิกนี้?",
+  "cancel_button": "ยกเลิก",
+  "delete_button": "ลบ",
+  "deleting_message_free": "กำลังลบ...",
+  "deleting_message_subscribe": "กำลังลบ...",
+  "refreshing_message": "กำลังรีเฟรช...",
+  "success_title": "ลบสำเร็จ",
+  "success_message_free": "บล็อกของคุณถูกลบเรียบร้อยแล้ว",
+  "success_message_subscribe": "บล็อกที่ต้องสมัครสมาชิกของคุณถูกลบเรียบร้อยแล้ว",
+  "ok_button": "ตกลง",
+  "error_title": "ลบไม่สำเร็จ",
+  "error_default_message_free": "เกิดข้อผิดพลาดขณะลบบล็อก",
+  "error_default_message_subscribe": "เกิดข้อผิดพลาดขณะลบบล็อกที่ต้องสมัครสมาชิก",
+  "close_button": "ปิด",
+  "homeButton": "กลับไปหน้าหลัก"
+}

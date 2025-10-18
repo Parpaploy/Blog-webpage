@@ -113,18 +113,12 @@ export default function SubscribeBlogsDefaultPage({
 
           {showDeletePanel && (
             <DeleteSubscribeBlogPanel
-              onCancel={() => setShowDeletePanel(false)}
-              onConfirm={handleDeleteConfirm}
-            />
-          )}
-
-          {showDeletePanel && (
-            <DeleteSubscribeBlogPanel
               onCancel={handleDeleteCancel}
               onConfirm={handleDeleteConfirm}
               status={deleteStatus}
               error={deleteError}
               onSuccess={handleDeleteSuccess}
+              isRefreshing={isPending}
             />
           )}
         </>

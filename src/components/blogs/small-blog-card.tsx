@@ -6,6 +6,7 @@ import { FormatDate } from "../../../utils/format-date";
 import { useSidebar } from "../../../hooks/sidebar";
 import CategoryTag from "../category-tag";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 export default function SmallBlogCard({
   blog,
@@ -15,6 +16,8 @@ export default function SmallBlogCard({
   user: IUser | null;
 }) {
   const { isSidebar } = useSidebar();
+
+  const { t } = useTranslation("blogs");
 
   const router = useRouter();
 

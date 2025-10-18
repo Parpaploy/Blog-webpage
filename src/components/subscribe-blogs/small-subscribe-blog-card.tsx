@@ -7,6 +7,7 @@ import { useSidebar } from "../../../hooks/sidebar";
 import CategoryTag from "../category-tag";
 import { useRouter } from "next/navigation";
 import Star from "./star";
+import { useTranslation } from "react-i18next";
 
 export default function SmallSubscribeBlogCard({
   subBlog,
@@ -16,6 +17,8 @@ export default function SmallSubscribeBlogCard({
   user: IUser | null;
 }) {
   const { isSidebar } = useSidebar();
+
+  const { t } = useTranslation("subscribeBlogs");
 
   const router = useRouter();
 

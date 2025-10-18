@@ -10,6 +10,7 @@ import { FiEdit3 } from "react-icons/fi";
 import { FiMoreHorizontal } from "react-icons/fi";
 import { AiOutlineDelete } from "react-icons/ai";
 import { HiOutlineExclamationCircle } from "react-icons/hi2";
+import { useTranslation } from "react-i18next";
 
 export default function BlogCard({
   blog,
@@ -32,6 +33,8 @@ export default function BlogCard({
   // console.log(blog.author?.id, ":blog.author?.id");
 
   const router = useRouter();
+
+  const { t } = useTranslation("blogs");
 
   const [isToggle, setIsToggle] = useState<boolean>(false);
 
@@ -148,7 +151,7 @@ export default function BlogCard({
               }`}
             >
               <HiOutlineExclamationCircle size={20} />
-              <p className="mt-1">Author Profile</p>
+              <p className="mt-1">{t("author_profile")}</p>
             </div>
             {user && user?.documentId == blog.author?.documentId && (
               <div className="w-full h-[1px] bg-white/30 mt-2" />
@@ -165,8 +168,8 @@ export default function BlogCard({
                 }}
                 className={`text-white/80 hover:bg-white/30 hover:text-white/90 backdrop-blur-3xl cursor-pointer text-md transition-all px-3 pt-2`}
               >
-                <div className="flex items-center justify-start gap-3">
-                  <FiEdit3 /> <p>Edit</p>
+                <div className="flex items-center justify-start gap-3 py-1">
+                  <FiEdit3 /> <p>{t("edit")}</p>
                 </div>
                 <div className="w-full h-[1px] bg-white/30 mt-2" />
               </div>
@@ -183,8 +186,8 @@ export default function BlogCard({
                 }}
                 className={`text-white/80 hover:bg-white/30 hover:text-white/90 backdrop-blur-3xl cursor-pointer text-md transition-all px-3 py-2`}
               >
-                <div className="flex items-center justify-start gap-3">
-                  <AiOutlineDelete /> <p className="mt-1">Delete</p>
+                <div className="flex items-center justify-start gap-3 pb-1">
+                  <AiOutlineDelete /> <p className="mt-1">{t("delete")}</p>
                 </div>
               </div>
             </>

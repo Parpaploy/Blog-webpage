@@ -19,6 +19,8 @@
     "successTitle": "Success!",
     "successBody": "Your blog has been published successfully.",
     "successButton": "View My Blogs",
+    "homeButton": "Back to homepage",
+    "createAnotherButton": "Continue create another blog",
     "errorTitle": "Submission Failed",
     "errorButton": "Try Again"
   },
@@ -28,6 +30,8 @@
     "string": {
       "max": "{{field}} must be at most {{limit}} characters."
     },
-    "unknown": "An unknown error occurred. Please try again."
+    "unknown": "An unknown error occurred. Please try again.",
+    "missingFields": "Missing required fields. Please check title and thumbnail.",
+    "invalidPrice": "Please enter a valid price"
   }
 }

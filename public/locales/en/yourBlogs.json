@@ -1,4 +1,6 @@
 {
   "blog_title": "All your blogs",
-  "subscribe_blog_title": "ํAll your subscribe blogs"
+  "subscribe_blog_title": "ํAll your subscribe blogs",
+  "no_blog_found": "You have no blogs yet.",
+  "no_subscribe_blog_found": "You have no subscribe blogs yet."
 }

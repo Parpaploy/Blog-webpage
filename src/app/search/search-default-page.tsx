@@ -232,7 +232,7 @@ export default function SearchDefaultPage({
               </section>
             ) : (
               <section className="text-center w-full h-full flex items-center justify-center">
-                No Blogs found
+                {t("no_blog_found")}
               </section>
             )}
 
@@ -245,6 +245,7 @@ export default function SearchDefaultPage({
                 status={freeDeleteStatus}
                 error={deleteError}
                 onSuccess={handleFreeDeleteSuccess}
+                isRefreshing={isPending}
               />
             )}
 
@@ -255,6 +256,7 @@ export default function SearchDefaultPage({
                 status={subscribeDeleteStatus}
                 error={deleteError}
                 onSuccess={handleSubscribeDeleteSuccess}
+                isRefreshing={isPending}
               />
             )}
           </>

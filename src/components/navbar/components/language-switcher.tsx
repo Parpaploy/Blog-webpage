@@ -7,6 +7,8 @@ export default function LanguageSwitcher() {
   const { i18n } = useTranslation();
   const [hasMounted, setHasMounted] = useState(false);
 
+  const { t } = useTranslation("navbar");
+
   const [isThai, setIsThai] = useState(() => {
     if (typeof window !== "undefined") {
       const savedLang = localStorage.getItem("language");
@@ -80,7 +82,7 @@ export default function LanguageSwitcher() {
           <div
             className="absolute transition-transform duration-300 ease-in-out left-2"
             style={{
-              transform: isThai ? "translateX(0)" : "translateX(40px)",
+              transform: isThai ? "translateX(-2px)" : "translateX(40px)",
             }}
           >
             <div className="w-6 h-6 bg-white/20 border border-white/30 shadow-md rounded-full overflow-hidden">
@@ -91,7 +93,7 @@ export default function LanguageSwitcher() {
                     : "/assets/icons/en-icon.svg"
                 }
                 alt="lang-icon"
-                className="w-full h-full object-cover opacity-80"
+                className="w-full h-full object-cover opacity-70"
                 draggable="false"
               />
             </div>
@@ -99,7 +101,7 @@ export default function LanguageSwitcher() {
 
           <div
             style={{
-              transform: isThai ? "translateX(10px)" : "translateX(-12px)",
+              transform: isThai ? "translateX(12px)" : "translateX(-12px)",
             }}
             className="flex items-center justify-center w-full text-[16px]"
           >
@@ -108,14 +110,14 @@ export default function LanguageSwitcher() {
                 isThai ? "opacity-100" : "opacity-0"
               }`}
             >
-              TH
+              {t("thai")}
             </span>
             <span
               className={`absolute transition-opacity duration-300 ${
                 isThai ? "opacity-0" : "opacity-100"
               }`}
             >
-              ENG
+              {t("english")}
             </span>
           </div>
         </div>
