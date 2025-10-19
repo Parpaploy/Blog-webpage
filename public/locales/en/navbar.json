@@ -21,7 +21,8 @@
   "filter": {
     "all": "All",
     "free": "Free",
-    "subscribe": "Subscribe"
+    "subscribe": "Subscribe",
+    "reset": "Reset filters"
   },
 
   "thai": "Th",

@@ -107,7 +107,7 @@ export default function SidebarDefault({
               }
             />
 
-            <SidebarMenu
+            {/* <SidebarMenu
               path="/blogs"
               shortTitle={
                 <p className="flex items-center justify-center">
@@ -122,9 +122,9 @@ export default function SidebarDefault({
                   <div className="w-[90%]">{t("blogs")}</div>
                 </div>
               }
-            />
+            /> */}
 
-            <SidebarMenu
+            {/* <SidebarMenu
               path="/subscribe-blogs"
               shortTitle={
                 <div className="flex items-center justify-center">
@@ -139,7 +139,7 @@ export default function SidebarDefault({
                   <div className="w-[90%]">{t("subscribe-blogs")}</div>
                 </div>
               }
-            />
+            /> */}
           </div>
 
           {/* Bottom */}

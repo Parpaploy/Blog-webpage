@@ -203,10 +203,10 @@ export default function LanguageSwitcher({
             >
               <div
                 onClick={() => handleLanguageChange("th")}
-                className={`flex items-center gap-3 px-3 py-2.5 transition-all cursor-pointer ${
+                className={`flex items-center gap-3 px-3 py-2.5 transition-all ${
                   isThai
                     ? "bg-white/30 text-white/90"
-                    : "text-white/80 hover:bg-white/30 hover:text-white/90"
+                    : "text-white/80 hover:bg-white/30 hover:text-white/90 cursor-pointer"
                 } ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
               >
                 <img
@@ -219,10 +219,10 @@ export default function LanguageSwitcher({
 
               <div
                 onClick={() => handleLanguageChange("en")}
-                className={`flex items-center gap-3 px-3 py-2.5 transition-all cursor-pointer ${
+                className={`flex items-center gap-3 px-3 py-2.5 transition-all ${
                   !isThai
                     ? "bg-white/30 text-white/90"
-                    : "text-white/80 hover:bg-white/30 hover:text-white/90"
+                    : "text-white/80 hover:bg-white/30 hover:text-white/90 cursor-pointer"
                 } ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
               >
                 <img

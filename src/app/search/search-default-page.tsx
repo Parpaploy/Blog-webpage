@@ -40,7 +40,7 @@ export default function SearchDefaultPage({
   const router = useRouter();
 
   const params = useSearchParams();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const selectedCategories = params.getAll("category");
   const query = params.get("query") || "";
