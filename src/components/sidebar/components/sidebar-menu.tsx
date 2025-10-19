@@ -30,9 +30,10 @@ export default function SidebarMenu({
       className={`${
         isSidebar ? "w-full" : "w-auto"
       } group backdrop-blur-sm border border-white/30 border-l-0 border-r-0 shadow-md px-2 py-1.75 transition-all relative
-                    ${isSidebar ? "rounded-2xl" : "rounded-full"} 
                     ${
-                      isSidebar ? "w-full px-3 text-start" : "text-center w-11"
+                      isSidebar
+                        ? "rounded-2xl w-full px-3 text-start"
+                        : "rounded-full text-center w-11"
                     } 
                     ${
                       thisPath === path

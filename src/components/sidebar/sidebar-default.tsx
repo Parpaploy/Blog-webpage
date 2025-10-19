@@ -15,6 +15,7 @@ import { FaRegStar } from "react-icons/fa";
 import LoginButton from "./components/login-btn";
 import { useRouter } from "next/navigation";
 import { GoSearch } from "react-icons/go";
+import { IoAdd } from "react-icons/io5";
 
 export default function SidebarDefault({
   isLoggedIn,
@@ -48,98 +49,127 @@ export default function SidebarDefault({
         <div className="relative z-10 w-full h-full flex flex-col justify-between items-center">
           {/* Top */}
           <div
-            className={`flex flex-col h-full justify-start gap-3 ${
+            className={`flex flex-col h-full justify-between mb-3 ${
               isSidebar ? "items-start w-full" : "items-center"
             }`}
           >
-            {/* Logo */}
             <div
-              onClick={() => {
-                router.push("/");
-              }}
-              className={`w-full cursor-pointer transition-all overflow-hidden mb-3 ${
-                isSidebar ? "w-full text-start" : "text-center w-10"
+              className={`flex flex-col h-full justify-start gap-3 ${
+                isSidebar ? "items-start w-full" : "items-center"
               }`}
             >
-              <img
-                src={
-                  isSidebar
-                    ? "/assets/placeholders/logoipsum-large.svg"
-                    : "/assets/placeholders/logoipsum-small.svg"
-                }
-                className={`${
-                  isSidebar ? "px-1.5" : "p-0"
-                } w-full h-full object-contain`}
-              />
-            </div>
+              {/* Logo */}
+              <div
+                onClick={() => {
+                  router.push("/");
+                }}
+                className={`w-full cursor-pointer transition-all overflow-hidden mb-3 ${
+                  isSidebar ? "w-full text-start" : "text-center w-10"
+                }`}
+              >
+                <img
+                  src={
+                    isSidebar
+                      ? "/assets/placeholders/logoipsum-large.svg"
+                      : "/assets/placeholders/logoipsum-small.svg"
+                  }
+                  className={`${
+                    isSidebar ? "px-1.5" : "p-0"
+                  } w-full h-full object-contain`}
+                />
+              </div>
 
-            <SidebarMenu
-              path="/"
-              shortTitle={
-                <p className="flex items-center justify-center">
-                  <RiHomeLine size={24} />
-                </p>
-              }
-              longTitle={
-                <div className="flex items-stretch justify-start gap-10">
-                  <div className="w-[10%]">
+              <SidebarMenu
+                path="/"
+                shortTitle={
+                  <p className="flex items-center justify-center">
                     <RiHomeLine size={24} />
+                  </p>
+                }
+                longTitle={
+                  <div className="flex items-stretch justify-start gap-5">
+                    <div className="w-[10%]">
+                      <RiHomeLine size={24} />
+                    </div>
+                    <div className="w-[90%]">{t("home")}</div>
                   </div>
-                  <div className="w-[90%]">{t("home")}</div>
-                </div>
-              }
-            />
+                }
+              />
 
-            <SidebarMenu
-              path="/search"
-              shortTitle={
-                <p className="flex items-center justify-center">
-                  <GoSearch size={24} />
-                </p>
-              }
-              longTitle={
-                <div className="flex items-stretch justify-start gap-10">
-                  <div className="w-[10%]">
+              <SidebarMenu
+                path="/search"
+                shortTitle={
+                  <p className="flex items-center justify-center">
                     <GoSearch size={24} />
+                  </p>
+                }
+                longTitle={
+                  <div className="flex items-stretch justify-start gap-5">
+                    <div className="w-[10%]">
+                      <GoSearch size={24} />
+                    </div>
+                    <div className="w-[90%]">{t("search")}</div>
                   </div>
-                  <div className="w-[90%]">{t("search")}</div>
-                </div>
-              }
-            />
+                }
+              />
 
-            {/* <SidebarMenu
-              path="/blogs"
-              shortTitle={
-                <p className="flex items-center justify-center">
-                  <TbBrandBlogger size={24} />
-                </p>
-              }
-              longTitle={
-                <div className="flex items-stretch justify-start gap-10">
-                  <div className="w-[10%]">
+              {/* <SidebarMenu
+                path="/blogs"
+                shortTitle={
+                  <p className="flex items-center justify-center">
                     <TbBrandBlogger size={24} />
+                  </p>
+                }
+                longTitle={
+                  <div className="flex items-stretch justify-start gap-10">
+                    <div className="w-[10%]">
+                      <TbBrandBlogger size={24} />
+                    </div>
+                    <div className="w-[90%]">{t("blogs")}</div>
                   </div>
-                  <div className="w-[90%]">{t("blogs")}</div>
-                </div>
-              }
-            /> */}
+                }
+              /> */}
 
-            {/* <SidebarMenu
-              path="/subscribe-blogs"
-              shortTitle={
-                <div className="flex items-center justify-center">
-                  <FaRegStar size={24} />
-                </div>
-              }
-              longTitle={
-                <div className="flex items-stretch justify-start gap-10">
-                  <div className="w-[10%]">
+              {/* <SidebarMenu
+                path="/subscribe-blogs"
+                shortTitle={
+                  <div className="flex items-center justify-center">
                     <FaRegStar size={24} />
                   </div>
-                  <div className="w-[90%]">{t("subscribe-blogs")}</div>
-                </div>
-              }
-            /> */}
+                }
+                longTitle={
+                  <div className="flex items-stretch justify-start gap-10">
+                    <div className="w-[10%]">
+                      <FaRegStar size={24} />
+                    </div>
+                    <div className="w-[90%]">{t("subscribe-blogs")}</div>
+                  </div>
+                }
+              /> */}
+            </div>
+
+            <div
+              className={`flex flex-col justify-start gap-3 ${
+                isSidebar ? "items-start w-full" : "items-center"
+              }`}
+            >
+              <SidebarMenu
+                path="/add-blog"
+                shortTitle={
+                  <p className="flex items-center justify-center">
+                    <IoAdd size={24} />
+                  </p>
+                }
+                longTitle={
+                  <div className="flex items-stretch justify-start gap-5">
+                    <div className="w-[10%]">
+                      <IoAdd size={24} />
+                    </div>
+                    <div className="w-[90%] mt-0.5">{t("add")}</div>
+                  </div>
+                }
+              />
+            </div>
           </div>
 
           {/* Bottom */}

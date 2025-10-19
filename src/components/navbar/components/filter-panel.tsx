@@ -49,7 +49,7 @@ export default function FilterPanel({
           className="absolute top-12 right-0 w-60 h-fit bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-lg overflow-hidden z-50"
         >
           <div className="p-3 border-b border-white/30">
-            <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center justify-center gap-4">
               <label className="flex items-center gap-1.5 cursor-pointer">
                 <input
                   type="radio"
@@ -60,7 +60,7 @@ export default function FilterPanel({
                   disabled={isDisable}
                   className="cursor-pointer checked:cursor-default appearance-none h-3 w-3 mb-1 border border-white/40 rounded-full bg-white/20 checked:bg-white/90 focus:outline-none focus:ring-0 transition-all duration-200"
                 />
-                <span className="text-sm text-white/90">{t("filter.all")}</span>
+                <span className="text-md text-white/90">{t("filter.all")}</span>
               </label>
 
               <label className="flex items-center gap-1.5 cursor-pointer">
@@ -73,7 +73,7 @@ export default function FilterPanel({
                   disabled={isDisable}
                   className="cursor-pointer checked:cursor-default appearance-none h-3 w-3 mb-1 border border-white/40 rounded-full bg-white/20 checked:bg-white/80 focus:outline-none focus:ring-0 transition-all duration-200"
                 />
-                <span className="text-sm text-white/90">
+                <span className="text-md text-white/90">
                   {t("filter.free")}
                 </span>
               </label>
@@ -88,7 +88,7 @@ export default function FilterPanel({
                   disabled={isDisable}
                   className="cursor-pointer checked:cursor-default appearance-none h-3 w-3 mb-1 border border-white/40 rounded-full bg-white/20 checked:bg-white/90 focus:outline-none focus:ring-0 transition-all duration-200"
                 />
-                <span className="text-sm text-white/90">
+                <span className="text-md text-white/90">
                   {t("filter.subscribe")}
                 </span>
               </label>
