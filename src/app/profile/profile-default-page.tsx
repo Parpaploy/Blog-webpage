@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import { FiEdit3 } from "react-icons/fi";
 import { Logout } from "../../../lib/auth";
 import { IUserProps } from "../../../interfaces/props.interface";
+import imageCompression from "browser-image-compression";
 
 export default function ProfileDefaultPage({ user }: IUserProps) {
   const router = useRouter();
@@ -25,6 +26,7 @@ export default function ProfileDefaultPage({ user }: IUserProps) {
 
   const [isSaving, setIsSaving] = useState(false);
   const [isLogout, setIsLogout] = useState(false);
+  const [isCompressing, setIsCompressing] = useState(false);
   const [messageKeys, setMessageKeys] = useState<string[]>([]);
   const [messageType, setMessageType] = useState<"success" | "error" | null>(
     null
@@ -64,11 +66,35 @@ export default function ProfileDefaultPage({ user }: IUserProps) {
     }
   };
 
-  const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
     if (f) {
       setPreview(URL.createObjectURL(f));
-      setFile(f);
+      setIsCompressing(true);
+      setMessageKeys([]);
+      setMessageType(null);
+
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1024,
+        useWebWorker: true,
+      };
+
+      try {
+        //console.log(`Original file size: ${f.size / 1024 / 1024} MB`);
+        const compressedFile = await imageCompression(f, options);
+        //console.log(`Compressed file size: ${compressedFile.size / 1024 / 1024} MB`);
+
+        setFile(compressedFile);
+      } catch (error) {
+        //console.error("Image compression failed:", error);
+        setMessageKeys(["imageCompressionError"]);
+        setMessageType("error");
+        setFile(null);
+        setPreview(null);
+      } finally {
+        setIsCompressing(false);
+      }
     }
   };
 

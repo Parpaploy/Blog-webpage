@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
   images: {
     domains: ["localhost"],
   },
+  // serverActions: {
+  //   bodySizeLimit: "10mb",
+  // },
 
   async headers() {
     return [
