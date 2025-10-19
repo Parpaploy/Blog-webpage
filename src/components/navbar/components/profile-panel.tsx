@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import ProfileMenu from "./profile-menu";
 import { Logout } from "../../../../lib/auth";
 import { useTranslation } from "react-i18next";
+import { motion, AnimatePresence } from "framer-motion";
 
 const ProfilePanel = ({
   toggle,
@@ -12,10 +13,36 @@ const ProfilePanel = ({
 }) => {
   const { t } = useTranslation("navbar");
 
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!toggle) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        panelRef.current &&
+        !panelRef.current.contains(event.target as Node)
+      ) {
+        setToggle(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [toggle, setToggle]);
+
   return (
-    <>
+    <AnimatePresence>
       {toggle && (
-        <div
+        <motion.div
+          ref={panelRef}
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.2 }}
           onClick={(e) => e.stopPropagation()}
           className="absolute top-12 right-0 w-60 h-fit bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-lg overflow-hidden"
         >
@@ -38,9 +65,9 @@ const ProfilePanel = ({
           >
             {t("logout")}
           </div>
-        </div>
+        </motion.div>
       )}
-    </>
+    </AnimatePresence>
   );
 };
 

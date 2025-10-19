@@ -307,6 +307,7 @@ function Search({
   const handleSearch = () => {
     if (isQueryUnchanged()) return;
     setShowSuggestions(false);
+    setOpenNavbar(false);
 
     const newParams = new URLSearchParams(params.toString());
     if (query.trim() !== "") {
@@ -334,13 +335,14 @@ function Search({
   const handleReset = () => {
     setIsOpenCat(false);
     setIsOpenFilter(false);
+    setOpenNavbar(false);
+    setShowSuggestions(false);
 
     setTimeout(() => {
       setQuery("");
       setSelectedCategories([]);
       setLoadingCategories([]);
       setSuggestions([]);
-      setShowSuggestions(false);
     }, 3000);
     startTransition(() => {
       router.push(`/search`);
@@ -387,7 +389,7 @@ function Search({
       </button>
 
       {/* Input */}
-      <div className="2xl:min-w-100 xl:min-w-70 lg:min-w-70 md:min-w-30 h-full flex-1 relative">
+      <div className="2xl:min-w-100 xl:min-w-90 lg:min-w-70 md:min-w-30 h-full flex-1 relative">
         <input
           ref={inputRef}
           type="text"
