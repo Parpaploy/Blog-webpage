@@ -18,6 +18,7 @@ import { HiOutlineExclamationCircle } from "react-icons/hi2";
 import { useTranslation } from "react-i18next";
 import { useToggle } from "../../../hooks/toggle";
 import { motion, AnimatePresence } from "framer-motion";
+import CardPanel from "../card-panel";
 
 export default function SubscribeBlogCard({
   subBlog,
@@ -155,73 +156,18 @@ export default function SubscribeBlogCard({
         </div>
       </div>
 
-      <AnimatePresence>
-        {isToggle && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            transition={{ duration: 0.2 }}
-            className="absolute bottom-10 right-2 w-60 h-fit bg-black/50 backdrop-blur-sm backdrop-brightness-200 border border-white/30 shadow-md rounded-lg overflow-hidden z-50"
-          >
-            <div
-              onClick={(e) => {
-                e.stopPropagation();
-                goToUserBlogs(e);
-                setOpenBlogId(null);
-              }}
-              className={`text-white/80 hover:bg-white/30 hover:text-white/90 backdrop-blur-3xl cursor-pointer text-md transition-all px-3 pt-2`}
-            >
-              <div
-                className={`flex items-center justify-start gap-3 ${
-                  user?.documentId != subBlog.author?.documentId && "pb-2"
-                }`}
-              >
-                <HiOutlineExclamationCircle size={20} />
-                <p className="mt-1">{t("author_profile")}</p>
-              </div>
-              {user && user?.documentId == subBlog.author?.documentId && (
-                <div className="w-full h-[1px] bg-white/30 mt-2" />
-              )}
-            </div>
+      <CardPanel
+        blog={subBlog}
+        user={user}
+        isToggle={isToggle}
+        setOpenBlogId={setOpenBlogId}
+        setShowDeletePanel={setShowDeletePanel}
+        setSelectedDocumentId={setSelectedDocumentId}
+        goToUserBlogs={goToUserBlogs}
+        router={router}
+        t={t}
+      />
 
-            {user && user?.documentId == subBlog.author?.documentId && (
-              <>
-                <div
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    router.push(`/edit-subscribe-blog/${subBlog.documentId}`);
-                    setOpenBlogId(null);
-                  }}
-                  className={`text-white/80 hover:bg-white/30 hover:text-white/90 backdrop-blur-3xl cursor-pointer text-md transition-all px-3 pt-2`}
-                >
-                  <div className="flex items-center justify-start gap-3 py-1">
-                    <FiEdit3 /> <p>{t("edit")}</p>
-                  </div>
-                  <div className="w-full h-[1px] bg-white/30 mt-2" />
-                </div>
-                <div
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (setSelectedDocumentId !== undefined) {
-                      setSelectedDocumentId(subBlog.documentId);
-                    }
-                    if (setShowDeletePanel !== undefined) {
-                      setShowDeletePanel(true);
-                    }
-                    setOpenBlogId(null);
-                  }}
-                  className={`text-white/80 hover:bg-white/30 hover:text-white/90 backdrop-blur-3xl cursor-pointer text-md transition-all px-3 py-2`}
-                >
-                  <div className="flex items-center justify-start gap-3 pb-1">
-                    <AiOutlineDelete /> <p className="mt-1">{t("delete")}</p>
-                  </div>
-                </div>
-              </>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
       <Star />
     </div>
   );
