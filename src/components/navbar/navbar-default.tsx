@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   IBlog,
   ICategory,
@@ -43,6 +43,14 @@ export default function NavbarDefault({
   const [isOpenFilter, setIsOpenFilter] = React.useState<boolean>(false);
   const [isHover, setIsHover] = React.useState<boolean>(false);
 
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  const handleCloseSearch = () => {
+    setIsSearchOpen(false);
+    setIsOpenCat(false);
+    setIsOpenFilter(false);
+  };
+
   const defaultProfileUrl =
     "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1906669723.jpg";
 
@@ -54,10 +62,8 @@ export default function NavbarDefault({
   };
 
   useEffect(() => {
-    if (navRef.current) {
-      return registerRef(navRef.current, "navbar");
-    }
-  }, [registerRef]);
+    return registerRef(navRef.current, "navbar");
+  }, [registerRef, user]);
 
   useEffect(() => {
     setOpenNavbar(false);
@@ -66,6 +72,9 @@ export default function NavbarDefault({
   const handleToggleProfile = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
+
+    setIsOpenCat(false);
+    setIsOpenFilter(false);
 
     setOpenNavbar((prev) => !prev);
   };
@@ -79,60 +88,76 @@ export default function NavbarDefault({
       <nav className="w-full h-full rounded-4xl">
         <div className="w-full h-full flex justify-between items-start text-white/70">
           {user !== null ? (
+            <div className="block md:hidden lg:block whitespace-nowrap font-semibold text-lg bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1 cursor-default">
+              {t("hello")} {user.username}
+            </div>
+          ) : (
+            <p className="block md:hidden lg:block whitespace-nowrap font-semibold text-lg bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1">
+              {t("guest")}
+            </p>
+          )}
+
+          <div
+            className={`w-full flex items-center lg:justify-center md:justify-start`}
+          >
+            {pathname === "/search" && (
+              <Search
+                categories={categories}
+                isOpenCat={isOpenCat}
+                setIsOpenCat={setIsOpenCat}
+                isHover={isHover}
+                setIsHover={setIsHover}
+                blogs={blogs}
+                subscribeBlogs={subscribeBlogs}
+                isOpenFilter={isOpenFilter}
+                setIsOpenFilter={setIsOpenFilter}
+                user={user}
+                isOpen={isSearchOpen}
+                onClose={handleCloseSearch}
+              />
+            )}
+          </div>
+
+          {user !== null ? (
             <>
-              <div className="font-semibold text-lg bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1 cursor-default">
-                {t("hello")} {user.username}
-              </div>
-
-              {pathname === "/search" && (
-                <Search
-                  categories={categories}
-                  isOpenCat={isOpenCat}
-                  setIsOpenCat={setIsOpenCat}
-                  isHover={isHover}
-                  setIsHover={setIsHover}
-                  blogs={blogs}
-                  subscribeBlogs={subscribeBlogs}
-                  isOpenFilter={isOpenFilter}
-                  setIsOpenFilter={setIsOpenFilter}
+              <div className="relative flex gap-3 items-center justify-center">
+                <LanguageSwitcher
+                  openNavbar={openNavbar}
+                  setOpenNavbar={setOpenNavbar}
+                  onCloseSearch={handleCloseSearch}
                 />
-              )}
-
-              <div className="flex gap-3 items-center justify-center">
-                <LanguageSwitcher />
 
                 <div
-                  ref={navRef}
-                  className="relative flex items-center justify-center"
+                  onClick={handleToggleProfile}
+                  className="cursor-pointer w-10 h-10 rounded-full border border-white/30 shadow-md"
                 >
-                  <div
-                    onClick={handleToggleProfile}
-                    className="cursor-pointer w-10 h-10 rounded-full border border-white/30 shadow-md"
-                  >
-                    <img
-                      className="w-full h-full rounded-full overflow-hidden object-cover aspect-square opacity-95"
-                      src={
-                        user?.profile?.formats?.small?.url
-                          ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${user.profile.formats.small.url}`
-                          : defaultProfileUrl
-                      }
-                      onError={handleImageError}
-                      alt={(user?.username || "Guest") + " profile picture"}
-                    />
-                  </div>
-
-                  <ProfilePanel toggle={openNavbar} setToggle={setOpenNavbar} />
+                  <img
+                    className="w-full h-full rounded-full overflow-hidden object-cover aspect-square opacity-95"
+                    src={
+                      user?.profile?.formats?.small?.url
+                        ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${user.profile.formats.small.url}`
+                        : defaultProfileUrl
+                    }
+                    onError={handleImageError}
+                    alt={(user?.username || "Guest") + " profile picture"}
+                  />
                 </div>
+
+                <ProfilePanel toggle={openNavbar} setToggle={setOpenNavbar} />
               </div>
             </>
           ) : (
             <>
-              <p className="font-semibold text-lg bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1">
-                {t("guest")}
-              </p>
-
-              <div className="flex justify-center items-center gap-2">
-                <LanguageSwitcher />
+              <div
+                className={`flex justify-center items-center gap-2 ${
+                  isSidebar && "lg:gap-2 md:gap-0.5"
+                }`}
+              >
+                <LanguageSwitcher
+                  openNavbar={openNavbar}
+                  setOpenNavbar={setOpenNavbar}
+                  onCloseSearch={handleCloseSearch}
+                />
                 <LoginButton isLoggedIn={isLoggedIn} title={t("login")} />
                 <SignupButton isLoggedIn={isLoggedIn} title={t("signup")} />
               </div>

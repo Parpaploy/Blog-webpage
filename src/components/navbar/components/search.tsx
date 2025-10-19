@@ -6,6 +6,7 @@ import {
   ICategory,
   IBlog,
   ISubscribeBlog,
+  IUser,
 } from "../../../../interfaces/strapi.interface";
 import { useRouter, useSearchParams } from "next/navigation";
 import CategoryMenu from "./category-menu";
@@ -16,6 +17,8 @@ import { useTranslation } from "react-i18next";
 import { BsFilter } from "react-icons/bs";
 import { BiCategory } from "react-icons/bi";
 import { BsSortUp, BsSortDown } from "react-icons/bs";
+import { useToggle } from "../../../../hooks/toggle";
+import { useSidebar } from "../../../../hooks/sidebar";
 
 function Search({
   isOpenCat,
@@ -27,6 +30,9 @@ function Search({
   subscribeBlogs,
   isOpenFilter,
   setIsOpenFilter,
+  user,
+  isOpen,
+  onClose,
 }: {
   isOpenCat: boolean;
   setIsOpenCat: (isOpenCat: boolean) => void;
@@ -37,11 +43,17 @@ function Search({
   categories: ICategory[];
   blogs: IBlog[];
   subscribeBlogs: ISubscribeBlog[];
+  user: IUser | null;
+  isOpen: boolean;
+  onClose: () => void;
 }) {
   const { t } = useTranslation("navbar");
 
-  const inputRef = useRef<HTMLInputElement>(null);
+  const { isSidebar } = useSidebar();
 
+  const { setOpenNavbar, registerBlogToggleCallback } = useToggle();
+
+  const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const params = useSearchParams();
   const searchContainerRef = useRef<HTMLDivElement>(null);
@@ -255,6 +267,14 @@ function Search({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    return registerBlogToggleCallback(() => {
+      setIsOpenCat(false);
+      setIsOpenFilter(false);
+      setShowSuggestions(false);
+    });
+  }, [registerBlogToggleCallback, setIsOpenCat, setIsOpenFilter]);
+
   const updateSearchParams = (
     newQuery?: string,
     newCategories?: string[],
@@ -333,7 +353,12 @@ function Search({
   }, [params.toString()]);
 
   return (
-    <div className="w-[35%] flex gap-3 h-10 relative" ref={searchContainerRef}>
+    <div
+      className={`flex gap-2 transition-all ${
+        isSidebar && "lg:gap-2 md:gap-0.5"
+      } h-10 relative`}
+      ref={searchContainerRef}
+    >
       {/* Category */}
       <button
         className={`flex w-10 items-center justify-center h-full transition-all backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1 cursor-pointer
@@ -347,6 +372,7 @@ function Search({
           e.currentTarget.blur();
           setShowSuggestions(false);
           setIsOpenFilter(false);
+          setOpenNavbar(false);
           setIsOpenCat(!isOpenCat);
           setCanHover(false);
         }}
@@ -361,7 +387,7 @@ function Search({
       </button>
 
       {/* Input */}
-      <div className="h-full flex-1 relative">
+      <div className="2xl:min-w-100 xl:min-w-70 lg:min-w-70 md:min-w-30 h-full flex-1 relative">
         <input
           ref={inputRef}
           type="text"
@@ -371,6 +397,7 @@ function Search({
           onFocus={() => {
             setIsOpenCat(false);
             setIsOpenFilter(false);
+            setOpenNavbar(false);
             if (query.trim().length >= 2 && suggestions.length > 0) {
               setShowSuggestions(true);
             }
@@ -469,6 +496,7 @@ function Search({
             e.currentTarget.blur();
             setShowSuggestions(false);
             setIsOpenCat(false);
+            setOpenNavbar(false);
             setIsOpenFilter(!isOpenFilter);
             setCanHover(false);
           }}
@@ -487,7 +515,6 @@ function Search({
             >
               <div className="p-3 border-b border-white/30">
                 <div className="flex items-center justify-between gap-2">
-                  {/* All */}
                   <label className="flex items-center gap-1.5 cursor-pointer">
                     <input
                       type="radio"
@@ -503,7 +530,6 @@ function Search({
                     </span>
                   </label>
 
-                  {/* Free */}
                   <label className="flex items-center gap-1.5 cursor-pointer">
                     <input
                       type="radio"
@@ -519,7 +545,6 @@ function Search({
                     </span>
                   </label>
 
-                  {/* Subscribe */}
                   <label className="flex items-center gap-1.5 cursor-pointer">
                     <input
                       type="radio"
@@ -539,10 +564,8 @@ function Search({
 
               {sortOptions.map((option, index) => {
                 const isActive = currentSort === option.key;
-
                 const isDisabled =
                   option.key === "price" && currentType === "blog";
-
                 const label = isActive
                   ? currentDir === "asc"
                     ? option.asc

@@ -11,4 +11,5 @@ export interface ToggleContextType {
     type: "navbar" | "blog",
     id?: string
   ) => () => void;
+  registerBlogToggleCallback: (callback: () => void) => () => void;
 }

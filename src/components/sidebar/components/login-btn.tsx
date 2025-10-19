@@ -30,11 +30,12 @@ export default function LoginButton({
           }}
           type="submit"
           className={`
-            ${isSidebar ? "w-full" : "w-auto"} 
             ${
-              isSidebar ? "rounded-2xl" : "rounded-full"
-            }  p-2 bg-white/10 border border-white/30 border-l-0 shadow-md transition-all h-10 
-            ${isSidebar ? "w-full px-3" : "w-10"} 
+              isSidebar
+                ? "w-full rounded-2xl py-2 px-2.5"
+                : "w-auto rounded-full px-2.5"
+            }  bg-white/10 border border-white/30 border-l-0 shadow-md transition-all h-10 
+        
             ${
               currentPath === "/login"
                 ? "text-white bg-white/40"

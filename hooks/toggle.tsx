@@ -17,6 +17,7 @@ export function ToggleProvider({ children }: { children: ReactNode }) {
   const [openNavbar, setOpenNavbar] = useState(false);
   const [openBlogId, setOpenBlogId] = useState<string | null>(null);
   const refs = useRef<Map<string, HTMLElement>>(new Map());
+  const onBlogToggleCallbacks = useRef<Set<() => void>>(new Set());
 
   const closeAll = useCallback(() => {
     setOpenNavbar(false);
@@ -46,8 +47,17 @@ export function ToggleProvider({ children }: { children: ReactNode }) {
   const handleSetOpenBlogId = useCallback((id: string | null) => {
     if (id !== null) {
       setOpenNavbar(false);
+
+      onBlogToggleCallbacks.current.forEach((callback) => callback());
     }
     setOpenBlogId(id);
+  }, []);
+
+  const registerBlogToggleCallback = useCallback((callback: () => void) => {
+    onBlogToggleCallbacks.current.add(callback);
+    return () => {
+      onBlogToggleCallbacks.current.delete(callback);
+    };
   }, []);
 
   const registerRef = useCallback(
@@ -107,6 +117,7 @@ export function ToggleProvider({ children }: { children: ReactNode }) {
         setOpenBlogId: handleSetOpenBlogId,
         closeAll,
         registerRef,
+        registerBlogToggleCallback,
       }}
     >
       {children}

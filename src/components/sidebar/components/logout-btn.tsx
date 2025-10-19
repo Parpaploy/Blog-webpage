@@ -39,13 +39,17 @@ export default function LogoutButton({
       onClick={handleLogout}
       disabled={isLogout}
       className={`
-    ${isSidebar ? "rounded-2xl w-full px-3" : "rounded-full w-10"}
+    ${
+      isSidebar
+        ? "rounded-2xl w-full py-2 px-2.5"
+        : "rounded-full w-auto px-2.5"
+    }
     ${
       !isLogout
         ? "hover:bg-white/20 hover:text-white/90 cursor-pointer"
         : "cursor-not-allowed opacity-50"
     }
-    p-2 text-white/50 hover:text-white/70 bg-white/10 border border-white/30 border-l-0 shadow-md transition-all h-10
+    text-white/50 hover:text-white/70 bg-white/10 border border-white/30 border-l-0 shadow-md transition-all h-10
   `}
     >
       {isLogout ? (
