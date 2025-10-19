@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   ICategory,
   ISubscribeBlog,
@@ -16,6 +16,7 @@ import { FiMoreHorizontal } from "react-icons/fi";
 import { AiOutlineDelete } from "react-icons/ai";
 import { HiOutlineExclamationCircle } from "react-icons/hi2";
 import { useTranslation } from "react-i18next";
+import { useToggle } from "../../../hooks/toggle";
 
 export default function SubscribeBlogCard({
   subBlog,
@@ -38,7 +39,10 @@ export default function SubscribeBlogCard({
 
   const { t } = useTranslation("subscribeBlogs");
 
-  const [isToggle, setIsToggle] = useState<boolean>(false);
+  const { openBlogId, setOpenBlogId, registerRef } = useToggle();
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const isToggle = openBlogId === subBlog.documentId;
 
   const goToUserBlogs = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -50,8 +54,20 @@ export default function SubscribeBlogCard({
     }
   };
 
+  const handleToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setOpenBlogId(isToggle ? null : subBlog.documentId);
+  };
+
+  useEffect(() => {
+    if (cardRef.current) {
+      return registerRef(cardRef.current, "blog", subBlog.documentId);
+    }
+  }, [registerRef, subBlog.documentId]);
+
   return (
     <div
+      ref={cardRef}
       onClick={() => {
         router.push(`/subscribe-blogs/${subBlog.documentId}`);
       }}
@@ -125,10 +141,7 @@ export default function SubscribeBlogCard({
               {FormatDate(subBlog.createdAt)}
             </p>
             <div
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsToggle(!isToggle);
-              }}
+              onClick={handleToggle}
               className={`${
                 isToggle
                   ? "bg-black/70 text-white/90"
@@ -147,7 +160,7 @@ export default function SubscribeBlogCard({
             onClick={(e) => {
               e.stopPropagation();
               goToUserBlogs(e);
-              setIsToggle(false);
+              setOpenBlogId(null);
             }}
             className={`text-white/80 hover:bg-white/30 hover:text-white/90 backdrop-blur-3xl cursor-pointer text-md transition-all px-3 pt-2`}
           >
@@ -170,7 +183,7 @@ export default function SubscribeBlogCard({
                 onClick={(e) => {
                   e.stopPropagation();
                   router.push(`/edit-subscribe-blog/${subBlog.documentId}`);
-                  setIsToggle(false);
+                  setOpenBlogId(null);
                 }}
                 className={`text-white/80 hover:bg-white/30 hover:text-white/90 backdrop-blur-3xl cursor-pointer text-md transition-all px-3 pt-2`}
               >
@@ -188,7 +201,7 @@ export default function SubscribeBlogCard({
                   if (setShowDeletePanel !== undefined) {
                     setShowDeletePanel(true);
                   }
-                  setIsToggle(false);
+                  setOpenBlogId(null);
                 }}
                 className={`text-white/80 hover:bg-white/30 hover:text-white/90 backdrop-blur-3xl cursor-pointer text-md transition-all px-3 py-2`}
               >

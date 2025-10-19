@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   IBlog,
   ICategory,
@@ -15,6 +15,7 @@ import LanguageSwitcher from "./components/language-switcher";
 import { usePathname } from "next/navigation";
 import ProfilePanel from "./components/profile-panel";
 import Search from "./components/search";
+import { useToggle } from "../../../hooks/toggle";
 
 export default function NavbarDefault({
   isLoggedIn,
@@ -32,15 +33,15 @@ export default function NavbarDefault({
   subscribeBlogs: ISubscribeBlog[];
 }) {
   const { t } = useTranslation("navbar");
-
   const { isSidebar } = useSidebar();
-
   const pathname = usePathname();
 
-  const [isToggle, setIsToggle] = useState<boolean>(false);
-  const [isOpenCat, setIsOpenCat] = useState<boolean>(false);
-  const [isOpenFilter, setIsOpenFilter] = useState<boolean>(false);
-  const [isHover, setIsHover] = useState<boolean>(false);
+  const { openNavbar, setOpenNavbar, registerRef } = useToggle();
+  const navRef = useRef<HTMLDivElement>(null);
+
+  const [isOpenCat, setIsOpenCat] = React.useState<boolean>(false);
+  const [isOpenFilter, setIsOpenFilter] = React.useState<boolean>(false);
+  const [isHover, setIsHover] = React.useState<boolean>(false);
 
   const defaultProfileUrl =
     "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1906669723.jpg";
@@ -49,13 +50,25 @@ export default function NavbarDefault({
     e: React.SyntheticEvent<HTMLImageElement, Event>
   ) => {
     e.currentTarget.src = defaultProfileUrl;
-
     e.currentTarget.onerror = null;
   };
 
   useEffect(() => {
-    setIsToggle(false);
-  }, [pathname]);
+    if (navRef.current) {
+      return registerRef(navRef.current, "navbar");
+    }
+  }, [registerRef]);
+
+  useEffect(() => {
+    setOpenNavbar(false);
+  }, [pathname, setOpenNavbar]);
+
+  const handleToggleProfile = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    setOpenNavbar((prev) => !prev);
+  };
 
   return (
     <main
@@ -89,21 +102,26 @@ export default function NavbarDefault({
                 <LanguageSwitcher />
 
                 <div
-                  onClick={() => {
-                    setIsToggle(!isToggle);
-                  }}
-                  className="cursor-pointer w-10 h-10 rounded-full border border-white/30 shadow-md"
+                  ref={navRef}
+                  className="relative flex items-center justify-center"
                 >
-                  <img
-                    className="w-full h-full rounded-full overflow-hidden object-cover aspect-square opacity-95"
-                    src={
-                      user?.profile?.formats?.small?.url
-                        ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${user.profile.formats.small.url}`
-                        : defaultProfileUrl
-                    }
-                    onError={handleImageError}
-                    alt={(user?.username || "Guest") + " profile picture"}
-                  />
+                  <div
+                    onClick={handleToggleProfile}
+                    className="cursor-pointer w-10 h-10 rounded-full border border-white/30 shadow-md"
+                  >
+                    <img
+                      className="w-full h-full rounded-full overflow-hidden object-cover aspect-square opacity-95"
+                      src={
+                        user?.profile?.formats?.small?.url
+                          ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${user.profile.formats.small.url}`
+                          : defaultProfileUrl
+                      }
+                      onError={handleImageError}
+                      alt={(user?.username || "Guest") + " profile picture"}
+                    />
+                  </div>
+
+                  <ProfilePanel toggle={openNavbar} setToggle={setOpenNavbar} />
                 </div>
               </div>
             </>
@@ -122,8 +140,6 @@ export default function NavbarDefault({
           )}
         </div>
       </nav>
-
-      <ProfilePanel toggle={isToggle} setToggle={setIsToggle} />
     </main>
   );
 }

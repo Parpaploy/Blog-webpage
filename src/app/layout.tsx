@@ -5,6 +5,7 @@ import Navbar from "@/components/navbar/navbar";
 import I18nProvider from "../../lib/i18n-provider";
 import Sidebar from "@/components/sidebar/sidebar";
 import { SidebarProvider } from "../../hooks/sidebar";
+import { ToggleProvider } from "../../hooks/toggle";
 
 const ibm = IBM_Plex_Sans_Thai({
   weight: ["400", "700"],
@@ -39,18 +40,20 @@ export default function RootLayout({
       >
         <I18nProvider>
           <SidebarProvider>
-            <div className="w-full h-full flex">
-              <Sidebar />
+            <ToggleProvider>
+              <div className="w-full h-full flex">
+                <Sidebar />
 
-              <div className="w-full h-full">
-                <Navbar />
+                <div className="w-full h-full">
+                  <Navbar />
 
-                {/* Page */}
-                <div className="w-full h-screen max-w-[1920px] pr-8 mx-auto">
-                  {children}
+                  {/* Page */}
+                  <div className="w-full h-screen max-w-[1920px] pr-8 mx-auto">
+                    {children}
+                  </div>
                 </div>
               </div>
-            </div>
+            </ToggleProvider>
           </SidebarProvider>
         </I18nProvider>
       </body>
