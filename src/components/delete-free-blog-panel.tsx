@@ -25,6 +25,10 @@ export default function DeleteFreeBlogPanel({
 
   const currentPath = usePathname();
 
+  const isOnDetailPage =
+    currentPath.startsWith("/subscribe-blogs/") ||
+    currentPath.startsWith("/blogs/");
+
   return (
     <main className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-black/50 backdrop-blur-md z-[999]">
       <div className="text-center p-10 bg-white/10 border border-white/30 shadow-md rounded-4xl max-w-md w-full mx-4">
@@ -68,12 +72,14 @@ export default function DeleteFreeBlogPanel({
               {t("success_title")}
             </p>
             <p className="mt-2 text-white/80">{t("success_message_free")}</p>
-            <button
-              onClick={onSuccess || onCancel}
-              className="cursor-pointer mt-3 text-white/80 w-full px-3 py-2 hover:bg-white/30 hover:text-white/90 bg-white/20 border border-white/30 shadow-md rounded-4xl transition-all"
-            >
-              {t("ok_button")}
-            </button>
+            {!isOnDetailPage && (
+              <button
+                onClick={onSuccess || onCancel}
+                className="cursor-pointer mt-3 text-white/80 w-full px-3 py-2 hover:bg-white/30 hover:text-white/90 bg-white/20 border border-white/30 shadow-md rounded-4xl transition-all"
+              >
+                {t("ok_button")}
+              </button>
+            )}
 
             {currentPath !== "/" && (
               <button

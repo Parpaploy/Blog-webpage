@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef, useState, useTransition } from "react";
 import { IBlog, IUser } from "../../../../interfaces/strapi.interface";
 import SmallBlogCard from "@/components/blogs/small-blog-card";
 import { FormatDate } from "../../../../utils/format-date";
@@ -8,23 +8,96 @@ import { FormatRichText } from "../../../../utils/format-rich-text";
 import { useTranslation } from "react-i18next";
 import { useSidebar } from "../../../../hooks/sidebar";
 import GlobalLoading from "@/app/loading";
+import { useRouter } from "next/navigation";
+import { deleteFreeBlog } from "../../../../lib/apis/blog-uploader";
+import DetailPanel from "@/components/detail-panel";
+import { FiMoreHorizontal } from "react-icons/fi";
+import DeleteFreeBlogPanel from "@/components/delete-free-blog-panel";
+import { useToggle } from "../../../../hooks/toggle";
 
 export default function BlogDetailPage({
   blog,
   blogs,
   blogUser,
   user,
+  token,
 }: {
   blog: IBlog;
   blogs: IBlog[];
   blogUser: IBlog;
   user: IUser | null;
+  token: string | undefined;
 }) {
   const { t } = useTranslation("blogs");
 
   const { isSidebar } = useSidebar();
 
+  const router = useRouter();
+
   // console.log(blog);
+
+  const { openBlogId, setOpenBlogId, registerRef } = useToggle();
+  const panelRef = useRef<HTMLButtonElement>(null);
+  const isToggle = openBlogId === blog.documentId;
+
+  useEffect(() => {
+    if (panelRef.current) {
+      registerRef(panelRef.current, "blog", blog.documentId);
+    }
+  }, [registerRef, blog.documentId]);
+
+  const handleToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setOpenBlogId(isToggle ? null : blog.documentId);
+  };
+
+  const [showDeletePanel, setShowDeletePanel] = useState(false);
+  const [selectedDocumentId, setSelectedDocumentId] = useState<string | null>(
+    null
+  );
+  const [isPending, startTransition] = useTransition();
+  const [freeDeleteStatus, setFreeDeleteStatus] = useState<
+    "confirm" | "deleting" | "success" | "error"
+  >("confirm");
+  const [deleteError, setDeleteError] = useState<string>("");
+
+  const goToUserBlogs = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (user?.id !== blog.author?.id) {
+      router.push(`/user-blogs/${blog.author?.id}`);
+    } else {
+      router.push("/your-blogs");
+    }
+  };
+
+  const handleDeleteFreeConfirm = async () => {
+    const docId = selectedDocumentId || blog.documentId;
+    if (!docId || !token) return;
+
+    setFreeDeleteStatus("deleting");
+    const result = await deleteFreeBlog(docId, token);
+    if (result.success) {
+      setFreeDeleteStatus("success");
+    } else {
+      setFreeDeleteStatus("error");
+      setDeleteError(result.error || "Failed to delete blog");
+    }
+  };
+
+  const handleFreeDeleteSuccess = () => {
+    startTransition(() => {
+      setTimeout(() => {
+        router.refresh();
+      }, 500);
+    });
+  };
+
+  const handleFreeDeleteCancel = () => {
+    setShowDeletePanel(false);
+    setFreeDeleteStatus("confirm");
+    setSelectedDocumentId(null);
+    setDeleteError("");
+  };
 
   const authorBlogs = blog?.author?.id
     ? blogs.filter(
@@ -52,9 +125,38 @@ export default function BlogDetailPage({
       {/* Detail */}
       <section className="lg:w-[70%] w-full lg:h-full h-[70%] overflow-y-auto pr-8 lg:mb-0 mb-3 scrollbar-hide">
         <div className="before:block 2xl:before:h-[7svh] xl:before:h-[9svh] lg:before:h-[8svh] md:before:h-[6svh] before:content-['']" />
-        <div className="w-full text-start mb-5">
-          <h1 className="text-4xl font-bold">{blog?.title}</h1>
-          <p className="text-[#cfcfcf]">{blog?.description}</p>
+        <div className="w-full flex justify-between items-start mb-5">
+          <div className="w-full text-start">
+            <h1 className="text-4xl font-bold">{blog?.title}</h1>
+            <p className="text-[#cfcfcf]">{blog?.description}</p>
+          </div>
+
+          <div className="w-fit relative">
+            <button
+              ref={panelRef}
+              onClick={handleToggle}
+              className={`${
+                isToggle
+                  ? "bg-black/70 text-white/90"
+                  : "bg-black/50 hover:bg-black/70 text-white/80 hover:text-white/90"
+              } rounded-full border border-white/30 p-1 backdrop-blur-sm backdrop-brightness-200 transition-all 
+          cursor-pointer`}
+            >
+              <FiMoreHorizontal size={24} />
+
+              <DetailPanel
+                blog={blog}
+                user={user}
+                isToggle={isToggle}
+                setOpenBlogId={setOpenBlogId}
+                setShowDeletePanel={setShowDeletePanel}
+                setSelectedDocumentId={setSelectedDocumentId}
+                goToUserBlogs={goToUserBlogs}
+                router={router}
+                t={t}
+              />
+            </button>
+          </div>
         </div>
         <div className="w-full h-130 rounded-2xl overflow-hidden">
           <img
@@ -119,6 +221,17 @@ export default function BlogDetailPage({
           )}
         </div>
       </section>
+
+      {showDeletePanel && (
+        <DeleteFreeBlogPanel
+          onCancel={handleFreeDeleteCancel}
+          onConfirm={handleDeleteFreeConfirm}
+          status={freeDeleteStatus}
+          error={deleteError}
+          onSuccess={handleFreeDeleteSuccess}
+          isRefreshing={isPending}
+        />
+      )}
     </main>
   );
 }

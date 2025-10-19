@@ -179,6 +179,28 @@ function Search({
     });
   }, [registerBlogToggleCallback, setIsOpenCat, setIsOpenFilter]);
 
+  useEffect(() => {
+    if (!isOpenCat && !isOpenFilter) {
+      return;
+    }
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        searchContainerRef.current &&
+        !searchContainerRef.current.contains(event.target as Node)
+      ) {
+        setIsOpenCat(false);
+        setIsOpenFilter(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpenCat, isOpenFilter, setIsOpenCat, setIsOpenFilter]);
+
   const updateSearchParams = (
     newQuery: string = urlQuery,
     newCategories: string[] = selectedCategories,

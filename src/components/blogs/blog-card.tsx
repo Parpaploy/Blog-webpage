@@ -1,18 +1,14 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { IBlog, ICategory, IUser } from "../../../interfaces/strapi.interface";
 import { FormatDate } from "../../../utils/format-date";
 import CategoryTag from "../category-tag";
 import { useRouter } from "next/navigation";
 import HighlightText from "../highlight";
-import { FiEdit3 } from "react-icons/fi";
 import { FiMoreHorizontal } from "react-icons/fi";
-import { AiOutlineDelete } from "react-icons/ai";
-import { HiOutlineExclamationCircle } from "react-icons/hi2";
 import { useTranslation } from "react-i18next";
 import { useToggle } from "../../../hooks/toggle";
-import { motion, AnimatePresence } from "framer-motion";
 import CardPanel from "../card-panel";
 
 export default function BlogCard({
@@ -136,16 +132,16 @@ export default function BlogCard({
             <p className="xl:text-xs lg:text-[10px] md:text-[14px] text-[#bdbdbd]/70">
               {FormatDate(blog.createdAt)}
             </p>
-            <div
+            <button
               onClick={handleToggle}
               className={`${
                 isToggle
                   ? "bg-black/70 text-white/90"
                   : "bg-black/50 hover:bg-black/70 text-white/80 hover:text-white/90"
-              } rounded-full border border-white/30 p-1 backdrop-blur-sm backdrop-brightness-200 transition-all`}
+              } cursor-pointer rounded-full border border-white/30 p-1 backdrop-blur-sm backdrop-brightness-200 transition-all`}
             >
               <FiMoreHorizontal />
-            </div>
+            </button>
           </div>
         </div>
       </div>

@@ -24,12 +24,15 @@ export default async function BlogDetail({ params }: any) {
 
   const userToShow = fetchedUser || initialUser;
 
+  const token = cookieStore.get("token")?.value;
+
   return (
     <BlogDetailPage
       blog={blog}
       blogs={blogs}
       blogUser={blogUser}
       user={userToShow}
+      token={token}
     />
   );
 }
