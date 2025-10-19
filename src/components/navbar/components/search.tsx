@@ -80,6 +80,8 @@ function Search({
 
   const currentType = params.get("type") || "all";
 
+  const areFiltersActive = currentType !== "all" || currentSort !== "latest";
+
   const sortOptions = [
     {
       key: "latest",
@@ -127,6 +129,18 @@ function Search({
       newParams.set("sortBy", "latest");
       newParams.delete("sortDir");
     }
+
+    startTransition(() => {
+      router.push(`/search?${newParams.toString()}`);
+    });
+  };
+
+  const handleResetFilters = () => {
+    setIsOpenFilter(false);
+    const newParams = new URLSearchParams(params.toString());
+    newParams.delete("type");
+    newParams.delete("sortBy");
+    newParams.delete("sortDir");
 
     startTransition(() => {
       router.push(`/search?${newParams.toString()}`);
@@ -363,13 +377,14 @@ function Search({
     >
       {/* Category */}
       <button
-        className={`flex w-10 items-center justify-center h-full transition-all backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1 cursor-pointer
-              ${
-                isOpenCat
-                  ? "bg-white/30 text-white/90"
-                  : "bg-white/10 hover:bg-white/30 text-white/60 hover:text-white/80"
-              }
-                  ${!isProcessing ? "" : "opacity-60 pointer-events-none"}`}
+        disabled={isProcessing}
+        className={`flex w-10 items-center justify-center h-full transition-all backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1
+          ${
+            isOpenCat
+              ? "bg-white/30 text-white/90"
+              : "bg-white/10 hover:bg-white/30 text-white/60 hover:text-white/80"
+          }disabled:bg-white/10 disabled:text-white/60 disabled:opacity-60 disabled:cursor-not-allowed 
+          ${!isProcessing ? "cursor-pointer" : ""}`}
         onClick={(e) => {
           e.currentTarget.blur();
           setShowSuggestions(false);
@@ -470,11 +485,11 @@ function Search({
 
       {/* Search */}
       <button
-        className={`flex w-10 items-center justify-center h-full transition-all bg-white/10 hover:bg-white/30 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1 cursor-pointer ${
-          isProcessing || isQueryUnchanged()
-            ? "opacity-60 pointer-events-none"
-            : ""
-        }`}
+        disabled={isProcessing || isQueryUnchanged()}
+        className={`flex w-10 items-center justify-center h-full transition-all bg-white/10 hover:bg-white/30 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1 
+                    disabled:opacity-60 disabled:cursor-not-allowed disabled:bg-white/10 ${
+                      isProcessing || isQueryUnchanged() ? "" : "cursor-pointer"
+                    }`}
         onClick={handleSearch}
       >
         {isSearching ? (
@@ -487,13 +502,14 @@ function Search({
       {/* Filter */}
       <div className="relative">
         <button
-          className={`flex w-10 items-center justify-center h-full transition-all backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1 cursor-pointer
-                ${
-                  isOpenFilter
-                    ? "bg-white/30 text-white/90"
-                    : "bg-white/10 hover:bg-white/30 text-white/80 hover:text-white/90"
-                }
-                    ${!isProcessing ? "" : "opacity-60 pointer-events-none"}`}
+          disabled={isProcessing}
+          className={`flex w-10 items-center justify-center h-full transition-all backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1
+            ${
+              isOpenFilter
+                ? "bg-white/30 text-white/90"
+                : "bg-white/10 hover:bg-white/30 text-white/80 hover:text-white/90"
+            } disabled:opacity-60 disabled:cursor-not-allowed disabled:bg-white/10 disabled:text-white/80
+             ${!isProcessing ? "cursor-pointer" : ""}`}
           onClick={(e) => {
             e.currentTarget.blur();
             setShowSuggestions(false);
@@ -606,6 +622,22 @@ function Search({
                   </div>
                 );
               })}
+
+              <div
+                onClick={
+                  areFiltersActive && !isDisable
+                    ? handleResetFilters
+                    : undefined
+                }
+                className={`text-md transition-all px-3 py-2.5 flex items-center justify-center gap-2 ${
+                  areFiltersActive && !isDisable
+                    ? "text-white/80 hover:bg-white/30 hover:text-white/90 cursor-pointer"
+                    : "text-white/40 bg-white/10 cursor-not-allowed"
+                }`}
+              >
+                <RiResetRightLine size={16} />
+                <span>{t("filter.reset")}</span>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -613,23 +645,34 @@ function Search({
 
       {/* Reset */}
       <button
-        onClick={handleReset}
-        className={`group flex w-10 items-center justify-center h-full transition-all bg-white/10 hover:bg-white/30 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1 cursor-pointer ${
-          !isProcessing &&
-          (query.trim() !== "" ||
+        disabled={
+          isProcessing ||
+          !(
+            query.trim() !== "" ||
             selectedCategories.length > 0 ||
             params.get("sortBy") ||
-            params.get("type"))
-            ? ""
-            : "opacity-60 pointer-events-none"
-        }`}
+            params.get("type")
+          )
+        }
+        onClick={handleReset}
+        className={`group flex w-10 items-center justify-center h-full transition-all bg-white/10 hover:bg-white/30 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1 
+                    disabled:opacity-60 disabled:cursor-not-allowed disabled:bg-white/10
+                    ${
+                      !isProcessing &&
+                      (query.trim() !== "" ||
+                        selectedCategories.length > 0 ||
+                        params.get("sortBy") ||
+                        params.get("type"))
+                        ? "cursor-pointer"
+                        : ""
+                    }`}
       >
         <RiResetRightLine
           size={20}
           className={`${
             isPending
               ? "animate-spin-smooth"
-              : "group-hover:rotate-360 transition-transform duration-500"
+              : "group-hover:rotate-360 transition-transform duration-500 group-disabled:rotate-0"
           }`}
         />
       </button>

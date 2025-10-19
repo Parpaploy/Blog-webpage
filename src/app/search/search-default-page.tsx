@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useEffect, useState, useTransition } from "react";
+import React, { useEffect, useMemo, useState, useTransition } from "react";
 import { useSidebar } from "../../../hooks/sidebar";
 import { useTranslation } from "react-i18next";
 import {
   IBlog,
-  ICategory,
   ISubscribeBlog,
   IUser,
 } from "../../../interfaces/strapi.interface";
@@ -20,8 +19,8 @@ import {
 } from "../../../lib/apis/blog-uploader";
 import DeleteSubscribeBlogPanel from "@/components/delete-subscribe-blog-panel";
 import DeleteFreeBlogPanel from "@/components/delete-free-blog-panel";
-import { TFunction } from "i18next";
 import { BlogEntry } from "../../../types/logic.type";
+import { filterAndSortBlogs } from "../../../utils/search-helper";
 
 export default function SearchDefaultPage({
   blogs,
@@ -41,26 +40,27 @@ export default function SearchDefaultPage({
   const router = useRouter();
 
   const params = useSearchParams();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const selectedCategories = params.getAll("category");
-
   const query = params.get("query") || "";
-  const queryLower = query.toLowerCase();
 
-  const allBlogs: BlogEntry[] = [
-    ...(blogs || []).map((blog) => ({
-      ...blog,
-      type: "blog" as const,
-      sortPrice: 0,
-    })),
+  const allBlogs: BlogEntry[] = useMemo(
+    () => [
+      ...(blogs || []).map((blog) => ({
+        ...blog,
+        type: "blog" as const,
+        sortPrice: 0,
+      })),
 
-    ...(subscribeBlogs || []).map((subBlog) => ({
-      ...subBlog,
-      type: "subscribe" as const,
-      sortPrice: parseFloat(subBlog.price) || 0,
-    })),
-  ];
+      ...(subscribeBlogs || []).map((subBlog) => ({
+        ...subBlog,
+        type: "subscribe" as const,
+        sortPrice: parseFloat(subBlog.price) || 0,
+      })),
+    ],
+    [blogs, subscribeBlogs]
+  );
 
   const [filteredBlogs, setFilteredBlogs] = useState<BlogEntry[]>(allBlogs);
 
@@ -171,50 +171,13 @@ export default function SearchDefaultPage({
     setIsLoading(true);
 
     const timer = setTimeout(() => {
-      const sortBy = params.get("sortBy") || "latest";
+      const sortedAndFiltered = filterAndSortBlogs(allBlogs, params);
 
-      const type = params.get("type") || "all";
-
-      const filtered = allBlogs.filter((item) => {
-        const matchQuery =
-          !queryLower ||
-          item.title?.toLowerCase().includes(queryLower) ||
-          item.description?.toLowerCase().includes(queryLower) ||
-          item.author?.username?.toLowerCase().includes(queryLower);
-
-        const matchCategory =
-          selectedCategories.length === 0 ||
-          selectedCategories.every((selectedCat) =>
-            item.categories?.some((cat: ICategory) => cat.title === selectedCat)
-          );
-
-        const matchType = type === "all" || item.type === type;
-
-        return matchQuery && matchCategory && matchType;
-      });
-
-      const sorted = filtered.sort((a, b) => {
-        switch (sortBy) {
-          case "alphabetical":
-            return a.title.localeCompare(b.title);
-
-          case "price":
-            return b.sortPrice - a.sortPrice;
-
-          case "latest":
-          default:
-            return (
-              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-            );
-        }
-      });
-
-      setFilteredBlogs(sorted);
+      setFilteredBlogs(sortedAndFiltered);
       setIsLoading(false);
     }, 500);
-
     return () => clearTimeout(timer);
-  }, [params.toString()]);
+  }, [params, allBlogs]);
 
   if (isLoading) {
     return <GlobalLoading />;
