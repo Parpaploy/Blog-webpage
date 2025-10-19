@@ -34,7 +34,7 @@ export default function RichTextEditor({
     editorProps: {
       attributes: {
         class:
-          "overflow-y-auto min-h-100 max-h-100 px-5 py-4 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-3xl focus:ring-2 focus:ring-white/30 focus:outline-none",
+          "overflow-y-auto min-h-100 max-h-100 px-10 py-15 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-3xl focus:ring-2 focus:ring-white/30 focus:outline-none",
       },
     },
     immediatelyRender: false,
@@ -60,7 +60,7 @@ export default function RichTextEditor({
           overflow: auto;
         }
       `}</style>
-      <MenuBar token={token} editor={editor} />
+      <MenuBar editor={editor} />
       <EditorContent editor={editor} />
     </div>
   );

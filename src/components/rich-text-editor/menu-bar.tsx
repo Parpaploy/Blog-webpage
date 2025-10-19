@@ -19,74 +19,10 @@ import {
 } from "lucide-react";
 import { Toggle } from "../ui/toggle";
 
-export default function MenuBar({
-  editor,
-  token,
-}: {
-  editor: any;
-  token: string | undefined;
-}) {
+export default function MenuBar({ editor }: { editor: any }) {
   if (!editor) return null;
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleImageUpload = async (file: File) => {
-    const timestamp = Date.now();
-    const randomStr = Math.random().toString(36).substring(2, 8);
-    const fileExtension = file.name.split(".").pop() || "jpg";
-    const safeFileName = `image_${timestamp}_${randomStr}.${fileExtension}`;
-
-    const renamedFile = new File([file], safeFileName, { type: file.type });
-
-    const formData = new FormData();
-    formData.append("files", renamedFile);
-
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/upload`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        }
-      );
-
-      if (!res.ok) {
-        const errorText = await res.text();
-        let errorData;
-        try {
-          errorData = JSON.parse(errorText);
-        } catch {
-          errorData = { message: errorText };
-        }
-        console.error("Upload error:", errorData);
-        alert(
-          `อัปโหลดไม่สำเร็จ: ${
-            errorData.error?.message || errorData.message || "Unknown error"
-          }`
-        );
-        return;
-      }
-
-      const data = await res.json();
-      const imageUrl = data[0]?.url
-        ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${data[0].url}`
-        : null;
-
-      if (imageUrl) {
-        editor.chain().focus().setImage({ src: imageUrl }).run();
-      } else {
-        alert("อัปโหลดไม่สำเร็จ: ไม่พบ URL ของรูปภาพ");
-      }
-    } catch (error: any) {
-      console.error("Upload failed:", error);
-      alert(
-        `เกิดข้อผิดพลาดขณะอัปโหลดรูปภาพ: ${error.message || "Unknown error"}`
-      );
-    }
-  };
 
   const addImage = () => {
     fileInputRef.current?.click();
@@ -105,7 +41,16 @@ export default function MenuBar({
         return;
       }
 
-      handleImageUpload(file);
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+        const base64Url = event.target?.result as string;
+        if (base64Url && editor) {
+          editor.chain().focus().setImage({ src: base64Url }).run();
+        }
+      };
+
+      reader.readAsDataURL(file);
     }
   };
 
@@ -170,6 +115,7 @@ export default function MenuBar({
       onClick: () => editor.chain().focus().toggleHighlight().run(),
       pressed: editor.isActive("highlight"),
     },
+
     { icon: <ImageIcon />, onClick: addImage, pressed: false },
   ];
 

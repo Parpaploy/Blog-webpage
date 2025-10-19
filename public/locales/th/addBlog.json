@@ -17,7 +17,7 @@
   "status": {
     "submitting": "กำลังโพสต์บล็อกของคุณ...",
     "successTitle": "สำเร็จ!",
-    "successBody": "โพสต์บล็อกของคุณถูกโพสต์แล้ว",
+    "successBody": "บล็อกของคุณถูกโพสต์แล้ว",
     "successButton": "ดูบล็อกของฉัน",
     "homeButton": "กลับไปหน้าหลัก",
     "createAnotherButton": "สร้างบล็อกใหม่ต่อ",

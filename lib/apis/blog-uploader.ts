@@ -269,11 +269,22 @@ export async function createBlog({
       throw new Error("No thumbnail ID returned from upload");
     }
 
+    let processedDetail = detail; // detail ที่มี Base64
+    if (detail && Object.keys(detail).length > 0) {
+      console.log("⏳ Processing Rich Text images before create...");
+      // เรียกฟังก์ชันใหม่ของเรา
+      processedDetail = await processRichTextImages(detail, token);
+      console.log("✅ Rich Text images processed.");
+    }
+
     const blogData: any = {
       data: {
         title,
         description,
-        detail: detail && Object.keys(detail).length > 0 ? detail : null,
+        detail:
+          processedDetail && Object.keys(processedDetail).length > 0
+            ? processedDetail
+            : null,
         author: authorId,
         categories,
         thumbnail: thumbnailId,
@@ -372,11 +383,21 @@ export async function updateFreeBlog({
       //console.log("🖼️ New thumbnail ID:", thumbnailId);
     }
 
+    let processedDetail = detail;
+    if (detail && Object.keys(detail).length > 0) {
+      //console.log("⏳ Processing Rich Text images before update...");
+      processedDetail = await processRichTextImages(detail, token);
+      //console.log("✅ Rich Text images processed.");
+    }
+
     const blogData: any = {
       data: {
         title,
         description,
-        detail: detail && Object.keys(detail).length > 0 ? detail : null,
+        detail:
+          processedDetail && Object.keys(processedDetail).length > 0
+            ? processedDetail
+            : null,
         categories,
       },
     };
@@ -413,18 +434,17 @@ export async function updateFreeBlog({
     const result = await res.json();
     //console.log("✅ Blog updated successfully");
 
-    // ลบ thumbnail เก่า
     if (oldThumbnailId && thumbnailId) {
       //console.log("🗑️ Deleting old thumbnail:", oldThumbnailId);
       const deleted = await deleteMedia(oldThumbnailId, token);
       //console.log("Delete old thumbnail result:", deleted);
     }
 
-    if (oldDetail && detail) {
+    if (oldDetail && processedDetail) {
       //console.log("\n" + "=".repeat(50));
       //console.log("🔍 CHECKING RICH TEXT IMAGES FOR CLEANUP");
       //console.log("=".repeat(50));
-      await deleteUnusedRichTextImages(oldDetail, detail, token);
+      await deleteUnusedRichTextImages(oldDetail, processedDetail, token);
       //console.log("=".repeat(50) + "\n");
     } else {
       //console.log("⚠️ No old detail found, skipping Rich Text image cleanup");
@@ -498,11 +518,21 @@ export async function updateSubscribeBlog({
       //console.log("🖼️ New thumbnail ID:", thumbnailId);
     }
 
+    let processedDetail = detail;
+    if (detail && Object.keys(detail).length > 0) {
+      //console.log("⏳ Processing Rich Text images before update...");
+      processedDetail = await processRichTextImages(detail, token);
+      //console.log("✅ Rich Text images processed.");
+    }
+
     const blogData: any = {
       data: {
         title,
         description,
-        detail: detail && Object.keys(detail).length > 0 ? detail : null,
+        detail:
+          processedDetail && Object.keys(processedDetail).length > 0
+            ? processedDetail
+            : null,
         categories,
       },
     };
@@ -549,13 +579,13 @@ export async function updateSubscribeBlog({
       }, 1000);
     }
 
-    if (oldDetail && detail) {
+    if (oldDetail && processedDetail) {
       //console.log("\n" + "=".repeat(50));
       //console.log("🔍 CHECKING RICH TEXT IMAGES FOR CLEANUP");
       //console.log("=".repeat(50));
 
       setTimeout(async () => {
-        await deleteUnusedRichTextImages(oldDetail, detail, token);
+        await deleteUnusedRichTextImages(oldDetail, processedDetail, token);
         //console.log("=".repeat(50) + "\n");
       }, 1500);
     } else {
@@ -689,7 +719,7 @@ export async function deleteSubscribeBlog(
 
     let richTextImages: string[] = [];
     if (existingBlog?.data?.detail) {
-      const detail = existingBlog.data.detail; // Strapi JSON field returns object directly
+      const detail = existingBlog.data.detail;
       richTextImages = extractImageUrls(detail);
       //console.log(`📊 Found ${richTextImages.length} Rich Text images to delete`);
     }
@@ -781,4 +811,97 @@ export async function deleteSubscribeBlog(
       error: error.message || "An unexpected error occurred",
     };
   }
+}
+
+function base64ToFile(base64String: string): File {
+  try {
+    const parts = base64String.split(";base64,");
+    if (parts.length !== 2) {
+      throw new Error("Invalid base64 string");
+    }
+
+    const contentType = parts[0].split(":")[1];
+    if (!contentType) {
+      throw new Error("No content type in base64 string");
+    }
+
+    const extension = contentType.split("/")[1] || "jpg";
+
+    const timestamp = Date.now();
+    const randomStr = Math.random().toString(36).substring(2, 8);
+    const fileName = `richtext_${timestamp}_${randomStr}.${extension}`;
+
+    const byteCharacters = atob(parts[1]);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+
+    return new File([byteArray], fileName, { type: contentType });
+  } catch (error: any) {
+    //console.error("Failed to convert base64 to file:", error);
+    throw new Error(`Invalid Base64 string: ${error.message}`);
+  }
+}
+
+async function processRichTextImages(
+  detailNode: any,
+  token: string
+): Promise<any> {
+  if (!detailNode || typeof detailNode !== "object") return detailNode;
+
+  const newNode = { ...detailNode };
+
+  if (
+    (newNode.type === "resizableImage" || newNode.type === "image") &&
+    newNode.attrs?.src &&
+    newNode.attrs.src.startsWith("data:image/")
+  ) {
+    const base64String = newNode.attrs.src;
+
+    try {
+      const fileToUpload = base64ToFile(base64String);
+
+      const formData = new FormData();
+      formData.append("files", fileToUpload);
+
+      const uploadResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}/api/upload`,
+        {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+          body: formData,
+        }
+      );
+
+      if (!uploadResponse.ok) {
+        throw new Error("Failed to upload rich text image");
+      }
+
+      const uploadedFiles = await uploadResponse.json();
+      const newUrl = uploadedFiles[0]?.url;
+
+      if (newUrl) {
+        const fullUrl = `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${newUrl}`;
+        //console.log(`✅ Image uploaded, URL: ${fullUrl}`);
+        newNode.attrs = { ...newNode.attrs, src: fullUrl };
+      } else {
+        return null;
+      }
+    } catch (error) {
+      //console.error("❌ Failed to process/upload Base64 image:", error);
+      return null;
+    }
+  }
+
+  if (Array.isArray(newNode.content)) {
+    const newContent = await Promise.all(
+      newNode.content.map((child: any) => processRichTextImages(child, token))
+    );
+
+    newNode.content = newContent.filter(Boolean);
+  }
+
+  return newNode;
 }

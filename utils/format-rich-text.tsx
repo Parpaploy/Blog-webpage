@@ -15,7 +15,6 @@ export function FormatRichText(content: any) {
 
     if (target.src !== DEFAULT_IMAGE_URL) {
       target.src = DEFAULT_IMAGE_URL;
-
       target.onerror = null;
     }
   };
@@ -96,34 +95,103 @@ export function FormatRichText(content: any) {
 
       case "image":
       case "resizableImage": {
-        const width = node.attrs.width;
-        const isSmall = width && width < 600;
+        const layout = node.attrs?.layout || "inline";
+        const width = node.attrs?.width || 300;
 
-        const wrapperStyles: React.CSSProperties = {
-          margin: "1rem 0",
+        const getImageStyle = (): React.CSSProperties => {
+          const baseStyle: React.CSSProperties = {
+            width: `${width}px`,
+            height: "auto",
+            maxWidth: "100%",
+            display: "block",
+          };
+
+          switch (layout) {
+            case "inline":
+              return {
+                ...baseStyle,
+                display: "inline-block",
+                verticalAlign: "top",
+                margin: "4px 8px",
+              };
+            case "left":
+              return {
+                ...baseStyle,
+                float: "left",
+                marginRight: "16px",
+                marginBottom: "8px",
+                marginTop: "4px",
+              };
+            case "right":
+              return {
+                ...baseStyle,
+                float: "right",
+                marginLeft: "16px",
+                marginBottom: "8px",
+                marginTop: "4px",
+              };
+            case "center":
+              return {
+                ...baseStyle,
+                margin: "16px auto",
+              };
+            case "square":
+              return {
+                ...baseStyle,
+                float: "left",
+                marginRight: "12px",
+                marginBottom: "8px",
+                marginTop: "4px",
+                width: `${width}px`,
+                height: `${width}px`,
+                objectFit: "cover",
+              };
+            case "behind":
+              return {
+                ...baseStyle,
+                position: "absolute",
+                left: "50%",
+                transform: "translateX(-50%)",
+                opacity: 0.2,
+                zIndex: 0,
+              };
+            default:
+              return baseStyle;
+          }
         };
 
-        if (isSmall) {
-          wrapperStyles.float = "left";
-          wrapperStyles.margin = "4px 16px 8px 0";
-          wrapperStyles.display = "inline-block";
-        } else {
-          wrapperStyles.display = "flex";
-          wrapperStyles.justifyContent = "center";
-          wrapperStyles.clear = "both";
-        }
+        const getWrapperStyle = (): React.CSSProperties => {
+          const baseStyle: React.CSSProperties = {
+            position: "relative",
+            maxWidth: "100%",
+          };
+
+          if (layout === "center") {
+            return {
+              ...baseStyle,
+              display: "block",
+              clear: "both",
+              textAlign: "center",
+            };
+          } else if (layout === "behind") {
+            return {
+              ...baseStyle,
+              position: "relative",
+              width: "100%",
+              height: "0",
+            };
+          }
+
+          return baseStyle;
+        };
 
         return (
-          <span key={index} style={wrapperStyles}>
+          <span key={index} style={getWrapperStyle()}>
             <img
               src={node.attrs.src || DEFAULT_IMAGE_URL}
               alt={node.attrs.alt || "Image failed to load"}
-              className="max-w-full rounded-xl shadow-md"
-              style={{
-                width: width ? `${width}px` : "auto",
-                height: "auto",
-                display: "block",
-              }}
+              className="rounded-xl shadow-md"
+              style={getImageStyle()}
               onError={handleImageError}
             />
           </span>
@@ -180,7 +248,7 @@ export function FormatRichText(content: any) {
   };
 
   return (
-    <div>
+    <div className="relative">
       {content.content.map((node: any, index: number) =>
         renderNode(node, index)
       )}
