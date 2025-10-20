@@ -165,6 +165,10 @@ export default function SubscribeBlogCard({
       />
 
       <Star />
+
+      <div className="absolute top-2.5 right-2.5 px-1 rounded-md text-white/80 bg-white/10 backdrop-blur-sm border border-white/20 shadow-xs">
+        {subBlog.price} {t("baht")}
+      </div>
     </div>
   );
 }

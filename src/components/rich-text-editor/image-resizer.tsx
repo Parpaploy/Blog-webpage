@@ -199,7 +199,9 @@ export const ImageResizer = (props: any) => {
       >
         {(showMenu || isClicked) && layout !== "behind" && (
           <span
-            className="absolute -left-8 top-1/2 -translate-y-1/2 p-1 text-white/60 hover:text-white/90 bg-white/10 backdrop-blur-sm border border-white/30 hover:bg-white/30 shadow-md rounded cursor-move transition-colors"
+            className={`absolute -left-8 top-1/2 -translate-y-1/2 p-1 text-white/60 hover:text-white/90 bg-white/10 backdrop-blur-sm border border-white/30 hover:bg-white/30 shadow-md rounded cursor-move transition-all duration-200 ${
+              isClicked ? "opacity-100" : "opacity-70"
+            }`}
             title="ลากเพื่อย้ายตำแหน่ง"
           >
             <GripVertical size={16} />
@@ -230,7 +232,9 @@ export const ImageResizer = (props: any) => {
 
         {showMenu && layout !== "behind" && !isDragging && (
           <span
-            className="absolute -top-12 left-0 rounded-full p-1 flex gap-1 z-[9999] text-white/60 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md"
+            className={`absolute -top-12 left-0 rounded-full p-1 flex gap-1 z-[9999] text-white/60 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md transition-opacity duration-200 ${
+              isClicked ? "opacity-100" : "opacity-70"
+            }`}
             onMouseDown={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -276,11 +280,11 @@ export const ImageResizer = (props: any) => {
 
         {layout !== "behind" && !isDragging && (
           <span
-            className={`absolute bottom-0 right-0 w-6 h-6 bg-white border-2 border-white/80 rounded-full cursor-nwse-resize shadow-lg flex items-center justify-center ${
+            className={`absolute bottom-0 right-0 w-6 h-6 bg-white border-2 border-white/80 rounded-full cursor-nwse-resize shadow-lg flex items-center justify-center transition-all ${
               isResizing
                 ? "opacity-100 scale-110"
                 : "opacity-0 group-hover:opacity-100"
-            } transition-all`}
+            } ${isClicked && !isResizing ? "opacity-100" : ""}`}
             onMouseDown={handleMouseDown}
             style={{ transform: "translate(50%, 50%)" }}
           >

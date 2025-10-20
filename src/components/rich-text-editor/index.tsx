@@ -20,8 +20,12 @@ export default function RichTextEditor({
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
-        bulletList: { HTMLAttributes: { class: "list-disc ml-3" } },
-        orderedList: { HTMLAttributes: { class: "list-decimal ml-3" } },
+        bulletList: {
+          HTMLAttributes: { class: "list-disc list-outside pl-6" },
+        },
+        orderedList: {
+          HTMLAttributes: { class: "list-decimal list-outside pl-6" },
+        },
       }),
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       Highlight,
@@ -34,7 +38,7 @@ export default function RichTextEditor({
     editorProps: {
       attributes: {
         class:
-          "overflow-y-auto min-h-100 max-h-100 px-10 py-15 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-3xl focus:ring-2 focus:ring-white/30 focus:outline-none",
+          "overflow-y-auto min-h-115 max-h-115 px-10 py-15 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-3xl focus:ring-2 focus:ring-white/30 focus:outline-none",
       },
     },
     immediatelyRender: false,
@@ -46,18 +50,21 @@ export default function RichTextEditor({
   return (
     <div className="w-full">
       <style jsx global>{`
-        .ProseMirror p {
+        .ProseMirror p,
+        .ProseMirror ul,
+        .ProseMirror ol,
+        .ProseMirror h1,
+        .ProseMirror h2,
+        .ProseMirror h3,
+        .ProseMirror h4,
+        .ProseMirror h5,
+        .ProseMirror h6 {
           margin: 0;
           line-height: 1.6;
         }
 
-        .ProseMirror p + p {
-          margin-top: 0.5em;
-        }
-
-        .ProseMirror ul,
-        .ProseMirror ol {
-          overflow: auto;
+        .ProseMirror > * + * {
+          margin-top: 0.75em;
         }
       `}</style>
       <MenuBar editor={editor} />

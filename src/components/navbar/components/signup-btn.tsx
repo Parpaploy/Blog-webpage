@@ -42,13 +42,13 @@ export default function SignupButton({
                 router.push("/signup");
               }}
               type="submit"
-              className={`w-fit border border-white/30 border-l-0 backdrop-blur-sm shadow-md rounded-full p-1.75 transition-all ${
+              className={`w-fit border border-white/30 backdrop-blur-sm shadow-md rounded-full p-2.25 transition-all ${
                 currentPath === "/signup"
                   ? "text-white bg-white/40 cursor-default"
                   : "bg-white/10 hover:bg-white/20 text-white/50 hover:text-white/70 cursor-pointer"
               }`}
             >
-              <IoPersonAddOutline size={24} />
+              <IoPersonAddOutline size={20} />
             </button>
           )}
         </>
