@@ -192,144 +192,146 @@ export default function ProfileDefaultPage({ user }: IUserProps) {
         isSidebar ? "pl-65" : "pl-25"
       } transition-all`}
     >
-      <div className="flex flex-col items-center space-y-4 text-white/70">
-        <label
-          htmlFor="profile"
-          className="relative w-28 h-28 cursor-pointer group"
-        >
-          <img
-            src={
-              preview
-                ? preview
-                : user?.profile?.formats?.small?.url
-                ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${user.profile.formats.small.url}`
-                : defaultProfileUrl
-            }
-            alt="profile preview"
-            className="w-full h-full object-cover rounded-full bg-white/10 backdrop-blur-sm border border-white/30 shadow-md transition-all duration-200 group-hover:brightness-70 opacity-95"
-            onError={handleImageError}
-          />
-          <input
-            id="profile"
-            type="file"
-            name="profile"
-            accept="image/*"
-            onChange={handleChangeFile}
-            className="hidden"
-            disabled={isSaving || isLogout}
-          />
+      <div className="w-full pr-25">
+        <div className="w-full flex flex-col items-center space-y-4 text-white/70 mx-auto">
           <label
             htmlFor="profile"
-            className={`absolute bottom-0 right-0 bg-white/30 backdrop-blur-sm border border-white/30 shadow-md text-white text-xs p-2 rounded-full ${
-              isSaving || isLogout
-                ? "cursor-not-allowed opacity-50"
-                : "cursor-pointer group-hover:bg-white/10"
-            } transition-all`}
+            className="relative w-28 h-28 cursor-pointer group"
           >
-            <FiEdit3 size={18} />
+            <img
+              src={
+                preview
+                  ? preview
+                  : user?.profile?.formats?.small?.url
+                  ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${user.profile.formats.small.url}`
+                  : defaultProfileUrl
+              }
+              alt="profile preview"
+              className="w-full h-full object-cover rounded-full bg-white/10 backdrop-blur-sm border border-white/30 shadow-md transition-all duration-200 group-hover:brightness-70 opacity-95"
+              onError={handleImageError}
+            />
+            <input
+              id="profile"
+              type="file"
+              name="profile"
+              accept="image/*"
+              onChange={handleChangeFile}
+              className="hidden"
+              disabled={isSaving || isLogout}
+            />
+            <label
+              htmlFor="profile"
+              className={`absolute bottom-0 right-0 bg-white/30 backdrop-blur-sm border border-white/30 shadow-md text-white text-xs p-2 rounded-full ${
+                isSaving || isLogout
+                  ? "cursor-not-allowed opacity-50"
+                  : "cursor-pointer group-hover:bg-white/10"
+              } transition-all`}
+            >
+              <FiEdit3 size={18} />
+            </label>
           </label>
-        </label>
 
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSave();
-          }}
-          className="flex flex-col space-y-3 w-full max-w-sm mt-6"
-        >
-          {messageKeys.length > 0 && (
-            <div
-              className={`text-center p-2 rounded ${
-                messageType === "success"
-                  ? "bg-green-500/20 text-green-300"
-                  : "bg-red-500/20 text-red-300"
-              }`}
-            >
-              {messageKeys.map((k) => t(k)).join(" ")}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSave();
+            }}
+            className="flex flex-col space-y-3 w-full max-w-sm mt-6"
+          >
+            {messageKeys.length > 0 && (
+              <div
+                className={`text-center p-2 rounded ${
+                  messageType === "success"
+                    ? "bg-green-500/20 text-green-300"
+                    : "bg-red-500/20 text-red-300"
+                }`}
+              >
+                {messageKeys.map((k) => t(k)).join(" ")}
+              </div>
+            )}
+
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder={t("username")}
+              className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
+              disabled={isSaving || isLogout}
+            />
+
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder={t("email")}
+              className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
+              disabled={isSaving || isLogout}
+            />
+
+            <input
+              type="password"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              placeholder={t("currentPassword")}
+              className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
+              disabled={isSaving || isLogout}
+            />
+
+            <div className="w-full flex justify-end items-center -mt-2.5 -mb-0 pr-3">
+              <div
+                onClick={() => {
+                  if (!isSaving && !isLogout) {
+                    router.push("/forgot-password");
+                  }
+                }}
+                className={`${
+                  !isSaving && !isLogout
+                    ? "cursor-pointer hover:text-white/80"
+                    : "cursor-not-allowed opacity-50"
+                } text-blue-400/80 underline transition-all text-end`}
+              >
+                {t("forgotPassword")}
+              </div>
             </div>
-          )}
 
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder={t("username")}
-            className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
-            disabled={isSaving || isLogout}
-          />
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder={t("newPassword")}
+              className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
+              disabled={isSaving || isLogout}
+            />
 
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder={t("email")}
-            className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
-            disabled={isSaving || isLogout}
-          />
-
-          <input
-            type="password"
-            value={currentPassword}
-            onChange={(e) => setCurrentPassword(e.target.value)}
-            placeholder={t("currentPassword")}
-            className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
-            disabled={isSaving || isLogout}
-          />
-
-          <div className="w-full flex justify-end items-center -mt-2.5 -mb-0 pr-3">
-            <div
-              onClick={() => {
-                if (!isSaving && !isLogout) {
-                  router.push("/forgot-password");
-                }
-              }}
+            <button
+              type="submit"
               className={`${
-                !isSaving && !isLogout
-                  ? "cursor-pointer hover:text-white/80"
-                  : "cursor-not-allowed opacity-50"
-              } text-blue-400/80 underline transition-all text-end`}
+                isLogout || isSaving || !hasChanges
+                  ? "opacity-50 cursor-not-allowed"
+                  : "cursor-pointer hover:bg-white/30 hover:text-white/90"
+              } text-white/80 w-full px-3 py-2 bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl transition-all`}
+              disabled={isSaving || isLogout || !hasChanges}
             >
-              {t("forgotPassword")}
-            </div>
-          </div>
-
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder={t("newPassword")}
-            className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
-            disabled={isSaving || isLogout}
-          />
+              {isSaving ? t("saving") : t("saveChanges")}
+            </button>
+          </form>
 
           <button
-            type="submit"
-            className={`${
-              isLogout || isSaving || !hasChanges
+            className={`max-w-sm text-white/80 w-full px-3 py-2 ${
+              isLogout || isSaving
                 ? "opacity-50 cursor-not-allowed"
                 : "cursor-pointer hover:bg-white/30 hover:text-white/90"
-            } text-white/80 w-full px-3 py-2 bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl transition-all`}
-            disabled={isSaving || isLogout || !hasChanges}
+            } bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl transition-all`}
+            disabled={isLogout || isSaving}
+            onClick={async () => {
+              setIsLogout(true);
+              await Logout();
+              router.push("/");
+            }}
           >
-            {isSaving ? t("saving") : t("saveChanges")}
+            {isLogout ? t("isLogout") : t("logout")}
           </button>
-        </form>
-
-        <button
-          className={`max-w-sm text-white/80 w-full px-3 py-2 ${
-            isLogout || isSaving
-              ? "opacity-50 cursor-not-allowed"
-              : "cursor-pointer hover:bg-white/30 hover:text-white/90"
-          } bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl transition-all`}
-          disabled={isLogout || isSaving}
-          onClick={async () => {
-            setIsLogout(true);
-            await Logout();
-            router.push("/");
-          }}
-        >
-          {isLogout ? t("isLogout") : t("logout")}
-        </button>
+        </div>
       </div>
     </main>
   );

@@ -8,9 +8,10 @@ export default function GlobalLoading() {
 
   return (
     <main
-      className={`w-full h-[93svh] flex items-center justify-center ${
-        isSidebar ? "pl-65" : "pl-25"
-      } transition-all`}
+      className={`w-screen fixed left-0 h-full ${
+        isSidebar && "pl-25"
+      } transition-all 
+      flex items-center justify-center`}
     >
       <div className="loader">
         <div style={{ "--i": 1 } as React.CSSProperties}></div>

@@ -56,93 +56,95 @@ export default function LoginDefaultPage() {
         isSidebar ? "pl-65" : "pl-25"
       } transition-all`}
     >
-      <form
-        onSubmit={handleSubmit}
-        className="w-full space-y-5 max-w-sm mx-auto"
-      >
-        <h2 className="text-2xl font-bold text-center text-white/80">
-          {t("title")}
-        </h2>
-
-        {messageKeys.length > 0 && (
-          <div
-            className={`text-center p-2 rounded ${
-              messageType === "success"
-                ? "bg-green-500/20 text-green-300"
-                : "bg-red-500/20 text-red-300"
-            }`}
-          >
-            {messageKeys.map((k) => t(k)).join(" ")}
-          </div>
-        )}
-
-        <div className="flex flex-col gap-5 text-white/70">
-          <input
-            name="identifier"
-            type="text"
-            required
-            placeholder={t("identifierPlaceholder")}
-            className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
-            disabled={loading}
-          />
-
-          <input
-            name="password"
-            type="password"
-            required
-            placeholder={t("passwordPlaceholder")}
-            className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
-            disabled={loading}
-          />
-        </div>
-
-        <div className="w-full flex justify-end items-center -mt-4 -mb-0 pr-3">
-          <div
-            onClick={() => {
-              if (!loading) {
-                router.push("/forgot-password");
-              }
-            }}
-            className={`text-blue-400/80 underline cursor-default ${
-              !loading
-                ? "hover:text-white/80 cursor-pointer"
-                : "cursor-not-allowed"
-            } transition-all text-end`}
-          >
-            {t("forgotPassword")}
-          </div>
-        </div>
-
-        <button
-          type="submit"
-          className={`text-white/80 w-full px-3 py-2 cursor-default ${
-            !loading
-              ? "hover:bg-white/30 hover:text-white/90 cursor-pointer"
-              : "opacity-50 cursor-not-allowed"
-          }  bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl transition-all`}
-          disabled={loading}
+      <div className="w-full pr-25">
+        <form
+          onSubmit={handleSubmit}
+          className="w-full space-y-5 max-w-sm mx-auto"
         >
-          {loading ? t("loading") : t("loginButton")}
-        </button>
+          <h2 className="text-2xl font-bold text-center text-white/80">
+            {t("title")}
+          </h2>
 
-        <div className="flex gap-1 items-center justify-center text-white/80">
-          {t("noAccount")}
-          <div
-            onClick={() => {
-              if (!loading) {
-                router.push("/signup");
-              }
-            }}
-            className={`underline text-blue-400/80 cursor-default ${
-              !loading
-                ? "hover:text-white/80 cursor-pointer"
-                : "cursor-not-allowed"
-            } transition-all`}
-          >
-            {t("signUp")}
+          {messageKeys.length > 0 && (
+            <div
+              className={`text-center p-2 rounded ${
+                messageType === "success"
+                  ? "bg-green-500/20 text-green-300"
+                  : "bg-red-500/20 text-red-300"
+              }`}
+            >
+              {messageKeys.map((k) => t(k)).join(" ")}
+            </div>
+          )}
+
+          <div className="flex flex-col gap-5 text-white/70">
+            <input
+              name="identifier"
+              type="text"
+              required
+              placeholder={t("identifierPlaceholder")}
+              className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
+              disabled={loading}
+            />
+
+            <input
+              name="password"
+              type="password"
+              required
+              placeholder={t("passwordPlaceholder")}
+              className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
+              disabled={loading}
+            />
           </div>
-        </div>
-      </form>
+
+          <div className="w-full flex justify-end items-center -mt-4 -mb-0 pr-3">
+            <div
+              onClick={() => {
+                if (!loading) {
+                  router.push("/forgot-password");
+                }
+              }}
+              className={`text-blue-400/80 underline cursor-default ${
+                !loading
+                  ? "hover:text-white/80 cursor-pointer"
+                  : "cursor-not-allowed"
+              } transition-all text-end`}
+            >
+              {t("forgotPassword")}
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            className={`text-white/80 w-full px-3 py-2 cursor-default ${
+              !loading
+                ? "hover:bg-white/30 hover:text-white/90 cursor-pointer"
+                : "opacity-50 cursor-not-allowed"
+            }  bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl transition-all`}
+            disabled={loading}
+          >
+            {loading ? t("loading") : t("loginButton")}
+          </button>
+
+          <div className="flex gap-1 items-center justify-center text-white/80">
+            {t("noAccount")}
+            <div
+              onClick={() => {
+                if (!loading) {
+                  router.push("/signup");
+                }
+              }}
+              className={`underline text-blue-400/80 cursor-default ${
+                !loading
+                  ? "hover:text-white/80 cursor-pointer"
+                  : "cursor-not-allowed"
+              } transition-all`}
+            >
+              {t("signUp")}
+            </div>
+          </div>
+        </form>
+      </div>
     </main>
   );
 }

@@ -225,7 +225,7 @@ export default function SearchDefaultPage({
                 </div>
               </section>
             ) : (
-              <section className="text-center w-full h-full flex items-center justify-center">
+              <section className="text-center w-full h-full flex items-center justify-center pr-25">
                 {t("no_blog_found")}
               </section>
             )}

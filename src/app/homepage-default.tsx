@@ -181,7 +181,7 @@ export default function HomepageDefault({
                   </div>
                 </section>
               ) : (
-                <section className="text-center w-full h-80 flex items-center justify-center">
+                <section className="text-center w-full h-80 flex items-center justify-center pr-25">
                   {t("no_pop_blog_found")}
                 </section>
               )}
@@ -218,7 +218,7 @@ export default function HomepageDefault({
                   </div>
                 </section>
               ) : (
-                <section className="text-center w-full h-80 flex items-center justify-center">
+                <section className="text-center w-full h-80 flex items-center justify-center pr-25">
                   {t("no_pop_subscribe_blog_found")}
                 </section>
               )}
@@ -252,7 +252,7 @@ export default function HomepageDefault({
                   </div>
                 </section>
               ) : (
-                <section className="text-center w-full h-80 flex items-center justify-center">
+                <section className="text-center w-full h-80 flex items-center justify-center pr-25">
                   {t("no_blog_found")}
                 </section>
               )}
@@ -288,7 +288,7 @@ export default function HomepageDefault({
                   </div>
                 </section>
               ) : (
-                <section className="text-center w-full h-80 flex items-center justify-center">
+                <section className="text-center w-full h-80 flex items-center justify-center pr-25">
                   {t("no_subscribe_blog_found")}
                 </section>
               )}

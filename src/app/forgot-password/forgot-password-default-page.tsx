@@ -59,60 +59,62 @@ export default function ForgotPasswordDefaultPage() {
         isSidebar ? "pl-65" : "pl-25"
       } transition-all relative`}
     >
-      <form
-        onSubmit={handleSubmit}
-        className="w-full space-y-5 max-w-sm mx-auto p-4"
-      >
-        <h2 className="text-2xl font-bold text-center text-white/80">
-          {t("title")}
-        </h2>
-        <p className="text-center text-white/70">{t("subtitle")}</p>
-
-        {messageKey && (
-          <div
-            className={`text-center p-2 rounded ${
-              messageType === "success"
-                ? "bg-green-500/20 text-green-300"
-                : "bg-red-500/20 text-red-300"
-            }`}
-          >
-            {t(messageKey)}
-          </div>
-        )}
-
-        <div className="flex flex-col gap-5 text-white/70">
-          <input
-            name="email"
-            type="email"
-            required
-            value={userEmail}
-            onChange={(e) => setUserEmail(e.target.value)}
-            placeholder={t("emailPlaceholder")}
-            className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
-            disabled={loading}
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="cursor-pointer text-white/80 w-full px-3 py-2 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl transition-all disabled:opacity-50"
-          disabled={loading}
+      <div className="w-full pr-25">
+        <form
+          onSubmit={handleSubmit}
+          className="w-full space-y-5 max-w-sm mx-auto p-4"
         >
-          {loading ? t("sending") : t("submitButton")}
-        </button>
+          <h2 className="text-2xl font-bold text-center text-white/80">
+            {t("title")}
+          </h2>
+          <p className="text-center text-white/70">{t("subtitle")}</p>
 
-        <div className="flex gap-1 items-center justify-center text-white/80">
-          {t("rememberPassword")}
-          <div
-            onClick={() => {
-              router.push("/login");
-            }}
-            className="underline cursor-pointer text-blue-400/80 hover:text-white/80 transition-all"
-          >
-            {t("login")}
+          {messageKey && (
+            <div
+              className={`text-center p-2 rounded ${
+                messageType === "success"
+                  ? "bg-green-500/20 text-green-300"
+                  : "bg-red-500/20 text-red-300"
+              }`}
+            >
+              {t(messageKey)}
+            </div>
+          )}
+
+          <div className="flex flex-col gap-5 text-white/70">
+            <input
+              name="email"
+              type="email"
+              required
+              value={userEmail}
+              onChange={(e) => setUserEmail(e.target.value)}
+              placeholder={t("emailPlaceholder")}
+              className="px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
+              disabled={loading}
+            />
           </div>
-        </div>
-      </form>
+
+          <button
+            type="submit"
+            className="cursor-pointer text-white/80 w-full px-3 py-2 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl transition-all disabled:opacity-50"
+            disabled={loading}
+          >
+            {loading ? t("sending") : t("submitButton")}
+          </button>
+
+          <div className="flex gap-1 items-center justify-center text-white/80">
+            {t("rememberPassword")}
+            <div
+              onClick={() => {
+                router.push("/login");
+              }}
+              className="underline cursor-pointer text-blue-400/80 hover:text-white/80 transition-all"
+            >
+              {t("login")}
+            </div>
+          </div>
+        </form>
+      </div>
     </main>
   );
 }

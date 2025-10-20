@@ -130,36 +130,38 @@ export default function ResetPasswordDefaultPage() {
           </div>
         </div>
       ) : (
-        <form
-          onSubmit={handleSubmit}
-          className="max-w-sm mx-auto w-full space-y-5 text-white/80"
-        >
-          <h2 className="text-2xl font-bold text-center">{t("title")}</h2>
-
-          <input
-            type="password"
-            placeholder={t("newPasswordPlaceholder")}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
-            required
-          />
-          <input
-            type="password"
-            placeholder={t("confirmPasswordPlaceholder")}
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
-            required
-          />
-          <button
-            type="submit"
-            disabled={loading}
-            className="cursor-pointer text-white/80 w-full px-3 py-2 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl transition-all"
+        <div className="w-full pr-25">
+          <form
+            onSubmit={handleSubmit}
+            className="max-w-sm mx-auto w-full space-y-5 text-white/80"
           >
-            {loading ? t("submitLoading") : t("submitButton")}
-          </button>
-        </form>
+            <h2 className="text-2xl font-bold text-center">{t("title")}</h2>
+
+            <input
+              type="password"
+              placeholder={t("newPasswordPlaceholder")}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
+              required
+            />
+            <input
+              type="password"
+              placeholder={t("confirmPasswordPlaceholder")}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="w-full px-3 py-2 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl focus:ring-2 focus:ring-white/30 focus:outline-none"
+              required
+            />
+            <button
+              type="submit"
+              disabled={loading}
+              className="cursor-pointer text-white/80 w-full px-3 py-2 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl transition-all"
+            >
+              {loading ? t("submitLoading") : t("submitButton")}
+            </button>
+          </form>
+        </div>
       )}
     </main>
   );

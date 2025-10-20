@@ -10,6 +10,7 @@ import DeleteSubscribeBlogPanel from "@/components/delete-subscribe-blog-panel";
 import { deleteSubscribeBlog } from "../../../lib/apis/blog-uploader";
 import { useRouter } from "next/navigation";
 import GlobalLoading from "../loading";
+import Loading from "./loading";
 
 export default function SubscribeBlogsDefaultPage({
   subscribeBlogs,
@@ -76,52 +77,54 @@ export default function SubscribeBlogsDefaultPage({
 
   return (
     <main
-      className={`${
-        isPending ? "w-full" : "w-screen"
-      } h-full overflow-y-auto 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] text-white/80 ${
+      className={`${isPending ? "w-full" : "w-screen"} h-full ${
+        subscribeBlogs && subscribeBlogs.length > 0
+          ? "overflow-y-auto"
+          : "overflow-y-hidden"
+      } 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] text-white/80 ${
         isSidebar ? "pl-65" : "pl-25"
       } transition-all scrollbar-hide relative`}
     >
-      {isPending ? (
-        <GlobalLoading />
-      ) : (
-        <>
-          <h1 className="text-2xl font-bold">{t("title")}</h1>
+      <h1 className="text-2xl font-bold">{t("title")}</h1>
 
-          {subscribeBlogs && subscribeBlogs.length > 0 ? (
-            <section className="w-full lg:px-10 lg:pt-5 md:px-0 md:pt-5 pb-3">
-              <div className="flex flex-wrap gap-5 items-center justify-center">
-                {subscribeBlogs.map((subBlog, index: number) => (
-                  <SubscribeBlogCard
-                    key={subBlog.id}
-                    subBlog={subBlog}
-                    user={user}
-                    showDeletePanel={showDeletePanel}
-                    setShowDeletePanel={setShowDeletePanel}
-                    setSelectedDocumentId={setSelectedDocumentId}
-                  />
-                ))}
-              </div>
-            </section>
-          ) : (
-            <section className="text-center w-full min-h-screen flex items-center justify-center">
-              No Subscribe blogs found
-            </section>
-          )}
+      <div
+        className={`w-full h-full pr-25 ${
+          !subscribeBlogs || (subscribeBlogs.length <= 0 && "pb-11")
+        }`}
+      >
+        {subscribeBlogs && subscribeBlogs.length > 0 ? (
+          <section className="w-full lg:px-10 lg:pt-5 md:px-0 md:pt-5 pb-3">
+            <div className="flex flex-wrap gap-5 items-center justify-center">
+              {subscribeBlogs.map((subBlog, index: number) => (
+                <SubscribeBlogCard
+                  key={subBlog.id}
+                  subBlog={subBlog}
+                  user={user}
+                  showDeletePanel={showDeletePanel}
+                  setShowDeletePanel={setShowDeletePanel}
+                  setSelectedDocumentId={setSelectedDocumentId}
+                />
+              ))}
+            </div>
+          </section>
+        ) : (
+          <section className="text-center w-full h-full flex items-center justify-center">
+            {t("no_blog_found")}
+          </section>
+        )}
+      </div>
 
-          <AddButton />
+      <AddButton />
 
-          {showDeletePanel && (
-            <DeleteSubscribeBlogPanel
-              onCancel={handleDeleteCancel}
-              onConfirm={handleDeleteConfirm}
-              status={deleteStatus}
-              error={deleteError}
-              onSuccess={handleDeleteSuccess}
-              isRefreshing={isPending}
-            />
-          )}
-        </>
+      {showDeletePanel && (
+        <DeleteSubscribeBlogPanel
+          onCancel={handleDeleteCancel}
+          onConfirm={handleDeleteConfirm}
+          status={deleteStatus}
+          error={deleteError}
+          onSuccess={handleDeleteSuccess}
+          isRefreshing={isPending}
+        />
       )}
     </main>
   );
