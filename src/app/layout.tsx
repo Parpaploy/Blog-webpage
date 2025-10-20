@@ -14,10 +14,19 @@ const ibm = IBM_Plex_Sans_Thai({
 });
 
 export const metadata: Metadata = {
-  title: "Blog",
+  title: "Kintsugi",
   description: "Sample blog website",
   icons: {
-    icon: "/icon.svg?v=1",
+    icon: [
+      {
+        url: "/icon-light.svg",
+        media: "(prefers-color-scheme: light)",
+      },
+      {
+        url: "/icon-dark.svg",
+        media: "(prefers-color-scheme: dark)",
+      },
+    ],
   },
 };
 
@@ -31,7 +40,8 @@ export default function RootLayout({
       <body
         className={`${ibm.className}  antialiased bg-fixed`}
         style={{
-          backgroundImage: "url('/assets/placeholders/Image 4064x2704.jpg')",
+          backgroundImage:
+            "url('/assets/placeholders/Chihiro Spirited Away.jpg')",
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
