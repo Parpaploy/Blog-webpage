@@ -36,9 +36,7 @@ export default function SidebarMenu({
           router.push(path);
         }
       }}
-      className={`whitespace-nowrap max-h-16 ${
-        isSidebar ? "w-full" : "w-auto"
-      } group backdrop-blur-sm border border-white/30 border-l-0 border-r-0 shadow-md px-2 py-1.75 transition-all relative overflow-hidden
+      className={`whitespace-nowrap max-h-16 group backdrop-blur-sm border border-white/30 border-l-0 border-r-0 shadow-md px-2 py-1.75 transition-all duration-300 ease-in-out relative overflow-hidden
       ${
         isSidebar
           ? "rounded-3xl w-full px-3 text-start"
@@ -68,7 +66,7 @@ export default function SidebarMenu({
           </div>
         </div>
       ) : (
-        <p className="flex items-center justify-center">{icon}</p>
+        <div className="flex items-center justify-center">{icon}</div>
       )}
       <div
         className={`absolute w-1 h-full ${

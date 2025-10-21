@@ -36,7 +36,7 @@ export default function SidebarDefault({
     <aside
       className={`fixed top-0 left-0 z-50 ${
         isSidebar ? "w-60" : "w-20"
-      } h-full p-3 transition-all duration-300`}
+      } h-full p-3 transition-all duration-1000`}
     >
       <main
         className={`relative w-full h-full py-3 ${
