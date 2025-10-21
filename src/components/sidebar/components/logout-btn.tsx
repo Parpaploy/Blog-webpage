@@ -46,7 +46,7 @@ export default function LogoutButton({
         group backdrop-blur-sm border border-white/30 border-l-0 border-r-0 shadow-md px-2 py-1.75 transition-all relative
         ${
           isSidebar
-            ? "rounded-3xl w-full px-2 text-start"
+            ? "rounded-3xl w-full px-3 text-start"
             : "rounded-full text-center w-11"
         } 
         ${
@@ -58,12 +58,12 @@ export default function LogoutButton({
     >
       {isLogout ? (
         <span
-          className={`flex items-center gap-2 ${
-            isSidebar ? "justify-start" : "justify-center"
+          className={`flex items-center gap-3 ${
+            isSidebar ? "justify-start" : "justify-center px-0.5"
           }`}
         >
           <div
-            className={`w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin`}
+            className={`min-w-5 min-h-5 border-2 border-white/30 border-t-white rounded-full animate-spin`}
           />
           {isSidebar && (
             <span className="whitespace-nowrap">{t("loggingOut")}</span>

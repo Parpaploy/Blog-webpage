@@ -36,7 +36,7 @@ export default function SidebarDefault({
     <aside
       className={`fixed top-0 left-0 z-50 ${
         isSidebar ? "w-60" : "w-20"
-      } h-full p-3 transition-all`}
+      } h-full p-3 transition-all duration-300`}
     >
       <main
         className={`relative w-full h-full py-3 ${
@@ -80,70 +80,27 @@ export default function SidebarDefault({
 
               <SidebarMenu
                 path="/"
-                shortTitle={
-                  <p className="flex items-center justify-center">
-                    <RiHomeLine size={24} />
-                  </p>
-                }
-                longTitle={
-                  <div className="flex items-stretch justify-start gap-5">
-                    <div className="w-[10%]">
-                      <RiHomeLine size={24} />
-                    </div>
-                    <div className="w-[90%]">{t("home")}</div>
-                  </div>
-                }
+                icon={<RiHomeLine size={24} />}
+                label={t("home")}
               />
 
               <SidebarMenu
                 path="/search"
-                shortTitle={
-                  <p className="flex items-center justify-center">
-                    <GoSearch size={24} />
-                  </p>
-                }
-                longTitle={
-                  <div className="flex items-stretch justify-start gap-5">
-                    <div className="w-[10%]">
-                      <GoSearch size={24} />
-                    </div>
-                    <div className="w-[90%]">{t("search")}</div>
-                  </div>
-                }
+                icon={<GoSearch size={24} />}
+                label={t("search")}
               />
 
               <SidebarMenu
                 path="/blogs"
-                shortTitle={
-                  <p className="flex items-center justify-center">
-                    <TbBrandBlogger size={24} />
-                  </p>
-                }
-                longTitle={
-                  <div className="flex items-stretch justify-start gap-5">
-                    <div className="w-[10%]">
-                      <TbBrandBlogger size={24} />
-                    </div>
-                    <div className="w-[90%]">{t("blogs")}</div>
-                  </div>
-                }
+                icon={<TbBrandBlogger size={24} />}
+                label={t("blogs")}
               />
 
               <SidebarMenu
                 path="/subscribe-blogs"
-                shortTitle={
-                  <div className="flex items-center justify-center">
-                    <FaRegStar size={24} />
-                  </div>
-                }
-                longTitle={
-                  <div className="flex items-stretch justify-start gap-5 !whitespace-normal">
-                    <div className="w-[10%]">
-                      <FaRegStar size={24} />
-                    </div>
-                    <div className="w-[90%]">{t("subscribe-blogs")}</div>
-                  </div>
-                }
+                icon={<FaRegStar size={24} />}
+                label={t("subscribe-blogs")}
+                isLongLabel={true}
               />
             </div>
 
@@ -154,19 +111,8 @@ export default function SidebarDefault({
             >
               <SidebarMenu
                 path="/add-blog"
-                shortTitle={
-                  <p className="flex items-center justify-center">
-                    <IoAdd size={24} />
-                  </p>
-                }
-                longTitle={
-                  <div className="flex items-stretch justify-start gap-5">
-                    <div className="w-[10%]">
-                      <IoAdd size={24} />
-                    </div>
-                    <div className="w-[90%] mt-0.5">{t("add")}</div>
-                  </div>
-                }
+                icon={<IoAdd size={24} />}
+                label={t("add")}
               />
             </div>
           </div>

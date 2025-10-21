@@ -42,7 +42,7 @@ export default function LoginButton({
             
             ${
               isSidebar
-                ? "rounded-3xl w-full px-2 text-start"
+                ? "rounded-3xl w-full px-3 text-start"
                 : "rounded-full text-center w-11"
             }  
             
