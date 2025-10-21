@@ -2,6 +2,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import { useSidebar } from "../../../../hooks/sidebar";
 import { usePathname, useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 export default function SidebarMenu({
   label,
@@ -18,6 +19,12 @@ export default function SidebarMenu({
   const thisPath = usePathname();
   const router = useRouter();
   const [showLabel, setShowLabel] = useState(isSidebar);
+
+  const { i18n } = useTranslation("sidebar");
+
+  const currentLanguage = i18n.language;
+
+  const isThai = currentLanguage === "th";
 
   useEffect(() => {
     if (isSidebar) {
@@ -36,7 +43,7 @@ export default function SidebarMenu({
           router.push(path);
         }
       }}
-      className={`whitespace-nowrap max-h-16 group backdrop-blur-sm border border-white/30 border-l-0 border-r-0 shadow-md px-2 py-1.75 transition-all duration-300 ease-in-out relative overflow-hidden
+      className={`whitespace-nowrap max-h-16 group backdrop-blur-sm border border-white/30 border-l-0 border-r-0 shadow-md px-2 py-1.75 transition-all duration-300 ease-in-out relative
       ${
         isSidebar
           ? "rounded-3xl w-full px-3 text-start"
@@ -50,24 +57,26 @@ export default function SidebarMenu({
       ${thisPath === path && isSidebar && "rounded-r-sm"}
       ${thisPath !== path && isSidebar && "hover:rounded-r-sm"}`}
     >
-      {isSidebar ? (
-        <div
-          className={`flex items-stretch justify-start gap-5 ${
-            isLongLabel && "!whitespace-normal"
-          }`}
-        >
-          <div className="w-[10%]">{icon}</div>
+      <div className="w-full h-full overflow-hidden">
+        {isSidebar ? (
           <div
-            className={`w-[90%] transition-opacity duration-500 ${
-              showLabel ? "opacity-100" : "opacity-0"
-            } ${isLongLabel && isSidebar && "mt-0.25"}`}
+            className={`flex items-stretch justify-start gap-5 ${
+              isLongLabel && isThai && "!whitespace-normal"
+            }`}
           >
-            {label}
+            <div className="w-[10%]">{icon}</div>
+            <div
+              className={`w-[90%] transition-opacity duration-500 ${
+                showLabel ? "opacity-100" : "opacity-0"
+              } ${isLongLabel && isSidebar && "mt-0.25"}`}
+            >
+              {label}
+            </div>
           </div>
-        </div>
-      ) : (
-        <div className="flex items-center justify-center">{icon}</div>
-      )}
+        ) : (
+          <div className="flex items-center justify-center">{icon}</div>
+        )}
+      </div>
       <div
         className={`absolute w-1 h-full ${
           thisPath === path
