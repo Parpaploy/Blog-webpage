@@ -27,6 +27,12 @@ export default function LanguageSwitcher({
   const [loading, setLoading] = useState(false);
   const [isPanelOpen, setPanelOpen] = useState(false);
 
+  const [isHoverDisabled, setIsHoverDisabled] = useState(false);
+
+  const handleMouseLeave = () => {
+    setIsHoverDisabled(false);
+  };
+
   useEffect(() => {
     setHasMounted(true);
   }, []);
@@ -84,12 +90,14 @@ export default function LanguageSwitcher({
   };
 
   const largeScreenToggle = () => {
+    if (loading) return;
     handleLanguageChange(isThai ? "en" : "th");
+    setIsHoverDisabled(true);
   };
 
   if (!hasMounted) {
     return (
-      <div className="w-10 h-10 rounded-full lg:w-20 bg-white/5 animate-pulse"></div>
+      <div className="w-10 h-10 rounded-full lg:w-20 bg-white/5 animate-pulse" />
     );
   }
 
@@ -107,10 +115,11 @@ export default function LanguageSwitcher({
       )}
 
       <div ref={switcherRef} className="relative flex items-center">
+        {/* Large */}
         <button
           onClick={largeScreenToggle}
-          className="w-20 h-10 rounded-full relative overflow-hidden hidden lg:flex items-center justify-center bg-white/10 backdrop-blur-xs border border-white/30 shadow-md cursor-pointer"
-          disabled={loading}
+          onMouseLeave={handleMouseLeave}
+          className={`group w-20 h-10 rounded-full relative overflow-hidden hidden lg:flex items-center justify-center bg-white/10 backdrop-blur-xs border border-white/30 shadow-md cursor-pointer`} // <--- ลบ isHoverDisabled ออกจากตรงนี้
         >
           {loading && (
             <div className="absolute inset-0 flex items-center justify-center">
@@ -129,7 +138,15 @@ export default function LanguageSwitcher({
                 transform: isThai ? "translateX(-2px)" : "translateX(40px)",
               }}
             >
-              <div className="w-6 h-6 bg-white/20 border border-white/30 shadow-md rounded-full overflow-hidden">
+              <div
+                className={`transition-all ${
+                  !isHoverDisabled
+                    ? isThai
+                      ? "group-hover:translate-x-1 group-hover:opacity-70"
+                      : "group-hover:-translate-x-1 group-hover:opacity-70"
+                    : ""
+                } w-6 h-6 bg-white/20 border border-white/30 shadow-md rounded-full overflow-hidden`}
+              >
                 <img
                   src={
                     isThai
@@ -150,14 +167,22 @@ export default function LanguageSwitcher({
             >
               <span
                 className={`absolute transition-opacity duration-300 ${
-                  isThai ? "opacity-100" : "opacity-0"
+                  isThai
+                    ? `opacity-100 ${
+                        !isHoverDisabled ? "group-hover:opacity-70" : ""
+                      }`
+                    : "opacity-0"
                 }`}
               >
                 {t("thai")}
               </span>
               <span
                 className={`absolute transition-opacity duration-300 ${
-                  isThai ? "opacity-0" : "opacity-100"
+                  isThai
+                    ? "opacity-0"
+                    : `opacity-100 ${
+                        !isHoverDisabled ? "group-hover:opacity-70" : ""
+                      }`
                 }`}
               >
                 {t("english")}
@@ -166,6 +191,7 @@ export default function LanguageSwitcher({
           </div>
         </button>
 
+        {/* Small */}
         <button
           onClick={() => {
             setOpenNavbar(false);

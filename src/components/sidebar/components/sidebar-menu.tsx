@@ -66,7 +66,7 @@ export default function SidebarMenu({
           >
             <div className="w-[10%]">{icon}</div>
             <div
-              className={`w-[90%] transition-opacity duration-500 ${
+              className={`w-[90%] transition-opacity duration-700 ${
                 showLabel ? "opacity-100" : "opacity-0"
               } ${isLongLabel && isSidebar && "mt-0.25"}`}
             >

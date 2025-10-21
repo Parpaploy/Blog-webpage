@@ -130,37 +130,15 @@ export default function SidebarDefault({
                 <LogoutButton
                   isLoggedIn={isLoggedIn}
                   Logout={() => Logout(new FormData())}
-                  shortTitle={
-                    <p className="flex items-center justify-center">
-                      <CiLogout size={24} />
-                    </p>
-                  }
-                  longTitle={
-                    <div className="flex items-stretch justify-start gap-5">
-                      <div className="w-[10%]">
-                        <CiLogout size={24} />
-                      </div>
-                      <div className="w-[90%]"> {t("logout")}</div>
-                    </div>
-                  }
+                  icon={<CiLogout size={24} />}
+                  label={t("logout")}
                 />
               ) : (
                 <LoginButton
                   path="/login"
                   isLoggedIn={isLoggedIn}
-                  shortTitle={
-                    <p className="flex items-center justify-center">
-                      <CiLogin size={24} />
-                    </p>
-                  }
-                  longTitle={
-                    <div className="flex items-stretch justify-start gap-5">
-                      <div className="w-[10%]">
-                        <CiLogin size={24} />
-                      </div>
-                      <div className="w-[90%]"> {t("login")}</div>
-                    </div>
-                  }
+                  icon={<CiLogin size={24} />}
+                  label={t("login")}
                 />
               )}
             </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSidebar } from "../../../../hooks/sidebar";
 import { CiLogout } from "react-icons/ci";
@@ -9,18 +9,19 @@ import { CiLogout } from "react-icons/ci";
 export default function LogoutButton({
   isLoggedIn,
   Logout,
-  shortTitle,
-  longTitle,
+  label,
+  icon,
 }: {
   isLoggedIn: boolean;
   Logout: (formData: FormData) => void | Promise<void>;
-  shortTitle: ReactNode;
-  longTitle: ReactNode;
+  label: string;
+  icon: ReactNode;
 }) {
   const { isSidebar } = useSidebar();
   const router = useRouter();
   const { t } = useTranslation("sidebar");
   const [isLogout, setIsLogout] = useState(false);
+  const [showLabel, setShowLabel] = useState(isSidebar);
 
   const handleLogout = async () => {
     if (isLogout) return;
@@ -33,6 +34,15 @@ export default function LogoutButton({
     router.push("/login");
   };
 
+  useEffect(() => {
+    if (isSidebar) {
+      const timer = setTimeout(() => setShowLabel(true), 50);
+      return () => clearTimeout(timer);
+    } else {
+      setShowLabel(false);
+    }
+  }, [isSidebar]);
+
   if (!isLoggedIn) return null;
 
   return (
@@ -41,9 +51,9 @@ export default function LogoutButton({
       onClick={handleLogout}
       disabled={isLogout}
       className={`
-        whitespace-nowrap h-10
+        whitespace-nowrap h-10 text-white/50
         ${isSidebar ? "w-full" : "w-auto"}
-        group backdrop-blur-sm border border-white/30 border-l-0 border-r-0 shadow-md px-2 py-1.75 transition-all relative
+        group backdrop-blur-sm border border-white/30 border-l-0 border-r-0 shadow-md px-2 py-1.75 transition-all duration-300 ease-in-out relative
         ${
           isSidebar
             ? "rounded-3xl w-full px-3 text-start"
@@ -51,7 +61,7 @@ export default function LogoutButton({
         } 
         ${
           !isLogout
-            ? "text-white/50 hover:text-white/70 hover:bg-white/20 cursor-pointer"
+            ? "hover:text-white/70 hover:bg-white/20 cursor-pointer"
             : "cursor-not-allowed opacity-50"
         }
       `}
@@ -70,9 +80,20 @@ export default function LogoutButton({
           )}
         </span>
       ) : isSidebar ? (
-        longTitle
+        <div className="flex items-stretch justify-start gap-5">
+          <div className="w-[10%]">
+            <CiLogout size={24} />
+          </div>
+          <div
+            className={`w-[90%] transition-opacity duration-700 ${
+              showLabel ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            {label}
+          </div>
+        </div>
       ) : (
-        shortTitle
+        <div className="flex items-center justify-center">{icon}</div>
       )}
     </button>
   );
