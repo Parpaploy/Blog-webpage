@@ -1,42 +1,83 @@
-import React, { useEffect, useRef } from "react";
+"use client";
+
+import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
 import ProfileMenu from "./profile-menu";
 import { Logout } from "../../../../lib/auth";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
+import { createPortal } from "react-dom";
+
+type PanelPosition = {
+  top?: number;
+  right?: number;
+  bottom?: number;
+};
 
 const ProfilePanel = ({
   toggle,
   setToggle,
+  buttonRef,
 }: {
   toggle: boolean;
   setToggle: (toggle: boolean) => void;
+  buttonRef: React.RefObject<HTMLDivElement | null>;
 }) => {
   const { t } = useTranslation("navbar");
-
   const panelRef = useRef<HTMLDivElement>(null);
+  const [hasMounted, setHasMounted] = useState(false);
+  const [position, setPosition] = useState<PanelPosition | null>(null);
 
   useEffect(() => {
-    if (!toggle) return;
+    setHasMounted(true);
+  }, []);
 
+  useLayoutEffect(() => {
+    if (toggle && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      const isDesktop = window.innerWidth >= 768;
+
+      if (isDesktop) {
+        setPosition({
+          top: rect.bottom + 8,
+          right: window.innerWidth - rect.right,
+        });
+      } else {
+        setPosition({
+          bottom: window.innerHeight - rect.bottom - 6,
+          right: window.innerWidth - rect.left + 160,
+        });
+      }
+    }
+  }, [toggle, buttonRef]);
+
+  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         panelRef.current &&
-        !panelRef.current.contains(event.target as Node)
+        !panelRef.current.contains(event.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target as Node)
       ) {
         setToggle(false);
       }
     };
 
-    document.addEventListener("click", handleClickOutside);
+    if (toggle) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
 
     return () => {
-      document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [toggle, setToggle]);
+  }, [toggle, setToggle, buttonRef]);
 
-  return (
+  if (!hasMounted) {
+    return null;
+  }
+
+  return createPortal(
     <AnimatePresence>
-      {toggle && (
+      {toggle && position && (
         <motion.div
           ref={panelRef}
           initial={{
@@ -54,9 +95,13 @@ const ProfilePanel = ({
             y: window.innerWidth >= 768 ? -10 : 0,
             x: window.innerWidth >= 768 ? 0 : -10,
           }}
-          transition={{ duration: 0.2 }}
           onClick={(e) => e.stopPropagation()}
-          className="absolute md:top-12 md:bottom-auto md:right-0 top-auto bottom-0 right-51 md:w-60 w-40 h-fit bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-lg overflow-hidden"
+          className="fixed md:w-60 w-40 h-fit bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-lg overflow-hidden z-[999]"
+          style={{
+            top: position.top ? `${position.top}px` : "auto",
+            right: position.right ? `${position.right}px` : "auto",
+            bottom: position.bottom ? `${position.bottom}px` : "auto",
+          }}
         >
           <ProfileMenu
             path="/profile"
@@ -79,7 +124,8 @@ const ProfilePanel = ({
           </div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 };
 

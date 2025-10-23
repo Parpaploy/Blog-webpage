@@ -17,6 +17,7 @@ import ProfilePanel from "./components/profile-panel";
 import Search from "./components/search";
 import { useToggle } from "../../../hooks/toggle";
 import MobileMenu from "./components/mobile-menu";
+import MobileMenuPanel from "./components/mobile-menu-panel";
 import ProfileButton from "./components/profile-button";
 
 export default function NavbarDefault({
@@ -41,11 +42,12 @@ export default function NavbarDefault({
   const { openNavbar, setOpenNavbar, registerRef } = useToggle();
   const navRef = useRef<HTMLDivElement>(null);
 
+  const profileButtonRef = useRef<HTMLDivElement>(null);
+
   const [isOpenCat, setIsOpenCat] = useState<boolean>(false);
   const [isOpenFilter, setIsOpenFilter] = useState<boolean>(false);
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
-
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const handleCloseSearch = () => {
@@ -142,6 +144,7 @@ export default function NavbarDefault({
                 />
 
                 <ProfileButton
+                  ref={profileButtonRef}
                   user={user}
                   handleToggleProfile={handleToggleProfile}
                   defaultProfileUrl={defaultProfileUrl}
@@ -149,13 +152,17 @@ export default function NavbarDefault({
                   isProfile={openNavbar}
                 />
 
-                <ProfilePanel toggle={openNavbar} setToggle={setOpenNavbar} />
+                <ProfilePanel
+                  toggle={openNavbar}
+                  setToggle={setOpenNavbar}
+                  buttonRef={profileButtonRef}
+                />
               </div>
             </>
           ) : (
             <>
               <div
-                className={`flex justify-center items-center gap-2 ${
+                className={`md:flex justify-center items-center gap-2 hidden ${
                   isSidebar && "lg:gap-2 md:gap-0.5"
                 }`}
               >
@@ -173,21 +180,31 @@ export default function NavbarDefault({
           )}
 
           <div className="md:hidden block">
+            <LoginButton isLoggedIn={isLoggedIn} title={t("login")} />
+            <SignupButton isLoggedIn={isLoggedIn} title={t("signup")} />
+
             <MobileMenu
               isToggle={isMobileMenuOpen}
               setIsToggle={setIsMobileMenuOpen}
-              openNavbar={openNavbar}
-              setOpenNavbar={setOpenNavbar}
-              onCloseSearch={handleCloseSearch}
-              user={user}
-              handleToggleProfile={handleToggleProfile}
-              defaultProfileUrl={defaultProfileUrl}
-              handleImageError={handleImageError}
-              isProfile={openNavbar}
             />
           </div>
         </div>
       </nav>
+
+      <div className="md:hidden block">
+        <MobileMenuPanel
+          isToggle={isMobileMenuOpen}
+          setIsToggle={setIsMobileMenuOpen}
+          openNavbar={openNavbar}
+          setOpenNavbar={setOpenNavbar}
+          onCloseSearch={handleCloseSearch}
+          user={user}
+          handleToggleProfile={handleToggleProfile}
+          defaultProfileUrl={defaultProfileUrl}
+          handleImageError={handleImageError}
+          isProfile={openNavbar}
+        />
+      </div>
     </main>
   );
 }

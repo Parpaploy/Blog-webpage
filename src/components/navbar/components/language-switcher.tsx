@@ -1,9 +1,16 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { createPortal } from "react-dom";
+
+type PanelPosition = {
+  top?: number;
+  right?: number;
+  bottom?: number;
+  left?: number;
+};
 
 export default function LanguageSwitcher({
   openNavbar,
@@ -27,6 +34,8 @@ export default function LanguageSwitcher({
   });
   const [loading, setLoading] = useState(false);
   const [isPanelOpen, setPanelOpen] = useState(false);
+
+  const [position, setPosition] = useState<PanelPosition | null>(null);
 
   const [isHoverDisabled, setIsHoverDisabled] = useState(false);
 
@@ -54,9 +63,27 @@ export default function LanguageSwitcher({
     }
   }, [hasMounted, i18n]);
 
+  useLayoutEffect(() => {
+    if (isPanelOpen && switcherRef.current) {
+      const rect = switcherRef.current.getBoundingClientRect();
+      const isDesktop = window.innerWidth >= 768;
+
+      if (isDesktop) {
+        setPosition({
+          top: rect.bottom + 8,
+          right: window.innerWidth - rect.right,
+        });
+      } else {
+        setPosition({
+          bottom: window.innerHeight - rect.bottom - 7,
+          right: window.innerWidth - rect.left + 120,
+        });
+      }
+    }
+  }, [isPanelOpen]);
+
   useEffect(() => {
     if (!isPanelOpen) return;
-
     const handleClickOutside = (event: MouseEvent) => {
       if (
         switcherRef.current &&
@@ -65,7 +92,6 @@ export default function LanguageSwitcher({
         setPanelOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -75,13 +101,10 @@ export default function LanguageSwitcher({
   const handleLanguageChange = (newLang: "th" | "en") => {
     if (loading || i18n.language === newLang) {
       setPanelOpen(false);
-
       return;
     }
-
     setLoading(true);
     setPanelOpen(false);
-
     setTimeout(() => {
       i18n.changeLanguage(newLang);
       setIsThai(newLang === "th");
@@ -119,7 +142,6 @@ export default function LanguageSwitcher({
         )}
 
       <div ref={switcherRef} className="relative flex items-center">
-        {/* Large */}
         <button
           onClick={largeScreenToggle}
           onMouseLeave={handleMouseLeave}
@@ -195,7 +217,6 @@ export default function LanguageSwitcher({
           </div>
         </button>
 
-        {/* Small */}
         <button
           onClick={() => {
             setOpenNavbar(false);
@@ -226,60 +247,70 @@ export default function LanguageSwitcher({
           </div>
         </button>
 
-        <AnimatePresence>
-          {isPanelOpen && (
-            <motion.div
-              initial={{
-                opacity: 0,
-                y: window.innerWidth >= 768 ? -10 : 0,
-                x: window.innerWidth >= 768 ? 0 : 10,
-              }}
-              animate={{
-                opacity: 1,
-                y: 0,
-                x: 0,
-              }}
-              exit={{
-                opacity: 0,
-                y: window.innerWidth >= 768 ? -10 : 0,
-                x: window.innerWidth >= 768 ? 0 : -10,
-              }}
-              className="absolute md:top-12 md:bottom-auto md:right-0 md:left-auto -bottom-1.5 top-auto left-auto right-40.5 w-40 h-fit bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-lg overflow-hidden z-50"
-            >
-              <div
-                onClick={() => handleLanguageChange("th")}
-                className={`flex items-center gap-3 px-3 py-2.5 transition-all ${
-                  isThai
-                    ? "bg-white/30 text-white/90"
-                    : "text-white/80 hover:bg-white/30 hover:text-white/90 cursor-pointer"
-                } ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
-              >
-                <img
-                  src="/assets/icons/th-icon.svg"
-                  alt="thai-icon"
-                  className="w-6 h-6 opacity-70"
-                />
-                <span className="text-md">{t("thai")}</span>
-              </div>
+        {hasMounted &&
+          createPortal(
+            <AnimatePresence>
+              {isPanelOpen && position && (
+                <motion.div
+                  initial={{
+                    opacity: 0,
+                    y: window.innerWidth >= 768 ? -10 : 10,
+                    x: 0,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                    x: 0,
+                  }}
+                  exit={{
+                    opacity: 0,
+                    y: window.innerWidth >= 768 ? -10 : 10,
+                    x: 0,
+                  }}
+                  className="fixed w-40 h-fit bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-lg overflow-hidden z-[999]" // ใช้ z-index สูงๆ
+                  style={{
+                    top: position.top ? `${position.top}px` : "auto",
+                    right: position.right ? `${position.right}px` : "auto",
+                    bottom: position.bottom ? `${position.bottom}px` : "auto",
+                    left: position.left ? `${position.left}px` : "auto",
+                  }}
+                >
+                  <div
+                    onClick={() => handleLanguageChange("th")}
+                    className={`flex items-center gap-3 px-3 py-2.5 transition-all ${
+                      isThai
+                        ? "bg-white/30 text-white/90"
+                        : "text-white/80 hover:bg-white/30 hover:text-white/90 cursor-pointer"
+                    } ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+                  >
+                    <img
+                      src="/assets/icons/th-icon.svg"
+                      alt="thai-icon"
+                      className="w-6 h-6 opacity-70"
+                    />
+                    <span className="text-md">{t("thai")}</span>
+                  </div>
 
-              <div
-                onClick={() => handleLanguageChange("en")}
-                className={`flex items-center gap-3 px-3 py-2.5 transition-all ${
-                  !isThai
-                    ? "bg-white/30 text-white/90"
-                    : "text-white/80 hover:bg-white/30 hover:text-white/90 cursor-pointer"
-                } ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
-              >
-                <img
-                  src="/assets/icons/en-icon.svg"
-                  alt="eng-icon"
-                  className="w-6 h-6 opacity-70"
-                />
-                <span className="text-md">{t("english")}</span>
-              </div>
-            </motion.div>
+                  <div
+                    onClick={() => handleLanguageChange("en")}
+                    className={`flex items-center gap-3 px-3 py-2.5 transition-all ${
+                      !isThai
+                        ? "bg-white/30 text-white/90"
+                        : "text-white/80 hover:bg-white/30 hover:text-white/90 cursor-pointer"
+                    } ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+                  >
+                    <img
+                      src="/assets/icons/en-icon.svg"
+                      alt="eng-icon"
+                      className="w-6 h-6 opacity-70"
+                    />
+                    <span className="text-md">{t("english")}</span>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>,
+            document.body
           )}
-        </AnimatePresence>
       </div>
     </>
   );

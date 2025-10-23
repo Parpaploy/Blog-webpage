@@ -2,31 +2,13 @@
 
 import React from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
-import MobileMenuPanel from "./mobile-menu-panel";
-import { IUser } from "../../../../interfaces/strapi.interface";
 
 export default function MobileMenu({
   isToggle,
   setIsToggle,
-  openNavbar,
-  setOpenNavbar,
-  onCloseSearch,
-  user,
-  handleToggleProfile,
-  defaultProfileUrl,
-  handleImageError,
-  isProfile,
 }: {
   isToggle: boolean;
   setIsToggle: (isToggle: boolean) => void;
-  openNavbar: boolean;
-  setOpenNavbar: (open: boolean) => void;
-  onCloseSearch?: () => void;
-  user: IUser | null;
-  handleToggleProfile: (e: React.MouseEvent) => void;
-  defaultProfileUrl: string;
-  handleImageError: (e: React.SyntheticEvent<HTMLImageElement, Event>) => void;
-  isProfile: boolean;
 }) {
   return (
     <>
@@ -41,21 +23,8 @@ export default function MobileMenu({
             : "md:bg-white/10 hover:bg-white/20 text-white/50 hover:text-white/70 cursor-pointer"
         }`}
       >
-        <RxHamburgerMenu size={20} />
+        <RxHamburgerMenu className="w-5 h-5" />
       </button>
-
-      <MobileMenuPanel
-        isToggle={isToggle}
-        setIsToggle={setIsToggle}
-        openNavbar={openNavbar}
-        setOpenNavbar={setOpenNavbar}
-        onCloseSearch={onCloseSearch}
-        user={user}
-        handleToggleProfile={handleToggleProfile}
-        defaultProfileUrl={defaultProfileUrl}
-        handleImageError={handleImageError}
-        isProfile={isProfile}
-      />
     </>
   );
 }
