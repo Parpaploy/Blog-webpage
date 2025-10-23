@@ -34,7 +34,7 @@ export default function SidebarDefault({
 
   return (
     <aside
-      className={`fixed top-0 left-0 z-50 ${
+      className={`hidden md:block fixed top-0 left-0 z-50 ${
         isSidebar ? "w-60" : "w-20"
       } h-full p-3 transition-all duration-300`}
     >

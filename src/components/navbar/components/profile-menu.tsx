@@ -7,10 +7,12 @@ export default function ProfileMenu({
   path,
   title,
   setToggle,
+  onClose,
 }: {
   path: string;
   title: string;
   setToggle: (toggle: boolean) => void;
+  onClose?: () => void;
 }) {
   const router = useRouter();
 
@@ -21,11 +23,12 @@ export default function ProfileMenu({
       onClick={() => {
         router.push(path);
         setToggle(false);
+        onClose?.();
       }}
       className={`${
         currentPath === path
           ? "text-white bg-white/40"
-          : "text-white/80 hover:bg-white/30 hover:text-white/90 cursor-pointer"
+          : "text-white/80 md:hover:bg-white/30 md:hover:text-white/90 cursor-pointer"
       } text-md transition-all px-3 pt-2`}
     >
       {title}

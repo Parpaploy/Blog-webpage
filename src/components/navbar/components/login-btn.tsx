@@ -42,10 +42,10 @@ export default function LoginButton({
                 router.push("/login");
               }}
               type="submit"
-              className={`w-fit border border-white/30 backdrop-blur-sm shadow-md rounded-full p-2.25 transition-all underline ${
+              className={`w-fit border md:border-white/30 border-transparent md:backdrop-blur-sm md:shadow-md rounded-full p-2.25 transition-all underline ${
                 currentPath === "/login"
                   ? "text-white bg-white/40 cursor-default"
-                  : "bg-white/10 hover:bg-white/20 text-white/50 hover:text-white/70 cursor-pointer"
+                  : "md:bg-white/10 hover:bg-white/20 text-white/50 hover:text-white/70 cursor-pointer"
               }`}
             >
               <TbLogin size={20} />

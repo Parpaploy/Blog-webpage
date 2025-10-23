@@ -16,6 +16,8 @@ import { usePathname } from "next/navigation";
 import ProfilePanel from "./components/profile-panel";
 import Search from "./components/search";
 import { useToggle } from "../../../hooks/toggle";
+import MobileMenu from "./components/mobile-menu";
+import ProfileButton from "./components/profile-button";
 
 export default function NavbarDefault({
   isLoggedIn,
@@ -39,9 +41,10 @@ export default function NavbarDefault({
   const { openNavbar, setOpenNavbar, registerRef } = useToggle();
   const navRef = useRef<HTMLDivElement>(null);
 
-  const [isOpenCat, setIsOpenCat] = React.useState<boolean>(false);
-  const [isOpenFilter, setIsOpenFilter] = React.useState<boolean>(false);
-  const [isHover, setIsHover] = React.useState<boolean>(false);
+  const [isOpenCat, setIsOpenCat] = useState<boolean>(false);
+  const [isOpenFilter, setIsOpenFilter] = useState<boolean>(false);
+  const [isHover, setIsHover] = useState<boolean>(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
@@ -81,26 +84,35 @@ export default function NavbarDefault({
 
   return (
     <main
-      className={`fixed top-0 right-0 z-50 ${
-        isSidebar ? "w-[calc(100%-15.5rem)]" : "w-[calc(100%-5.5rem)]"
-      } h-fit max-w-[1920px] mt-3 pr-5 transition-all`}
+      className={`fixed bottom-3 left-1/2 -translate-x-1/2 z-50 
+            md:top-0 md:right-0 md:left-auto md:translate-x-0 ${
+              isSidebar
+                ? "md:w-[calc(100%-15.5rem)] w-[95%]"
+                : "md:w-[calc(100%-5.5rem)] w-[95%]"
+            } md:h-fit max-w-[1920px] mt-3 md:pr-5 !transition-all duration-300`}
     >
-      <nav className="w-full h-full rounded-4xl">
+      <nav
+        className="w-full h-full rounded-4xl 
+                      p-2 md:p-0 
+                      bg-white/10 backdrop-blur-sm border border-white/30 shadow-md
+                      md:bg-transparent md:backdrop-blur-none md:border-none md:shadow-none
+      "
+      >
         <div className="w-full h-full flex justify-between items-start text-white/70">
           {user !== null ? (
-            <div className="block md:hidden lg:block whitespace-nowrap font-semibold text-lg bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1 cursor-default">
+            <div className="block md:hidden lg:block whitespace-nowrap font-semibold text-lg md:bg-white/10 md:backdrop-blur-sm border md:border-white/30 border-transparent md:shadow-md rounded-4xl px-2 py-1 cursor-default">
               {t("hello")} {user.username}
             </div>
           ) : (
-            <p className="block md:hidden lg:block whitespace-nowrap font-semibold text-lg bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1">
+            <p className="block md:hidden lg:block whitespace-nowrap font-semibold text-lg md:bg-white/10 md:backdrop-blur-sm border md:border-white/30 border-transparent md:shadow-md rounded-4xl px-2 py-1">
               {t("guest")}
             </p>
           )}
 
-          <div
-            className={`w-full flex items-center lg:justify-center md:justify-start`}
-          >
-            {pathname === "/search" && (
+          {pathname === "/search" && (
+            <div
+              className={`w-full flex items-center lg:justify-center md:justify-start`}
+            >
               <Search
                 categories={categories}
                 isOpenCat={isOpenCat}
@@ -115,33 +127,27 @@ export default function NavbarDefault({
                 isOpen={isSearchOpen}
                 onClose={handleCloseSearch}
               />
-            )}
-          </div>
+            </div>
+          )}
 
           {user !== null ? (
             <>
-              <div className="relative flex gap-3 items-center justify-center">
+              <div />
+
+              <div className="relative md:flex gap-3 items-center justify-center hidden">
                 <LanguageSwitcher
                   openNavbar={openNavbar}
                   setOpenNavbar={setOpenNavbar}
                   onCloseSearch={handleCloseSearch}
                 />
 
-                <div
-                  onClick={handleToggleProfile}
-                  className="cursor-pointer w-10 h-10 rounded-full border border-white/30 shadow-md"
-                >
-                  <img
-                    className="w-full h-full rounded-full overflow-hidden object-cover aspect-square opacity-95"
-                    src={
-                      user?.profile?.formats?.small?.url
-                        ? `${process.env.NEXT_PUBLIC_STRAPI_BASE_URL}${user.profile.formats.small.url}`
-                        : defaultProfileUrl
-                    }
-                    onError={handleImageError}
-                    alt={(user?.username || "Guest") + " profile picture"}
-                  />
-                </div>
+                <ProfileButton
+                  user={user}
+                  handleToggleProfile={handleToggleProfile}
+                  defaultProfileUrl={defaultProfileUrl}
+                  handleImageError={handleImageError}
+                  isProfile={openNavbar}
+                />
 
                 <ProfilePanel toggle={openNavbar} setToggle={setOpenNavbar} />
               </div>
@@ -153,16 +159,33 @@ export default function NavbarDefault({
                   isSidebar && "lg:gap-2 md:gap-0.5"
                 }`}
               >
-                <LanguageSwitcher
-                  openNavbar={openNavbar}
-                  setOpenNavbar={setOpenNavbar}
-                  onCloseSearch={handleCloseSearch}
-                />
                 <LoginButton isLoggedIn={isLoggedIn} title={t("login")} />
                 <SignupButton isLoggedIn={isLoggedIn} title={t("signup")} />
+                <div className="md:block hidden">
+                  <LanguageSwitcher
+                    openNavbar={openNavbar}
+                    setOpenNavbar={setOpenNavbar}
+                    onCloseSearch={handleCloseSearch}
+                  />
+                </div>
               </div>
             </>
           )}
+
+          <div className="md:hidden block">
+            <MobileMenu
+              isToggle={isMobileMenuOpen}
+              setIsToggle={setIsMobileMenuOpen}
+              openNavbar={openNavbar}
+              setOpenNavbar={setOpenNavbar}
+              onCloseSearch={handleCloseSearch}
+              user={user}
+              handleToggleProfile={handleToggleProfile}
+              defaultProfileUrl={defaultProfileUrl}
+              handleImageError={handleImageError}
+              isProfile={openNavbar}
+            />
+          </div>
         </div>
       </nav>
     </main>

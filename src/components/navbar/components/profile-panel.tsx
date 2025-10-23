@@ -39,12 +39,24 @@ const ProfilePanel = ({
       {toggle && (
         <motion.div
           ref={panelRef}
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
+          initial={{
+            opacity: 0,
+            y: window.innerWidth >= 768 ? -10 : 0,
+            x: window.innerWidth >= 768 ? 0 : 10,
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+            x: 0,
+          }}
+          exit={{
+            opacity: 0,
+            y: window.innerWidth >= 768 ? -10 : 0,
+            x: window.innerWidth >= 768 ? 0 : -10,
+          }}
           transition={{ duration: 0.2 }}
           onClick={(e) => e.stopPropagation()}
-          className="absolute top-12 right-0 w-60 h-fit bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-lg overflow-hidden"
+          className="absolute md:top-12 md:bottom-auto md:right-0 top-auto bottom-0 right-51 md:w-60 w-40 h-fit bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-lg overflow-hidden"
         >
           <ProfileMenu
             path="/profile"

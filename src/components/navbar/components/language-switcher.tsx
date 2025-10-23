@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
+import { createPortal } from "react-dom";
 
 export default function LanguageSwitcher({
   openNavbar,
@@ -103,23 +104,26 @@ export default function LanguageSwitcher({
 
   return (
     <>
-      {loading && (
-        <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-black/40 z-[9999]">
-          <div className="loader">
-            <div style={{ "--i": 1 } as React.CSSProperties}></div>
-            <div style={{ "--i": 2 } as React.CSSProperties}></div>
-            <div style={{ "--i": 3 } as React.CSSProperties}></div>
-            <div style={{ "--i": 4 } as React.CSSProperties}></div>
-          </div>
-        </div>
-      )}
+      {loading &&
+        hasMounted &&
+        createPortal(
+          <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-black/40 z-[9999]">
+            <div className="loader">
+              <div style={{ "--i": 1 } as React.CSSProperties}></div>
+              <div style={{ "--i": 2 } as React.CSSProperties}></div>
+              <div style={{ "--i": 3 } as React.CSSProperties}></div>
+              <div style={{ "--i": 4 } as React.CSSProperties}></div>
+            </div>
+          </div>,
+          document.body
+        )}
 
       <div ref={switcherRef} className="relative flex items-center">
         {/* Large */}
         <button
           onClick={largeScreenToggle}
           onMouseLeave={handleMouseLeave}
-          className={`group w-20 h-10 rounded-full relative overflow-hidden hidden lg:flex items-center justify-center bg-white/10 backdrop-blur-xs border border-white/30 shadow-md cursor-pointer`} // <--- ลบ isHoverDisabled ออกจากตรงนี้
+          className={`group w-20 h-10 rounded-full relative overflow-hidden hidden lg:flex items-center justify-center bg-white/10 backdrop-blur-xs border border-white/30 shadow-md cursor-pointer`}
         >
           {loading && (
             <div className="absolute inset-0 flex items-center justify-center">
@@ -139,11 +143,11 @@ export default function LanguageSwitcher({
               }}
             >
               <div
-                className={`transition-all ${
+                className={`transition-all opacity-80 ${
                   !isHoverDisabled
                     ? isThai
-                      ? "group-hover:translate-x-1 group-hover:opacity-70"
-                      : "group-hover:-translate-x-1 group-hover:opacity-70"
+                      ? "group-hover:translate-x-1 group-hover:opacity-90"
+                      : "group-hover:-translate-x-1 group-hover:opacity-90"
                     : ""
                 } w-6 h-6 bg-white/20 border border-white/30 shadow-md rounded-full overflow-hidden`}
               >
@@ -154,7 +158,7 @@ export default function LanguageSwitcher({
                       : "/assets/icons/en-icon.svg"
                   }
                   alt="lang-icon"
-                  className="w-full h-full object-cover opacity-70"
+                  className="w-full h-full object-cover"
                   draggable="false"
                 />
               </div>
@@ -168,8 +172,8 @@ export default function LanguageSwitcher({
               <span
                 className={`absolute transition-opacity duration-300 ${
                   isThai
-                    ? `opacity-100 ${
-                        !isHoverDisabled ? "group-hover:opacity-70" : ""
+                    ? `opacity-80 ${
+                        !isHoverDisabled ? "group-hover:opacity-100" : ""
                       }`
                     : "opacity-0"
                 }`}
@@ -201,10 +205,12 @@ export default function LanguageSwitcher({
               onCloseSearch();
             }
           }}
-          className="w-10 h-10 rounded-full flex lg:hidden items-center justify-center bg-white/10 backdrop-blur-xs border border-white/30 shadow-md cursor-pointer"
+          className={`md:w-10 md:h-10 w-8 h-8 rounded-full flex lg:hidden items-center justify-center bg-white/10 backdrop-blur-xs border border-white/30 md:shadow-md cursor-pointer ${
+            isPanelOpen && "md:bg-white/40 border-white/60"
+          }`}
           disabled={loading}
         >
-          <div className="w-6 h-6">
+          <div className="md:w-6 md:h-6 w-full h-full">
             <img
               src={
                 isThai
@@ -212,7 +218,9 @@ export default function LanguageSwitcher({
                   : "/assets/icons/en-icon.svg"
               }
               alt="lang-icon"
-              className="w-full h-full object-cover opacity-70"
+              className={`w-full h-full object-cover opacity-60 transition-all ${
+                isPanelOpen && "opacity-80"
+              }`}
               draggable="false"
             />
           </div>
@@ -221,11 +229,22 @@ export default function LanguageSwitcher({
         <AnimatePresence>
           {isPanelOpen && (
             <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
-              className="absolute top-12 right-0 w-40 h-fit bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-lg overflow-hidden z-50"
+              initial={{
+                opacity: 0,
+                y: window.innerWidth >= 768 ? -10 : 0,
+                x: window.innerWidth >= 768 ? 0 : 10,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+                x: 0,
+              }}
+              exit={{
+                opacity: 0,
+                y: window.innerWidth >= 768 ? -10 : 0,
+                x: window.innerWidth >= 768 ? 0 : -10,
+              }}
+              className="absolute md:top-12 md:bottom-auto md:right-0 md:left-auto -bottom-1.5 top-auto left-auto right-40.5 w-40 h-fit bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-lg overflow-hidden z-50"
             >
               <div
                 onClick={() => handleLanguageChange("th")}

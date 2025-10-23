@@ -145,8 +145,8 @@ export default function HomepageDefault({
       <main
         className={`${
           isPending ? "w-full" : "w-screen"
-        } h-full overflow-y-auto scrollbar-hide text-white/80 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] ${
-          isSidebar ? "pl-65" : "pl-25"
+        } h-full overflow-y-auto scrollbar-hide text-white/80 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] pt-[2svh] ${
+          isSidebar ? "md:pl-65 pl-3" : "md:pl-25 pl-3"
         } transition-all relative`}
       >
         {isPending ? (
