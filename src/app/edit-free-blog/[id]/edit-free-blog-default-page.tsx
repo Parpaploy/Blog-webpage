@@ -136,12 +136,12 @@ export default function EditFreeBlogDefaultPage({
   return (
     <>
       <main
-        className={`w-screen h-full 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] overflow-y-auto scrollbar-hide ${
-          isSidebar ? "pl-65" : "pl-25"
-        } transition-all`}
+        className={`w-screen h-full 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] pt-[2svh] overflow-y-auto scrollbar-hide ${
+          isSidebar ? "md:pl-65" : "md:pl-25"
+        } transition-all md:pb-0 pb-18 md:px-auto px-3`}
       >
-        <div className="w-full pr-25">
-          <section className="w-full max-w-3xl mx-auto h-full">
+        <div className="w-full md:pr-25">
+          <section className="w-full md:max-w-3xl mx-auto h-full">
             <form
               onSubmit={handleSubmit}
               className="h-full w-full space-y-6 text-white/80"
@@ -347,7 +347,7 @@ export default function EditFreeBlogDefaultPage({
               <button
                 type="submit"
                 disabled={submissionStatus === "submitting"}
-                className="mb-3 cursor-pointer text-white/80 hover:text-white/90 w-full px-3 py-3 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl transition-all disabled:bg-gray-600 disabled:opacity-70 disabled:cursor-not-allowed"
+                className="mb-3 cursor-pointer md:mt-0 -mt-2 text-white/80 hover:text-white/90 w-full px-3 py-3 hover:bg-white/30 bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl transition-all disabled:bg-gray-600 disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {submissionStatus === "submitting"
                   ? t("updating", "Updating...")

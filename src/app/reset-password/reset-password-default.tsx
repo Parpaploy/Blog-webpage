@@ -58,7 +58,7 @@ export default function ResetPasswordDefaultPage() {
       const data = await res.json();
       if (res.ok) {
         setStatus("success");
-        setMessageKeys(["successMessage"]);
+        //setMessageKeys(["successMessage"]);
       } else {
         const key = backendMessageMap[data.error?.message] || "unexpectedError";
         setStatus("error");
@@ -81,12 +81,12 @@ export default function ResetPasswordDefaultPage() {
 
   return (
     <main
-      className={`w-screen h-full 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] ${
-        isSidebar ? "pl-65" : "pl-25"
+      className={`w-screen h-full 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] pt-[50%] ${
+        isSidebar ? "md:pl-65 md:px-auto px-3" : "md:pl-25 md:px-auto px-3"
       } transition-all`}
     >
       {status ? (
-        <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-white/10 backdrop-blur-sm z-[999]">
+        <div className="fixed md:px-0 px-3 top-0 left-0 w-screen h-screen flex items-center justify-center bg-white/10 backdrop-blur-sm z-[999]">
           <div className="text-center p-10 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl max-w-md w-full">
             {status === "success" && (
               <>
@@ -130,7 +130,7 @@ export default function ResetPasswordDefaultPage() {
           </div>
         </div>
       ) : (
-        <div className="w-full pr-25">
+        <div className="w-full md:pr-25">
           <form
             onSubmit={handleSubmit}
             className="max-w-sm mx-auto w-full space-y-5 text-white/80"

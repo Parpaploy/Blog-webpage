@@ -59,8 +59,10 @@ export default function YourBlogsDefaultPage({
 
   const [deleteError, setDeleteError] = useState<string>("");
 
-  const userBlogs = blogs.filter((blog) => blog.author?.id === user?.id);
-  const userSubscribeBlogs = subscribeBlogs.filter(
+  const userBlogs = (blogs || []).filter(
+    (blog) => blog.author?.id === user?.id
+  );
+  const userSubscribeBlogs = (subscribeBlogs || []).filter(
     (subBlog) => subBlog.author?.id === user?.id
   );
 

@@ -103,7 +103,15 @@ export default function MobileMenuPanel({
               setToggle={setIsToggle}
               onClose={handleMenuClick}
             />
-            {user !== null ? (
+
+            <ProfileMenu
+              path="/subscribe-blogs"
+              title={t("subscribe-blogs")}
+              setToggle={setIsToggle}
+              onClose={handleMenuClick}
+            />
+
+            {/* {user !== null ? (
               <ProfileMenu
                 path="/subscribe-blogs"
                 title={t("subscribe-blogs")}
@@ -118,17 +126,18 @@ export default function MobileMenuPanel({
                 onClose={handleMenuClick}
                 haveLine={false}
               />
-            )}
+            )} */}
           </div>
-          {user !== null && (
-            <div className="h-11 flex gap-2 justify-end items-center px-2">
+
+          <div className="h-11 flex gap-2 justify-end items-center px-2">
+            <LanguageSwitcher
+              openNavbar={openNavbar}
+              setOpenNavbar={setOpenNavbar}
+              onCloseSearch={onCloseSearch}
+              onPanelToggle={setLangPanelOpen}
+            />
+            {user !== null && (
               <>
-                <LanguageSwitcher
-                  openNavbar={openNavbar}
-                  setOpenNavbar={setOpenNavbar}
-                  onCloseSearch={onCloseSearch}
-                  onPanelToggle={setLangPanelOpen}
-                />
                 <ProfileButton
                   ref={mobileProfileButtonRef}
                   user={user}
@@ -143,8 +152,8 @@ export default function MobileMenuPanel({
                   buttonRef={mobileProfileButtonRef}
                 />
               </>
-            </div>
-          )}
+            )}
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

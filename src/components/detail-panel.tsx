@@ -36,9 +36,9 @@ export default function DetailPanel({
     <AnimatePresence>
       {isToggle && (
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 10 }}
+          exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.2 }}
           className="absolute top-10 right-0 w-60 h-fit bg-black/50 backdrop-blur-sm backdrop-brightness-200 border border-white/30 shadow-md rounded-lg overflow-hidden z-50"
           onClick={(e) => e.stopPropagation()}

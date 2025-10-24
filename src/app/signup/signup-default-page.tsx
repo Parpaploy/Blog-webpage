@@ -89,13 +89,13 @@ export default function SignupDefaultPage() {
   return (
     <main
       className={`w-screen h-full 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] pt-[50%] ${
-        isSidebar ? "pl-65" : "pl-25"
+        isSidebar ? "md:pl-65 md:px-auto px-3" : "md:pl-25 md:px-auto px-3"
       } transition-all`}
     >
-      <div className="w-full pr-25">
+      <div className="w-full md:pr-25">
         <form
           onSubmit={handleSubmit}
-          className="w-full space-y-5 max-w-sm mx-auto"
+          className="w-full space-y-5 md:max-w-sm mx-auto"
         >
           <h2 className="text-2xl font-bold text-center text-white/80">
             {t("title")}

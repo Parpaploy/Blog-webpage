@@ -55,11 +55,11 @@ export default function ForgotPasswordDefaultPage() {
 
   return (
     <main
-      className={`w-screen h-full 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] ${
-        isSidebar ? "pl-65" : "pl-25"
+      className={`w-screen h-full 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] pt-[50%] ${
+        isSidebar ? "md:pl-65" : "md:pl-25"
       } transition-all relative`}
     >
-      <div className="w-full pr-25">
+      <div className="w-full md:pr-25">
         <form
           onSubmit={handleSubmit}
           className="w-full space-y-5 max-w-sm mx-auto p-4"

@@ -17,7 +17,7 @@ export default function CategoryTag({
 
   return (
     <div
-      className={`xl:text-[14px] md:text-[10px] xl:px-1.5 px-1 xl:rounded-md rounded-sm bg-white/10 backdrop-blur-sm border border-white/20 shadow-xs line-clamp-1 
+      className={`xl:text-[14px] text-[10px] xl:px-1.5 px-1 xl:rounded-md rounded-sm bg-white/10 backdrop-blur-sm border border-white/20 shadow-xs line-clamp-1 
                   ${getTextSizeClass(textSize)}
                   ${
                     isSelected

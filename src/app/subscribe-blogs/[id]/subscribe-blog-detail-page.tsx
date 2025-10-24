@@ -121,22 +121,22 @@ export default function SubscribeBlogDetailPage({
 
   return (
     <main
-      className={`w-full h-full flex lg:flex-row flex-col text-white ${
-        isSidebar ? "pl-65" : "pl-25"
-      } transition-all`}
+      className={`md:w-full w-screen h-full flex lg:flex-row flex-col text-white ${
+        isSidebar ? "md:pl-65" : "md:pl-25"
+      } px-3 md:px-0 transition-all md:pb-0 pb-15`}
     >
       {/* Detail */}
-      <section className="lg:w-[70%] w-full lg:h-full h-[70%] overflow-y-auto pr-8 lg:mb-0 mb-3 scrollbar-hide">
-        <div className="before:block 2xl:before:h-[7svh] xl:before:h-[9svh] lg:before:h-[8svh] md:before:h-[6svh] before:content-['']" />
+      <section className="overflow-x-hidden lg:w-[70%] md:w-full w-full lg:h-full md:h-[70%] h-[60%] overflow-y-auto lg:pr-8 md:pl-0 lg:mb-0 mb-3 scrollbar-hide">
+        <div className="before:block 2xl:before:h-[7svh] xl:before:h-[9svh] lg:before:h-[8svh] md:before:h-[6svh] before:h-[2svh] before:content-['']" />
         <div className="w-full flex justify-between items-start mb-5">
           <div className="w-fit flex gap-5 justify-start items-center">
             <div className="w-full text-start">
               <div className=" flex justify-start items-center gap-3">
                 <h1 className="text-4xl font-bold">{subBlog?.title}</h1>
 
-                <div className="rounded-full mb-1 bg-amber-300/50 border-1 border-white/30 p-4 backdrop-blur-sm shadow-md">
-                  <FaStar className="w-5 h-5 text-[#424EDD]/50 absolute top-[calc(50%-1px)] -translate-y-1/2 left-1/2 -translate-x-1/2 z-20" />
-                  <FaStar className="w-6 h-6 text-white/30 absolute top-[calc(50%-1px)] -translate-y-1/2 left-1/2 -translate-x-1/2 z-10" />
+                <div className="rounded-full bg-amber-300/50 border-1 border-white/30 md:p-4 p-3 backdrop-blur-sm shadow-md">
+                  <FaStar className="md:w-5 w-4 md:h-5 h-4 text-[#424EDD]/50 absolute top-[calc(50%-1px)] -translate-y-1/2 left-1/2 -translate-x-1/2 z-20" />
+                  <FaStar className="md:w-6 w-5 md:h-6 h-5 text-white/30 absolute top-[calc(50%-1px)] -translate-y-1/2 left-1/2 -translate-x-1/2 z-10" />
                 </div>
               </div>
               <p className="text-[#cfcfcf]">{subBlog?.description}</p>
@@ -151,7 +151,7 @@ export default function SubscribeBlogDetailPage({
                 isToggle
                   ? "bg-black/70 text-white/90"
                   : "bg-black/50 hover:bg-black/70 text-white/80 hover:text-white/90"
-              } rounded-full border border-white/30 p-1 backdrop-blur-sm backdrop-brightness-200 transition-all 
+              } rounded-full border border-white/30 md:p-1 p-0.5 backdrop-blur-sm backdrop-brightness-200 transition-all 
           cursor-pointer`}
             >
               <FiMoreHorizontal size={24} />
@@ -170,7 +170,7 @@ export default function SubscribeBlogDetailPage({
             </button>
           </div>
         </div>
-        <div className="w-full h-130 rounded-2xl overflow-hidden">
+        <div className="w-full md:h-130 h-60 rounded-2xl overflow-hidden">
           <img
             className="w-full h-full object-cover"
             src={
@@ -205,13 +205,22 @@ export default function SubscribeBlogDetailPage({
         {FormatRichText(subBlog?.detail)}
       </section>
 
-      <div className="lg:w-[1px] w-[95%] bg-white/30 lg:h-[95%] h-[1px] lg:mb-0 mb-3 mx-auto lg:self-center" />
+      <div className="lg:w-[1px] w-full bg-white/30 lg:h-[95%] h-[1px] lg:mb-0 mb-3" />
 
       {/* Other blogs */}
-      <section className="lg:w-[30%] w-full lg:h-full h-[30%] flex flex-col lg:pl-8 pl-0 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] pt-0">
-        <h1 className="text-3xl font-bold text-start mb-3">
+      <section className="lg:w-[30%] w-full lg:h-full md:h-[30%] h-[40%] flex flex-col lg:pl-8 md:pl-0 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] pt-0">
+        <div
+          className="text-3xl font-bold text-start mb-3 cursor-pointer"
+          onClick={() => {
+            if (user?.id !== subBlog.author?.id) {
+              router.push(`/user-blogs/${subBlog.author?.id}`);
+            } else {
+              router.push("/your-blogs");
+            }
+          }}
+        >
           {t("more", { username: subBlog.author?.username })}
-        </h1>
+        </div>
 
         <div className="w-full h-full flex lg:flex-col flex-row items-start justify-start gap-5 lg:overflow-x-hidden lg:overflow-y-auto overflow-y-hidden overflow-x-auto scrollbar-hide pb-3">
           {authorBlogs.length > 0 ? (

@@ -86,8 +86,8 @@ export default function EmailConfirmationDefaultPage() {
   }
 
   return (
-    <main className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-white/10 backdrop-blur-sm z-[999]">
-      <div className="w-full pr-25">
+    <main className="md:px-0 px-3 fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-white/10 backdrop-blur-sm z-[999]">
+      <div className="w-full md:pr-25">
         <div className="text-center p-10 bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl max-w-md w-full mx-auto">
           {status === "verifying" && (
             <>

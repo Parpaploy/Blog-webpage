@@ -38,7 +38,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${ibm.className}  antialiased bg-fixed`}
+        className={`${ibm.className} antialiased bg-fixed`}
         style={{
           backgroundImage:
             "url('/assets/placeholders/Chihiro Spirited Away.jpg')",
