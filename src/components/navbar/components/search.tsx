@@ -244,6 +244,8 @@ function Search({
     }
 
     setOpenNavbar(false);
+    setIsOpenCat(false);
+    setIsOpenFilter(false);
     updateSearchParams(query, selectedCategories, "search");
   };
 
