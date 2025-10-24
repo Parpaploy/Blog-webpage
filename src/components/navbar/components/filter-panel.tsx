@@ -89,9 +89,18 @@ export default function FilterPanel({
       {isOpenFilter && position && (
         <motion.div
           ref={panelRef}
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
+          initial={{
+            opacity: 0,
+            y: window.innerWidth >= 768 ? -10 : 10,
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+          exit={{
+            opacity: 0,
+            y: window.innerWidth >= 768 ? -10 : 10,
+          }}
           transition={{ duration: 0.2 }}
           onClick={(e) => e.stopPropagation()}
           className="fixed w-60 h-fit bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-lg overflow-hidden z-50"

@@ -8,12 +8,6 @@ import { RiResetRightLine } from "react-icons/ri";
 import { createPortal } from "react-dom";
 import { PanelPosition } from "../../../../types/ui.type";
 
-const panelSlideVariants: Variants = {
-  hidden: { opacity: 0, y: 10 },
-  visible: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: 10 },
-};
-
 export default function CategoryPanel({
   isOpenCat,
   menuContainerVariants,
@@ -84,10 +78,19 @@ export default function CategoryPanel({
         <motion.div
           ref={panelRef}
           key="category-panel-background"
-          variants={panelSlideVariants}
-          initial="hidden"
-          animate="visible"
-          exit="exit"
+          initial={{
+            opacity: 0,
+            y: window.innerWidth >= 768 ? -10 : 10,
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+          exit={{
+            opacity: 0,
+            y: window.innerWidth >= 768 ? -10 : 10,
+          }}
+          transition={{ duration: 0.2 }}
           className={`fixed md:w-auto md:max-w-[40%] w-[95%] z-50 ${
             isDesktop
               ? "flex-wrap justify-center items-center"
@@ -105,7 +108,7 @@ export default function CategoryPanel({
             variants={menuContainerVariants}
             initial="hidden"
             animate="visible"
-            exit="hidden"
+            exit="exit"
             className="flex flex-wrap gap-3 items-center justify-center"
           >
             {categories.map((cat: ICategory) => (
@@ -125,13 +128,8 @@ export default function CategoryPanel({
               onClick={onCategoryReset}
               disabled={isResetDisabled}
               className={`
-                  group flex w-10 h-9 text-white/80 items-center justify-center 
-                  
-                  /* 1. ลบ 'transition-all' ออก */
-                  
-                  /* 2. เพิ่ม 'transition-colors' เข้าไปแทน */
-                  transition-colors duration-300 ease-in-out /* <-- เพิ่มบรรทัดนี้ */
-
+                  group flex w-10 h-9 text-white/80 items-center justify-center
+                  transition-colors duration-300 ease-in-out
                   bg-white/10 hover:enabled:bg-white/30 
                   !backdrop-blur-sm border border-white/30 
                   shadow-md rounded-4xl px-2 py-1 

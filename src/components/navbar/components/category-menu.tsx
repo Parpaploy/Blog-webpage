@@ -9,6 +9,7 @@ const itemVariants = {
     opacity: 1,
     transition: { duration: 0.3 },
   },
+  exit: { opacity: 0, transition: { duration: 0.2 } },
 };
 
 function CategoryMenu({
@@ -29,18 +30,6 @@ function CategoryMenu({
   const isSelected = selectedCategories.includes(catTitle);
   const isLoading = loadingCategories.includes(catTitle);
   const disabled = isDisable || isLoading;
-
-  const getButtonClasses = () => {
-    if (disabled) {
-      return isSelected
-        ? "bg-white/45 text-black/40 pointer-events-none"
-        : "bg-white/10 text-white/40 pointer-events-none";
-    }
-
-    return isSelected
-      ? "bg-white/90 text-black/80"
-      : "text-white/80 bg-white/10 hover:bg-white/30 hover:text-white/90";
-  };
 
   return (
     <motion.div

@@ -104,6 +104,11 @@ function Search({
       y: 0,
       transition: { when: "beforeChildren", staggerChildren: 0.05 },
     },
+    exit: {
+      opacity: 1,
+      y: 0,
+      transition: { staggerChildren: 0.05, staggerDirection: -1 },
+    },
   };
 
   const allEntries = useMemo(
