@@ -40,9 +40,10 @@ export default function NavbarDefault({
   const pathname = usePathname();
 
   const { openNavbar, setOpenNavbar, registerRef } = useToggle();
-  const navRef = useRef<HTMLDivElement>(null);
 
+  const navRef = useRef<HTMLDivElement>(null);
   const profileButtonRef = useRef<HTMLDivElement>(null);
+  const mobileMenuButtonRef = useRef<HTMLButtonElement>(null);
 
   const [isOpenCat, setIsOpenCat] = useState<boolean>(false);
   const [isOpenFilter, setIsOpenFilter] = useState<boolean>(false);
@@ -100,20 +101,32 @@ export default function NavbarDefault({
                       md:bg-transparent md:backdrop-blur-none md:border-none md:shadow-none
       "
       >
-        <div className="w-full h-full flex justify-between items-start text-white/70">
+        <div className="w-full h-full flex justify-between items-start gap-0.5 text-white/70">
           {user !== null ? (
-            <div className="block md:hidden lg:block whitespace-nowrap font-semibold text-lg md:bg-white/10 md:backdrop-blur-sm border md:border-white/30 border-transparent md:shadow-md rounded-4xl px-2 py-1 cursor-default">
+            <div
+              className={`${
+                pathname === "/search"
+                  ? "hidden lg:block"
+                  : "block md:hidden lg:block"
+              } whitespace-nowrap font-semibold text-lg md:bg-white/10 md:backdrop-blur-sm border md:border-white/30 border-transparent md:shadow-md rounded-4xl px-2 py-1 cursor-default`}
+            >
               {t("hello")} {user.username}
             </div>
           ) : (
-            <p className="block md:hidden lg:block whitespace-nowrap font-semibold text-lg md:bg-white/10 md:backdrop-blur-sm border md:border-white/30 border-transparent md:shadow-md rounded-4xl px-2 py-1">
+            <p
+              className={`${
+                pathname === "/search"
+                  ? "hidden lg:block"
+                  : "block md:hidden lg:block"
+              } whitespace-nowrap font-semibold text-lg md:bg-white/10 md:backdrop-blur-sm border md:border-white/30 border-transparent md:shadow-md rounded-4xl px-2 py-1`}
+            >
               {t("guest")}
             </p>
           )}
 
           {pathname === "/search" && (
             <div
-              className={`w-full flex items-center lg:justify-center md:justify-start`}
+              className={`w-full flex items-center lg:justify-center justify-start`}
             >
               <Search
                 categories={categories}
@@ -179,11 +192,12 @@ export default function NavbarDefault({
             </>
           )}
 
-          <div className="md:hidden block">
+          <div className="md:hidden flex gap-1">
             <LoginButton isLoggedIn={isLoggedIn} title={t("login")} />
             <SignupButton isLoggedIn={isLoggedIn} title={t("signup")} />
 
             <MobileMenu
+              ref={mobileMenuButtonRef}
               isToggle={isMobileMenuOpen}
               setIsToggle={setIsMobileMenuOpen}
             />
@@ -203,6 +217,7 @@ export default function NavbarDefault({
           defaultProfileUrl={defaultProfileUrl}
           handleImageError={handleImageError}
           isProfile={openNavbar}
+          buttonRef={mobileMenuButtonRef}
         />
       </div>
     </main>

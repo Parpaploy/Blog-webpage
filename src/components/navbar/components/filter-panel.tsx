@@ -1,6 +1,7 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { BsSortUp, BsSortDown } from "react-icons/bs";
 import { RiResetRightLine } from "react-icons/ri";
@@ -10,6 +11,13 @@ interface SortOption {
   asc: string;
   desc: string;
 }
+
+type PanelPosition = {
+  top?: number;
+  right?: number;
+  bottom?: number;
+  left?: number;
+};
 
 interface FilterPanelProps {
   isOpenFilter: boolean;
@@ -23,6 +31,7 @@ interface FilterPanelProps {
   onTypeChange: (type: string) => void;
   onSortChange: (sortKey: string) => void;
   onFilterReset: () => void;
+  buttonRef: React.RefObject<HTMLButtonElement | null>;
 }
 
 export default function FilterPanel({
@@ -37,16 +46,74 @@ export default function FilterPanel({
   onTypeChange,
   onSortChange,
   onFilterReset,
+  buttonRef,
 }: FilterPanelProps) {
-  return (
+  const panelRef = useRef<HTMLDivElement>(null);
+  const [hasMounted, setHasMounted] = useState(false);
+  const [position, setPosition] = useState<PanelPosition | null>(null);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  useLayoutEffect(() => {
+    if (isOpenFilter && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      const isDesktop = window.innerWidth >= 768;
+
+      if (isDesktop) {
+        setPosition({
+          top: rect.bottom + 8,
+          right: window.innerWidth - rect.right,
+        });
+      } else {
+        setPosition({
+          bottom: window.innerHeight - rect.top + 15,
+          right: window.innerWidth - rect.right,
+        });
+      }
+    }
+  }, [isOpenFilter, buttonRef]);
+
+  useEffect(() => {
+    if (!isOpenFilter) return;
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        panelRef.current &&
+        !panelRef.current.contains(event.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target as Node)
+      ) {
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpenFilter, buttonRef]);
+
+  if (!hasMounted) {
+    return null;
+  }
+
+  return createPortal(
     <AnimatePresence>
-      {isOpenFilter && (
+      {isOpenFilter && position && (
         <motion.div
+          ref={panelRef}
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.2 }}
-          className="absolute top-12 right-0 w-60 h-fit bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-lg overflow-hidden z-50"
+          onClick={(e) => e.stopPropagation()}
+          className="fixed w-60 h-fit bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-lg overflow-hidden z-50"
+          style={{
+            top: position.top ? `${position.top}px` : "auto",
+            right: position.right ? `${position.right}px` : "auto",
+            bottom: position.bottom ? `${position.bottom}px` : "auto",
+            left: position.left ? `${position.left}px` : "auto",
+          }}
         >
           <div className="p-3 border-b border-white/30">
             <div className="flex items-center justify-center gap-4">
@@ -157,6 +224,7 @@ export default function FilterPanel({
           </button>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }

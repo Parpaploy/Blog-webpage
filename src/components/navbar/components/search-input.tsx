@@ -142,7 +142,7 @@ export default function SearchInput({
   };
 
   return (
-    <div className="2xl:min-w-100 xl:min-w-90 lg:min-w-70 md:min-w-30 h-full flex-1 relative">
+    <div className="2xl:min-w-100 xl:min-w-90 lg:min-w-70 md:min-w-30 max-w-35 h-full flex-1 relative">
       <input
         ref={inputRef}
         type="text"
@@ -171,7 +171,7 @@ export default function SearchInput({
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-full left-0 right-0 mt-1 bg-white/10 backdrop-blur-md border border-white/30 rounded-2xl shadow-md overflow-hidden z-50"
+            className="absolute top-full left-0 right-0 mt-2 bg-white/10 backdrop-blur-md border border-white/30 rounded-2xl shadow-md overflow-hidden z-50"
           >
             <div>
               {suggestions.map((suggestion, index) => (

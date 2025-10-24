@@ -16,14 +16,17 @@ export default function LanguageSwitcher({
   openNavbar,
   setOpenNavbar = () => {},
   onCloseSearch,
+  onPanelToggle,
 }: {
   openNavbar: boolean;
   setOpenNavbar: (open: boolean) => void;
   onCloseSearch?: () => void;
+  onPanelToggle?: (isOpen: boolean) => void;
 }) {
   const { i18n, t } = useTranslation("navbar");
   const [hasMounted, setHasMounted] = useState(false);
   const switcherRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
 
   const [isThai, setIsThai] = useState(() => {
     if (typeof window !== "undefined") {
@@ -52,6 +55,10 @@ export default function LanguageSwitcher({
       setPanelOpen(false);
     }
   }, [openNavbar]);
+
+  useEffect(() => {
+    onPanelToggle?.(isPanelOpen);
+  }, [isPanelOpen, onPanelToggle]);
 
   useEffect(() => {
     if (hasMounted) {
@@ -86,10 +93,13 @@ export default function LanguageSwitcher({
     if (!isPanelOpen) return;
     const handleClickOutside = (event: MouseEvent) => {
       if (
+        panelRef.current &&
+        !panelRef.current.contains(event.target as Node) &&
         switcherRef.current &&
         !switcherRef.current.contains(event.target as Node)
       ) {
         setPanelOpen(false);
+        event.stopPropagation();
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -252,10 +262,11 @@ export default function LanguageSwitcher({
             <AnimatePresence>
               {isPanelOpen && position && (
                 <motion.div
+                  ref={panelRef}
                   initial={{
                     opacity: 0,
-                    y: window.innerWidth >= 768 ? -10 : 10,
-                    x: 0,
+                    y: window.innerWidth >= 768 ? -10 : 0,
+                    x: window.innerWidth >= 768 ? 0 : 10,
                   }}
                   animate={{
                     opacity: 1,
@@ -264,10 +275,11 @@ export default function LanguageSwitcher({
                   }}
                   exit={{
                     opacity: 0,
-                    y: window.innerWidth >= 768 ? -10 : 10,
-                    x: 0,
+                    y: window.innerWidth >= 768 ? -10 : 0,
+                    x: window.innerWidth >= 768 ? 0 : -10,
                   }}
-                  className="fixed w-40 h-fit bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-lg overflow-hidden z-[999]" // ใช้ z-index สูงๆ
+                  onClick={(e) => e.stopPropagation()}
+                  className="fixed w-40 h-fit bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-lg overflow-hidden z-[999]"
                   style={{
                     top: position.top ? `${position.top}px` : "auto",
                     right: position.right ? `${position.right}px` : "auto",

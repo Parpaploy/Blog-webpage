@@ -61,6 +61,8 @@ function Search({
   const router = useRouter();
   const params = useSearchParams();
   const searchContainerRef = useRef<HTMLDivElement>(null);
+  const filterButtonRef = useRef<HTMLButtonElement>(null);
+  const categoryButtonRef = useRef<HTMLButtonElement>(null);
 
   const urlQuery = params.get("query") || "";
 
@@ -190,7 +192,7 @@ function Search({
         !searchContainerRef.current.contains(event.target as Node)
       ) {
         setIsOpenCat(false);
-        setIsOpenFilter(false);
+        setIsOpenFilter(false); // <-- FilterPanel จะถูกปิดโดย logic นี้
       }
     };
 
@@ -284,12 +286,13 @@ function Search({
 
   return (
     <div
-      className={`flex gap-2 transition-all ${
+      className={`flex lg:gap-2 gap-1 transition-all ${
         isSidebar && "lg:gap-2 md:gap-0.5"
       } h-10 relative`}
       ref={searchContainerRef}
     >
       <button
+        ref={categoryButtonRef}
         disabled={isProcessing}
         className={`flex w-10 items-center justify-center h-full transition-all backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1 ${
           isOpenCat
@@ -349,6 +352,7 @@ function Search({
 
       <div className="relative">
         <button
+          ref={filterButtonRef}
           disabled={isProcessing}
           className={`flex w-10 items-center justify-center h-full transition-all backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1 ${
             isOpenFilter
@@ -370,6 +374,7 @@ function Search({
 
         <FilterPanel
           isOpenFilter={isOpenFilter}
+          buttonRef={filterButtonRef}
           isDisable={isDisable}
           currentType={currentType}
           sortOptions={sortOptions}
@@ -424,6 +429,7 @@ function Search({
         loadingCategories={loadingCategories}
         isDisable={isDisable}
         onCategoryReset={handleCategoryReset}
+        buttonRef={categoryButtonRef}
       />
     </div>
   );

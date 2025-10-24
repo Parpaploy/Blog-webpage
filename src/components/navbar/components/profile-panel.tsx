@@ -17,10 +17,12 @@ const ProfilePanel = ({
   toggle,
   setToggle,
   buttonRef,
+  haveLine = true,
 }: {
   toggle: boolean;
   setToggle: (toggle: boolean) => void;
   buttonRef: React.RefObject<HTMLDivElement | null>;
+  haveLine?: boolean;
 }) => {
   const { t } = useTranslation("navbar");
   const panelRef = useRef<HTMLDivElement>(null);

@@ -1,30 +1,34 @@
 "use client";
-
 import React from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 
-export default function MobileMenu({
-  isToggle,
-  setIsToggle,
-}: {
-  isToggle: boolean;
-  setIsToggle: (isToggle: boolean) => void;
-}) {
+const MobileMenu = React.forwardRef<
+  HTMLButtonElement,
+  {
+    isToggle: boolean;
+    setIsToggle: (isToggle: boolean) => void;
+  }
+>(({ isToggle, setIsToggle }, ref) => {
   return (
     <>
       <button
+        ref={ref}
         onClick={() => {
           setIsToggle(!isToggle);
         }}
-        type="submit"
-        className={`relative w-fit border md:border-white/30 border-transparent md:backdrop-blur-sm md:shadow-md rounded-full p-2.25 transition-all underline ${
+        type="button"
+        className={`relative w-fit rounded-full p-2.25 border border-white/30 transition-all shadow-md underline cursor-pointer ${
           isToggle
-            ? "text-white bg-white/40 cursor-default"
-            : "md:bg-white/10 hover:bg-white/20 text-white/50 hover:text-white/70 cursor-pointer"
+            ? "text-white bg-white/40"
+            : "bg-white/10 hover:bg-white/20 text-white/50 hover:text-white/70"
         }`}
       >
         <RxHamburgerMenu className="w-5 h-5" />
       </button>
     </>
   );
-}
+});
+
+MobileMenu.displayName = "MobileMenu";
+
+export default MobileMenu;
