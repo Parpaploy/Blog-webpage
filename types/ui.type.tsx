@@ -6,3 +6,10 @@ export type Suggestion = {
 };
 
 export type SubmissionStatus = "submitting" | "success" | "error" | null;
+
+export type PanelPosition = {
+  top?: number;
+  right?: number;
+  bottom?: number;
+  left?: number;
+};

@@ -13,3 +13,9 @@ export interface ToggleContextType {
   ) => () => void;
   registerBlogToggleCallback: (callback: () => void) => () => void;
 }
+
+export interface SortOption {
+  key: string;
+  asc: string;
+  desc: string;
+}

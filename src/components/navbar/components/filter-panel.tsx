@@ -5,34 +5,8 @@ import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { BsSortUp, BsSortDown } from "react-icons/bs";
 import { RiResetRightLine } from "react-icons/ri";
-
-interface SortOption {
-  key: string;
-  asc: string;
-  desc: string;
-}
-
-type PanelPosition = {
-  top?: number;
-  right?: number;
-  bottom?: number;
-  left?: number;
-};
-
-interface FilterPanelProps {
-  isOpenFilter: boolean;
-  isDisable: boolean;
-  currentType: string;
-  sortOptions: SortOption[];
-  currentSort: string;
-  currentDir: string;
-  areFiltersActive: boolean;
-  t: (key: string) => string;
-  onTypeChange: (type: string) => void;
-  onSortChange: (sortKey: string) => void;
-  onFilterReset: () => void;
-  buttonRef: React.RefObject<HTMLButtonElement | null>;
-}
+import { PanelPosition } from "../../../../types/ui.type";
+import { SortOption } from "../../../../interfaces/state.interface";
 
 export default function FilterPanel({
   isOpenFilter,
@@ -47,7 +21,20 @@ export default function FilterPanel({
   onSortChange,
   onFilterReset,
   buttonRef,
-}: FilterPanelProps) {
+}: {
+  isOpenFilter: boolean;
+  isDisable: boolean;
+  currentType: string;
+  sortOptions: SortOption[];
+  currentSort: string;
+  currentDir: string;
+  areFiltersActive: boolean;
+  t: (key: string) => string;
+  onTypeChange: (type: string) => void;
+  onSortChange: (sortKey: string) => void;
+  onFilterReset: () => void;
+  buttonRef: React.RefObject<HTMLButtonElement | null>;
+}) {
   const panelRef = useRef<HTMLDivElement>(null);
   const [hasMounted, setHasMounted] = useState(false);
   const [position, setPosition] = useState<PanelPosition | null>(null);

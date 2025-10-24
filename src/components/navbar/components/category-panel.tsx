@@ -6,39 +6,13 @@ import { ICategory } from "../../../../interfaces/strapi.interface";
 import CategoryMenu from "./category-menu";
 import { RiResetRightLine } from "react-icons/ri";
 import { createPortal } from "react-dom";
-
-type PanelPosition = {
-  top?: number;
-  right?: number;
-  bottom?: number;
-  left?: number;
-};
+import { PanelPosition } from "../../../../types/ui.type";
 
 const panelSlideVariants: Variants = {
   hidden: { opacity: 0, y: 10 },
   visible: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: 10 },
 };
-
-const itemVariants = {
-  hidden: { opacity: 0, transition: { duration: 0.2 } },
-  visible: {
-    opacity: 1,
-    transition: { duration: 0.3 },
-  },
-};
-
-interface CategoryPanelProps {
-  isOpenCat: boolean;
-  menuContainerVariants: Variants;
-  categories: ICategory[];
-  onCategoryClick: (cat: string) => void;
-  selectedCategories: string[];
-  loadingCategories: string[];
-  isDisable: boolean;
-  onCategoryReset: () => void;
-  buttonRef: React.RefObject<HTMLButtonElement | null>;
-}
 
 export default function CategoryPanel({
   isOpenCat,
@@ -50,7 +24,17 @@ export default function CategoryPanel({
   isDisable,
   onCategoryReset,
   buttonRef,
-}: CategoryPanelProps) {
+}: {
+  isOpenCat: boolean;
+  menuContainerVariants: Variants;
+  categories: ICategory[];
+  onCategoryClick: (cat: string) => void;
+  selectedCategories: string[];
+  loadingCategories: string[];
+  isDisable: boolean;
+  onCategoryReset: () => void;
+  buttonRef: React.RefObject<HTMLButtonElement | null>;
+}) {
   const [hasMounted, setHasMounted] = useState(false);
 
   const panelRef = useRef<HTMLDivElement>(null);
@@ -80,6 +64,16 @@ export default function CategoryPanel({
     }
   }, [isOpenCat, buttonRef]);
 
+  const isResetDisabled = isDisable || selectedCategories.length <= 0;
+
+  const resetButtonVariants = {
+    hidden: { opacity: 0, transition: { duration: 0.2 } },
+    visible: {
+      opacity: isResetDisabled ? 0.6 : 1,
+      transition: { duration: 0.3 },
+    },
+  };
+
   if (!hasMounted) {
     return null;
   }
@@ -94,9 +88,11 @@ export default function CategoryPanel({
           initial="hidden"
           animate="visible"
           exit="exit"
-          className={`fixed flex z-50 ${
-            isDesktop ? "" : "left-1/2 -translate-x-1/2"
-          } p-3 bg-white/10 backdrop-blur-md border border-white/30 rounded-4xl shadow-md`} // 👈 3. ย้าย styling มาไว้ที่นี่
+          className={`fixed md:w-auto md:max-w-[40%] w-[95%] z-50 ${
+            isDesktop
+              ? "flex-wrap justify-center items-center"
+              : "flex left-1/2 -translate-x-1/2"
+          } p-3 bg-white/10 backdrop-blur-md border border-white/30 rounded-4xl shadow-md`}
           style={{
             top: position.top ? `${position.top}px` : "auto",
             right: position.right ? `${position.right}px` : "auto",
@@ -110,9 +106,7 @@ export default function CategoryPanel({
             initial="hidden"
             animate="visible"
             exit="hidden"
-            className={`flex flex-wrap gap-3 items-center ${
-              isDesktop ? "justify-start" : "justify-center"
-            }`}
+            className="flex flex-wrap gap-3 items-center justify-center"
           >
             {categories.map((cat: ICategory) => (
               <CategoryMenu
@@ -126,15 +120,22 @@ export default function CategoryPanel({
               />
             ))}
 
-            <button
+            <motion.button
+              variants={resetButtonVariants}
               onClick={onCategoryReset}
-              disabled={isDisable || selectedCategories.length <= 0}
+              disabled={isResetDisabled}
               className={`
                   group flex w-10 h-9 text-white/80 items-center justify-center 
-                  transition-all bg-white/10 hover:enabled:bg-white/30 
+                  
+                  /* 1. ลบ 'transition-all' ออก */
+                  
+                  /* 2. เพิ่ม 'transition-colors' เข้าไปแทน */
+                  transition-colors duration-300 ease-in-out /* <-- เพิ่มบรรทัดนี้ */
+
+                  bg-white/10 hover:enabled:bg-white/30 
                   !backdrop-blur-sm border border-white/30 
                   shadow-md rounded-4xl px-2 py-1 
-                  disabled:opacity-60 disabled:cursor-not-allowed disabled:bg-white/10 cursor-pointer
+                  disabled:cursor-not-allowed disabled:bg-white/10 cursor-pointer
               `}
             >
               <RiResetRightLine
@@ -146,7 +147,7 @@ export default function CategoryPanel({
                       "group-hover:rotate-360 transition-transform duration-500 group-disabled:rotate-0"
                 }`}
               />
-            </button>
+            </motion.button>
           </motion.div>
         </motion.div>
       )}

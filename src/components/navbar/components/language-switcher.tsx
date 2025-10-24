@@ -4,13 +4,7 @@ import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { createPortal } from "react-dom";
-
-type PanelPosition = {
-  top?: number;
-  right?: number;
-  bottom?: number;
-  left?: number;
-};
+import { PanelPosition } from "../../../../types/ui.type";
 
 export default function LanguageSwitcher({
   openNavbar,
