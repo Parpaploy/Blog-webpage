@@ -80,19 +80,19 @@ export default function BlogsDefaultPage({
     <main
       className={`${isPending ? "w-full" : "w-screen"} h-full ${
         blogs && blogs.length > 0 ? "overflow-y-auto" : "overflow-y-hidden"
-      } 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] text-white/80 ${
-        isSidebar ? "pl-65" : "pl-25"
-      } transition-all scrollbar-hide relative`}
+      } 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] pt-[2svh] text-white/80 ${
+        isSidebar ? "md:pl-65" : "md:pl-25"
+      } transition-all scrollbar-hide relative md:pb-0 !pb-18`}
     >
-      <h1 className="text-2xl font-bold">{t("title")}</h1>
+      <h1 className="text-2xl font-bold md:ml-0 ml-3">{t("title")}</h1>
 
       <div
-        className={`w-full h-full pr-25 ${
+        className={`w-full md:h-full pr-25 ${
           !blogs || (blogs.length <= 0 && "pb-11")
         }`}
       >
         {blogs && blogs.length > 0 ? (
-          <section className="w-full lg:px-10 lg:pt-5 md:px-0 md:pt-5 pb-3">
+          <section className="md:w-full w-screen lg:px-10 lg:pt-5 md:px-0 md:pt-5 pb-3">
             <div className="flex flex-wrap gap-5 items-center justify-center">
               {blogs.map((blog, index: number) => (
                 <BlogCard

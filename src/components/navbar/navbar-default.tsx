@@ -108,7 +108,7 @@ export default function NavbarDefault({
                 pathname === "/search"
                   ? "hidden lg:block"
                   : "block md:hidden lg:block"
-              } whitespace-nowrap font-semibold text-lg md:bg-white/10 md:backdrop-blur-sm border md:border-white/30 border-transparent md:shadow-md rounded-4xl px-2 py-1 cursor-default`}
+              } whitespace-nowrap font-semibold text-lg bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1 cursor-default`}
             >
               {t("hello")} {user.username}
             </div>
@@ -118,7 +118,7 @@ export default function NavbarDefault({
                 pathname === "/search"
                   ? "hidden lg:block"
                   : "block md:hidden lg:block"
-              } whitespace-nowrap font-semibold text-lg md:bg-white/10 md:backdrop-blur-sm border md:border-white/30 border-transparent md:shadow-md rounded-4xl px-2 py-1`}
+              } whitespace-nowrap font-semibold text-lg bg-white/10 backdrop-blur-sm border border-white/30 shadow-md rounded-4xl px-2 py-1`}
             >
               {t("guest")}
             </p>
