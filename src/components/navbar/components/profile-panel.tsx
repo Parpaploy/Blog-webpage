@@ -6,28 +6,28 @@ import { Logout } from "../../../../lib/auth";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { createPortal } from "react-dom";
-
-type PanelPosition = {
-  top?: number;
-  right?: number;
-  bottom?: number;
-};
+import { PanelPosition } from "../../../../types/ui.type";
 
 const ProfilePanel = ({
   toggle,
   setToggle,
   buttonRef,
-  haveLine = true,
+  setMobileMenuToggle,
 }: {
   toggle: boolean;
   setToggle: (toggle: boolean) => void;
   buttonRef: React.RefObject<HTMLDivElement | null>;
-  haveLine?: boolean;
+  setMobileMenuToggle: (toggle: boolean) => void;
 }) => {
   const { t } = useTranslation("navbar");
   const panelRef = useRef<HTMLDivElement>(null);
   const [hasMounted, setHasMounted] = useState(false);
   const [position, setPosition] = useState<PanelPosition | null>(null);
+
+  const handleMenuClick = () => {
+    setToggle(false);
+    setMobileMenuToggle?.(false);
+  };
 
   useEffect(() => {
     setHasMounted(true);
@@ -109,16 +109,18 @@ const ProfilePanel = ({
             path="/profile"
             title={t("manage")}
             setToggle={setToggle}
+            setMenuToggle={handleMenuClick}
           />
           <ProfileMenu
             path="/your-blogs"
             title={t("your-blogs")}
             setToggle={setToggle}
+            setMenuToggle={handleMenuClick}
           />
           <div
             onClick={() => {
               Logout();
-              setToggle(false);
+              handleMenuClick();
             }}
             className="text-white/80 text-md cursor-pointer hover:bg-white/30 transition-all hover:text-white/90 px-3 py-2"
           >

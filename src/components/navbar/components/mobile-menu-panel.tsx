@@ -110,23 +110,6 @@ export default function MobileMenuPanel({
               setToggle={setIsToggle}
               onClose={handleMenuClick}
             />
-
-            {/* {user !== null ? (
-              <ProfileMenu
-                path="/subscribe-blogs"
-                title={t("subscribe-blogs")}
-                setToggle={setIsToggle}
-                onClose={handleMenuClick}
-              />
-            ) : (
-              <ProfileMenu
-                path="/subscribe-blogs"
-                title={t("subscribe-blogs")}
-                setToggle={setIsToggle}
-                onClose={handleMenuClick}
-                haveLine={false}
-              />
-            )} */}
           </div>
 
           <div className="h-11 flex gap-2 justify-end items-center px-2">
@@ -135,6 +118,7 @@ export default function MobileMenuPanel({
               setOpenNavbar={setOpenNavbar}
               onCloseSearch={onCloseSearch}
               onPanelToggle={setLangPanelOpen}
+              setMobileMenuToggle={setIsToggle}
             />
             {user !== null && (
               <>
@@ -150,6 +134,7 @@ export default function MobileMenuPanel({
                   toggle={openNavbar}
                   setToggle={setOpenNavbar}
                   buttonRef={mobileProfileButtonRef}
+                  setMobileMenuToggle={setIsToggle}
                 />
               </>
             )}

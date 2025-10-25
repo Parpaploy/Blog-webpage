@@ -11,11 +11,13 @@ export default function LanguageSwitcher({
   setOpenNavbar = () => {},
   onCloseSearch,
   onPanelToggle,
+  setMobileMenuToggle,
 }: {
   openNavbar: boolean;
   setOpenNavbar: (open: boolean) => void;
   onCloseSearch?: () => void;
   onPanelToggle?: (isOpen: boolean) => void;
+  setMobileMenuToggle?: (toggle: boolean) => void;
 }) {
   const { i18n, t } = useTranslation("navbar");
   const [hasMounted, setHasMounted] = useState(false);
@@ -105,10 +107,12 @@ export default function LanguageSwitcher({
   const handleLanguageChange = (newLang: "th" | "en") => {
     if (loading || i18n.language === newLang) {
       setPanelOpen(false);
+      setMobileMenuToggle?.(false);
       return;
     }
     setLoading(true);
     setPanelOpen(false);
+    setMobileMenuToggle?.(false);
     setTimeout(() => {
       i18n.changeLanguage(newLang);
       setIsThai(newLang === "th");
