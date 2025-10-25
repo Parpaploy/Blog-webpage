@@ -48,8 +48,8 @@ function Search({
   isHover: boolean;
   setIsHover: (isHover: boolean) => void;
   categories: ICategory[];
-  blogs: IBlog[];
-  subscribeBlogs: ISubscribeBlog[];
+  blogs: IBlog[] | [];
+  subscribeBlogs: ISubscribeBlog[] | [];
   user: IUser | null;
   isOpen: boolean;
   onClose: () => void;

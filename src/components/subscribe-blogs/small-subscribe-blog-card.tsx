@@ -65,7 +65,7 @@ export default function SmallSubscribeBlogCard({
           <h2 className="font-bold md:text-xl text-md line-clamp-1">
             {subBlog.title}
           </h2>
-          <p className="font-medium md:text-md text-sm text-[#bdbdbd]/70 line-clamp-1">
+          <p className="font-medium md:text-md text-sm text-black/20 line-clamp-1">
             {subBlog.description}
           </p>
 
@@ -110,7 +110,7 @@ export default function SmallSubscribeBlogCard({
             </div>
           )}
 
-          <p className="xl:text-xs lg:text-[10px] md:text-[14px] text-[12px] text-[#bdbdbd]/70 text-end">
+          <p className="xl:text-xs lg:text-[10px] md:text-[14px] text-[12px] text-black/20 text-end">
             {FormatDate(subBlog.createdAt)}
           </p>
         </div>

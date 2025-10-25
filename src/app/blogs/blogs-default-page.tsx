@@ -9,7 +9,6 @@ import AddButton from "@/components/add-btn";
 import DeleteFreeBlogPanel from "@/components/delete-free-blog-panel";
 import { deleteFreeBlog } from "../../../lib/apis/blog-uploader";
 import { useRouter } from "next/navigation";
-import GlobalLoading from "../loading";
 
 export default function BlogsDefaultPage({
   blogs,
@@ -84,16 +83,16 @@ export default function BlogsDefaultPage({
         isSidebar ? "md:pl-65" : "md:pl-25"
       } transition-all scrollbar-hide relative md:pb-0 !pb-18`}
     >
-      <h1 className="text-2xl font-bold md:ml-0 ml-3">{t("title")}</h1>
+      <h1 className="text-2xl font-bold md:ml-0 ml-3 mb-3">{t("title")}</h1>
 
       <div
-        className={`w-full md:h-full pr-25 ${
+        className={`w-full md:h-full md:pr-25 ${
           !blogs || (blogs.length <= 0 && "pb-11")
         }`}
       >
         {blogs && blogs.length > 0 ? (
-          <section className="md:w-full w-screen lg:px-10 lg:pt-5 md:px-0 md:pt-5 pb-3">
-            <div className="flex flex-wrap gap-5 items-center justify-center">
+          <section className="md:w-full w-screen lg:px-10 lg:pt-5 md:px-0 md:pt-5 pb-3 px-3">
+            <div className="flex flex-wrap md:gap-5 gap-1.5 items-center justify-center">
               {blogs.map((blog, index: number) => (
                 <BlogCard
                   key={blog.id}
@@ -107,7 +106,7 @@ export default function BlogsDefaultPage({
             </div>
           </section>
         ) : (
-          <section className="text-center w-full h-full flex items-center justify-center">
+          <section className="text-center md:w-full md:h-full w-screen h-[85svh] flex items-center justify-center">
             {t("no_blog_found")}
           </section>
         )}

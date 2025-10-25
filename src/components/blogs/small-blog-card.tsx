@@ -64,7 +64,7 @@ export default function SmallBlogCard({
           <h2 className="font-bold md:text-xl text-md line-clamp-1">
             {blog.title}
           </h2>
-          <p className="font-medium md:text-md text-sm text-[#bdbdbd]/70 line-clamp-1">
+          <p className="font-medium md:text-md text-sm text-black/20 line-clamp-1">
             {blog.description}
           </p>
 
@@ -109,7 +109,7 @@ export default function SmallBlogCard({
             </div>
           )}
 
-          <p className="xl:text-xs lg:text-[10px] md:text-[14px] text-[12px] text-[#bdbdbd]/70 text-end">
+          <p className="xl:text-xs lg:text-[10px] md:text-[14px] text-[12px] text-black/20 text-end">
             {FormatDate(blog.createdAt)}
           </p>
         </div>

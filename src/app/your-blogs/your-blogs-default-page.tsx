@@ -162,7 +162,7 @@ export default function YourBlogsDefaultPage({
 
           {userBlogs && userBlogs.length > 0 ? (
             <section className="w-full h-auto overflow-y-auto py-3 scrollbar-hide">
-              <div className="inline-flex min-w-full gap-5 items-center justify-start overflow-x-auto pb-3">
+              <div className="inline-flex min-w-full md:gap-5 gap-3 items-center justify-start overflow-x-auto pb-3">
                 {userBlogs.map((blog, index: number) => (
                   <BlogCard
                     key={blog.id}
@@ -178,7 +178,7 @@ export default function YourBlogsDefaultPage({
               </div>
             </section>
           ) : (
-            <section className="text-center w-full h-80 flex items-center justify-center pr-25">
+            <section className="text-center w-full h-65 flex items-center justify-center md:pr-25">
               {t("no_blog_found")}
             </section>
           )}
@@ -194,7 +194,7 @@ export default function YourBlogsDefaultPage({
 
           {userSubscribeBlogs && userSubscribeBlogs.length > 0 ? (
             <section className="w-full h-auto overflow-y-auto pt-3 scrollbar-hide">
-              <div className="inline-flex min-w-full gap-5 items-center justify-start overflow-x-auto pb-3">
+              <div className="inline-flex min-w-full md:gap-5 gap-3 items-center justify-start overflow-x-auto pb-3">
                 {userSubscribeBlogs.map((subBlog, index: number) => (
                   <SubscribeBlogCard
                     key={subBlog.id}
@@ -210,7 +210,7 @@ export default function YourBlogsDefaultPage({
               </div>
             </section>
           ) : (
-            <section className="text-center w-full h-80 flex items-center justify-center pr-25">
+            <section className="text-center w-full h-65 flex items-center justify-center md:pr-25">
               {t("no_subscribe_blog_found")}
             </section>
           )}

@@ -194,9 +194,13 @@ export default function SearchDefaultPage({
           <GlobalLoading />
         ) : (
           <>
+            <h1 className="text-2xl font-bold md:ml-0 ml-3 mb-3">
+              {t("title")}
+            </h1>
+
             {filteredBlogs && filteredBlogs.length > 0 ? (
               <section className="w-full lg:px-10 lg:pt-5 md:px-0 md:pt-5 pb-3">
-                <div className="flex flex-wrap gap-5 items-center justify-center">
+                <div className="flex flex-wrap md:gap-5 gap-3 items-center justify-center">
                   {filteredBlogs.map((item: BlogEntry) =>
                     item.type === "blog" ? (
                       <BlogCard
@@ -225,7 +229,7 @@ export default function SearchDefaultPage({
                 </div>
               </section>
             ) : (
-              <section className="text-center w-full h-full flex items-center justify-center pr-25">
+              <section className="text-center w-full h-full flex items-center justify-center md:pr-25">
                 {t("no_blog_found")}
               </section>
             )}
