@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { IBlog, ICategory, IUser } from "../../../interfaces/strapi.interface";
 import { FormatDate } from "../../../utils/format-date";
 import { useSidebar } from "../../../hooks/sidebar";
@@ -8,19 +8,31 @@ import CategoryTag from "../category-tag";
 import { useRouter } from "next/navigation";
 import Star from "./star";
 import { useTranslation } from "react-i18next";
+import CardPanel from "../card-panel";
+import DetailButton from "../detail-btn";
+import { useToggle } from "../../../hooks/toggle";
 
 export default function SmallSubscribeBlogCard({
   subBlog,
   user,
+  setShowDeletePanel,
+  setSelectedDocumentId,
 }: {
   subBlog: IBlog;
   user: IUser | null;
+  setShowDeletePanel?: (showDeletePanel: boolean) => void;
+  setSelectedDocumentId?: (id: string) => void;
 }) {
   const { isSidebar } = useSidebar();
 
   const { t } = useTranslation("subscribeBlogs");
 
   const router = useRouter();
+
+  const { openBlogId, setOpenBlogId, registerRef } = useToggle();
+  const isToggle = openBlogId === subBlog.documentId;
+
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const goToUserBlogs = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -31,8 +43,15 @@ export default function SmallSubscribeBlogCard({
     }
   };
 
+  useEffect(() => {
+    if (cardRef.current) {
+      registerRef(cardRef.current, "blog", subBlog.documentId);
+    }
+  }, [registerRef, subBlog.documentId]);
+
   return (
     <div
+      ref={cardRef}
       onClick={() => {
         router.push(`/subscribe-blogs/${subBlog.documentId}`);
       }}
@@ -98,23 +117,45 @@ export default function SmallSubscribeBlogCard({
             <div
               className={`${
                 isSidebar
-                  ? "2xl:h-15 xl:h-6 lg:h-4.5 md:h-7 h-5"
-                  : "2xl:h-18 xl:h-8 lg:h-7 md:h-5 h-5"
+                  ? "2xl:h-13 xl:h-4.5 lg:h-4.5 md:h-5.5 h-5.5 2xl:mb-8 xl:mb-7.5 lg:mb-6.5 md:mb-8.5 mb-6"
+                  : "2xl:h-16.5 xl:h-5.5 lg:h-7.5 md:h-5 h-5.5 2xl:mb-7.5 xl:mb-7 lg:mb-6 md:mb-7.5 mb-6"
               } flex flex-wrap justify-start items-end gap-1 overflow-y-auto scrollbar-hide`}
             >
               {subBlog.categories.map((cat: ICategory, index: number) => {
                 return (
-                  <CategoryTag key={index} title={cat.title} textSize="sm" />
+                  <CategoryTag
+                    key={index}
+                    title={cat.title}
+                    textSize="sm"
+                    isSmall={true}
+                  />
                 );
               })}
             </div>
           )}
 
-          <p className="xl:text-xs lg:text-[10px] md:text-[14px] text-[12px] text-black/20 text-end">
-            {FormatDate(subBlog.createdAt)}
-          </p>
+          <DetailButton
+            isToggle={isToggle}
+            setOpenBlogId={setOpenBlogId}
+            blog={subBlog}
+            isSmall={true}
+          />
         </div>
       </div>
+
+      <CardPanel
+        blog={subBlog}
+        user={user}
+        isToggle={isToggle}
+        setOpenBlogId={setOpenBlogId}
+        setShowDeletePanel={setShowDeletePanel}
+        setSelectedDocumentId={setSelectedDocumentId}
+        goToUserBlogs={goToUserBlogs}
+        router={router}
+        t={t}
+        isSmall={true}
+        isSub={true}
+      />
 
       <Star />
     </div>

@@ -2,14 +2,13 @@
 
 import React, { useEffect, useRef } from "react";
 import { IBlog, ICategory, IUser } from "../../../interfaces/strapi.interface";
-import { FormatDate } from "../../../utils/format-date";
 import CategoryTag from "../category-tag";
 import { useRouter } from "next/navigation";
 import HighlightText from "../highlight";
-import { FiMoreHorizontal } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
 import { useToggle } from "../../../hooks/toggle";
 import CardPanel from "../card-panel";
+import DetailButton from "../detail-btn";
 
 export default function BlogCard({
   blog,
@@ -47,11 +46,6 @@ export default function BlogCard({
     } else {
       router.push("/your-blogs");
     }
-  };
-
-  const handleToggle = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setOpenBlogId(isToggle ? null : blog.documentId);
   };
 
   useEffect(() => {
@@ -129,21 +123,11 @@ export default function BlogCard({
             </div>
           )}
 
-          <div className="absolute md:bottom-2 md:right-2 bottom-1.5 right-1.5 flex items-center justify-end md:gap-3 gap-1">
-            <p className="xl:text-xs lg:text-[10px] md:text-[14px] text-[10px] text-black/20">
-              {FormatDate(blog.createdAt)}
-            </p>
-            <button
-              onClick={handleToggle}
-              className={`${
-                isToggle
-                  ? "bg-black/70 text-white/90"
-                  : "bg-black/50 hover:bg-black/70 text-white/80 hover:text-white/90"
-              } md:text-lg text-sm cursor-pointer rounded-full border border-white/30 md:p-1 p-0.5 backdrop-blur-sm backdrop-brightness-200 transition-all`}
-            >
-              <FiMoreHorizontal />
-            </button>
-          </div>
+          <DetailButton
+            isToggle={isToggle}
+            setOpenBlogId={setOpenBlogId}
+            blog={blog}
+          />
         </div>
       </div>
 
@@ -157,6 +141,7 @@ export default function BlogCard({
         goToUserBlogs={goToUserBlogs}
         router={router}
         t={t}
+        isSub={false}
       />
     </div>
   );
