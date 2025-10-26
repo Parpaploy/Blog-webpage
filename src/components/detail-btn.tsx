@@ -45,7 +45,7 @@ export default function DetailButton({
             : "bg-black/50 hover:bg-black/70 text-white/80 hover:text-white/90 hover:border-white/40"
         } cursor-pointer rounded-full border border-white/30 backdrop-blur-sm backdrop-brightness-200 transition-all ${
           isSmall
-            ? "xl:p-1 lg:p-0.5 md:p-1 p-0.5 xl:text-lg lg:text-sm md:text-lg text-sm"
+            ? "xl:p-1 lg:p-0.5 md:p-1 p-0.5 xl:text-lg lg:text-sm md:text-md text-sm"
             : "md:p-1 p-0.5 md:text-lg text-sm"
         }`}
       >

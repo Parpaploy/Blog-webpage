@@ -90,7 +90,7 @@ export default function SignupDefaultPage() {
     <main
       className={`w-screen h-full 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] pt-[50%] ${
         isSidebar ? "md:pl-65 md:px-auto px-3" : "md:pl-25 md:px-auto px-3"
-      } transition-all`}
+      } transition-all duration-300`}
     >
       <div className="w-full md:pr-25">
         <form

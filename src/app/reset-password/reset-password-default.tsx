@@ -83,7 +83,7 @@ export default function ResetPasswordDefaultPage() {
     <main
       className={`w-screen h-full 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] pt-[50%] ${
         isSidebar ? "md:pl-65 md:px-auto px-3" : "md:pl-25 md:px-auto px-3"
-      } transition-all`}
+      } transition-all duration-300`}
     >
       {status ? (
         <div className="fixed md:px-0 px-3 top-0 left-0 w-screen h-screen flex items-center justify-center bg-white/10 backdrop-blur-sm z-[999]">

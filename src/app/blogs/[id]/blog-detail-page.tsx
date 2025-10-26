@@ -14,6 +14,12 @@ import DetailPanel from "@/components/detail-panel";
 import { FiMoreHorizontal } from "react-icons/fi";
 import DeleteFreeBlogPanel from "@/components/delete-free-blog-panel";
 import { useToggle } from "../../../../hooks/toggle";
+import {
+  IoIosArrowDown,
+  IoIosArrowUp,
+  IoIosArrowBack,
+  IoIosArrowForward,
+} from "react-icons/io";
 
 export default function BlogDetailPage({
   blog,
@@ -39,6 +45,8 @@ export default function BlogDetailPage({
   const { openBlogId, setOpenBlogId, registerRef } = useToggle();
   const panelRef = useRef<HTMLButtonElement>(null);
   const isToggle = openBlogId === blog.documentId;
+
+  const [isOpen, setIsOpen] = useState<boolean>(true);
 
   useEffect(() => {
     if (panelRef.current) {
@@ -120,14 +128,20 @@ export default function BlogDetailPage({
     <main
       className={`md:w-full w-screen h-full flex lg:flex-row flex-col text-white ${
         isSidebar ? "md:pl-65" : "md:pl-25"
-      } px-3 md:px-0 transition-all md:pb-0 pb-15`}
+      } px-3 md:px-0 transition-all duration-300 md:pb-0 pb-15`}
     >
       {/* Detail */}
-      <section className="overflow-x-hidden lg:w-[70%] md:w-full w-full lg:h-full md:h-[70%] h-[60%] overflow-y-auto md:pl-0 lg:mb-0 mb-3 scrollbar-hide">
+      <section
+        className={`${
+          isOpen
+            ? "lg:w-[70%] md:w-full w-full lg:h-full md:h-[70%] h-[60%]"
+            : "w-full h-full"
+        } overflow-x-hidden overflow-y-auto md:pl-0 lg:mb-0 mb-3 scrollbar-hide transition-all duration-300`}
+      >
         <div className="before:block 2xl:before:h-[7svh] xl:before:h-[9svh] lg:before:h-[8svh] md:before:h-[6svh] before:h-[2svh] before:content-['']" />
         <div className="w-full flex justify-between items-start mb-5">
           <div className="2xl:w-[97%] xl:w-[96%] lg:w-[95%] md:w-[95%] w-[93%] text-start">
-            <h1 className="whitespace-normal text-4xl font-bold">
+            <h1 className="whitespace-normal md:text-4xl text-xl font-bold">
               {blog?.title}
             </h1>
             <p className="text-[#cfcfcf]">{blog?.description}</p>
@@ -160,7 +174,11 @@ export default function BlogDetailPage({
             </button>
           </div>
         </div>
-        <div className="w-full md:h-130 h-60 rounded-2xl overflow-hidden">
+        <div
+          className={`w-full ${
+            isSidebar ? "md:h-80" : "md:h-110"
+          } h-60 rounded-2xl overflow-hidden transition-all duration-300`}
+        >
           <img
             className="w-full h-full object-cover"
             src={
@@ -172,7 +190,7 @@ export default function BlogDetailPage({
         </div>
         <div className="w-full flex justify-between items-start my-3">
           <div className="w-full flex justify-start items-center gap-3">
-            <div className="w-10 h-10 rounded-full overflow-hidden">
+            <div className="w-8 h-8 rounded-full overflow-hidden">
               <img
                 className="w-full h-full object-cover"
                 src={
@@ -195,40 +213,68 @@ export default function BlogDetailPage({
         {FormatRichText(blog?.detail)}
       </section>
 
-      <div className="lg:w-[1px] w-full bg-white/30 lg:h-[95%] h-[1px] lg:mb-0 mb-3 lg:ml-8.5" />
+      <div className="lg:w-[1px] w-full bg-white/30 lg:h-[95%] h-[1px] lg:mb-0 mb-3 lg:ml-8.5 self-center" />
 
       {/* Other blogs */}
-      <section className="lg:w-[30%] w-full lg:h-full md:h-[30%] h-[40%] flex flex-col lg:pl-8 md:pl-0 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] pt-0">
-        <div
-          className="text-3xl font-bold text-start mb-3 cursor-pointer"
-          onClick={() => {
-            if (user?.id !== blog.author?.id) {
-              router.push(`/user-blogs/${blog.author?.id}`);
-            } else {
-              router.push("/your-blogs");
-            }
-          }}
-        >
-          {t("more", { username: blog.author?.username })}
+      <section
+        className={`transition-all duration-300 ${
+          isOpen
+            ? "lg:w-[30%] w-full lg:h-full md:h-[30%] h-[40%]"
+            : "lg:w-fit w-full lg:h-full md:h-fit h-fit mb-2"
+        } flex flex-col lg:pl-8 md:pl-0 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] pt-0`}
+      >
+        <div className="flex justify-start items-center gap-2 md:text-3xl text-xl font-bold text-start mb-3 cursor-pointer w-fit">
+          <div
+            className="tetx-xl lg:block hidden"
+            onClick={() => {
+              setIsOpen(!isOpen);
+            }}
+          >
+            {isOpen ? <IoIosArrowForward /> : <IoIosArrowBack />}
+          </div>
+          <div
+            className={`${!isOpen && "lg:hidden"}`}
+            onClick={() => {
+              if (user?.id !== blog.author?.id) {
+                router.push(`/user-blogs/${blog.author?.id}`);
+              } else {
+                router.push("/your-blogs");
+              }
+            }}
+          >
+            {t("more", { username: blog.author?.username })}
+          </div>
+          <div
+            className="tetx-xl lg:hidden block"
+            onClick={() => {
+              setIsOpen(!isOpen);
+            }}
+          >
+            {isOpen ? <IoIosArrowDown /> : <IoIosArrowUp />}
+          </div>
         </div>
 
         <div className="w-full h-full flex lg:flex-col flex-row items-start justify-start gap-5 lg:overflow-x-hidden lg:overflow-y-auto overflow-y-hidden overflow-x-auto scrollbar-hide pb-3">
-          {authorBlogs.length > 0 ? (
-            <div className="w-full h-full flex lg:flex-col flex-row items-start justify-start gap-5 lg:overflow-x-hidden lg:overflow-y-auto overflow-y-hidden overflow-x-auto scrollbar-hide pb-3">
-              {authorBlogs.map((authorBlog) => {
-                return (
-                  <SmallBlogCard
-                    key={authorBlog.id}
-                    blog={authorBlog}
-                    user={user}
-                  />
-                );
-              })}
-            </div>
-          ) : (
-            <div className="w-full min-h-full flex justify-center items-center text-white/50 text-sm text-center">
-              {t("no_more")}
-            </div>
+          {isOpen && (
+            <>
+              {authorBlogs.length > 0 ? (
+                <div className="w-full h-full flex lg:flex-col flex-row items-start justify-start gap-5 lg:overflow-x-hidden lg:overflow-y-auto overflow-y-hidden overflow-x-auto scrollbar-hide pb-3">
+                  {authorBlogs.map((authorBlog) => {
+                    return (
+                      <SmallBlogCard
+                        key={authorBlog.id}
+                        blog={authorBlog}
+                        user={user}
+                      />
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="w-full min-h-full flex justify-center items-center text-white/50 text-sm text-center">
+                  {t("no_more")}
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>

@@ -115,7 +115,7 @@ export default function SubscribeBlogCard({
 
         <div className="w-full flex flex-col gap-1">
           {subBlog.categories && subBlog.categories.length > 0 && (
-            <div className="2xl:mb-7.5 md:mb-7 2xl:h-16.5 xl:h-12 lg:h-6 md:h-6 h-5 mb-6.5 flex flex-wrap justify-start items-end gap-1 overflow-x-auto pb-0.5 scrollbar-hide">
+            <div className="transition-all duration-300 2xl:mb-7.5 md:mb-7 2xl:h-16.5 xl:h-12 lg:h-6 md:h-6 h-5 mb-6.5 flex flex-wrap justify-start items-end gap-1 overflow-x-auto pb-0.5 scrollbar-hide">
               {subBlog.categories.map((cat: ICategory, index: number) => {
                 return (
                   <CategoryTag

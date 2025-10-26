@@ -145,7 +145,7 @@ export default function YourBlogsDefaultPage({
         isPending ? "w-full" : "w-screen"
       } h-full overflow-y-auto 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] pt-[2svh] text-white/80 scrollbar-hide ${
         isSidebar ? "md:pl-65 pl-3" : "md:pl-25 pl-3"
-      } transition-all relative md:pb-0 pb-18`}
+      } transition-all duration-300 relative md:pb-0 pb-18`}
     >
       {isPending ? (
         <GlobalLoading />

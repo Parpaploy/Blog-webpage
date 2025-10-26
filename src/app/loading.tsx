@@ -9,8 +9,8 @@ export default function GlobalLoading() {
   return (
     <main
       className={`w-screen fixed left-0 h-full ${
-        isSidebar && "pl-25"
-      } transition-all 
+        isSidebar && "md:pl-25"
+      } transition-all duration-300
       flex items-center justify-center`}
     >
       <div className="loader">

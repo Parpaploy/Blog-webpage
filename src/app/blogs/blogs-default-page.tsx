@@ -81,7 +81,7 @@ export default function BlogsDefaultPage({
         blogs && blogs.length > 0 ? "overflow-y-auto" : "overflow-y-hidden"
       } 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] pt-[2svh] text-white/80 ${
         isSidebar ? "md:pl-65" : "md:pl-25"
-      } transition-all scrollbar-hide relative md:pb-0 !pb-18`}
+      } transition-all duration-300 scrollbar-hide relative md:pb-0 !pb-18`}
     >
       <h1 className="text-2xl font-bold md:ml-0 ml-3 mb-3">{t("title")}</h1>
 
