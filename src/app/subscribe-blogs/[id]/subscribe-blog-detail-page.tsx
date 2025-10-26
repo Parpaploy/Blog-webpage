@@ -21,6 +21,7 @@ import {
   IoIosArrowBack,
   IoIosArrowForward,
 } from "react-icons/io";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function SubscribeBlogDetailPage({
   subBlog,
@@ -228,22 +229,26 @@ export default function SubscribeBlogDetailPage({
       <div className="lg:w-[1px] w-full bg-white/30 lg:h-[95%] h-[1px] lg:mb-0 mb-3 lg:ml-8.5 self-center" />
 
       {/* Other blogs */}
-      <section
-        className={`transition-all duration-300 ${
-          isOpen
-            ? "lg:w-[30%] w-full lg:h-full md:h-[30%] h-[40%]"
-            : "lg:w-fit w-full lg:h-full md:h-fit h-fit mb-2"
-        } flex flex-col lg:pl-8 md:pl-0 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] pt-0`}
+      <motion.section
+        layout
+        transition={{ duration: 0.4, ease: "easeInOut" }}
+        className={`overflow-hidden flex flex-col lg:pl-8 md:pl-0 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] pt-0 ${
+          isOpen ? "lg:w-[30%] md:w-full w-full" : "lg:w-[3rem] w-full"
+        } 
+                    ${
+                      isOpen
+                        ? "lg:h-full md:h-[30%] h-[40%]"
+                        : "lg:h-full md:h-[4rem] h-[4rem]"
+                    } transition-all duration-500`}
       >
-        <div className="flex justify-start items-center gap-2 md:text-3xl text-xl font-bold text-start mb-3 cursor-pointer w-fit">
+        <div className="whitespace-nowrap py-1 flex justify-start items-center gap-2 md:text-3xl text-xl font-bold text-start mb-3 cursor-pointer w-fit">
           <div
-            className="tetx-xl lg:block hidden"
-            onClick={() => {
-              setIsOpen(!isOpen);
-            }}
+            className="text-2xl lg:block hidden mb-0.5"
+            onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? <IoIosArrowForward /> : <IoIosArrowBack />}
           </div>
+
           <div
             className={`${!isOpen && "lg:hidden"}`}
             onClick={() => {
@@ -258,45 +263,42 @@ export default function SubscribeBlogDetailPage({
           </div>
 
           <div
-            className="tetx-xl lg:hidden block"
-            onClick={() => {
-              setIsOpen(!isOpen);
-            }}
+            className="text-2xl lg:hidden block mb-1"
+            onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? <IoIosArrowDown /> : <IoIosArrowUp />}
           </div>
         </div>
-        <div
-          className="tetx-xl lg:hidden block"
-          onClick={() => {
-            setIsOpen(!isOpen);
-          }}
-        ></div>
 
-        <div className="w-full h-full flex lg:flex-col flex-row items-start justify-start gap-5 lg:overflow-x-hidden lg:overflow-y-auto overflow-y-hidden overflow-x-auto scrollbar-hide pb-3">
+        <AnimatePresence>
           {isOpen && (
-            <>
+            <motion.div
+              key="subBlogList"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.3 }}
+              className="w-full h-full flex lg:flex-col flex-row items-start justify-start gap-5 
+                   lg:overflow-x-hidden lg:overflow-y-auto 
+                   overflow-y-hidden overflow-x-auto scrollbar-hide pb-3"
+            >
               {authorBlogs.length > 0 ? (
-                <div className="w-full h-full flex lg:flex-col flex-row items-start justify-start gap-5 lg:overflow-x-hidden lg:overflow-y-auto overflow-y-hidden overflow-x-auto scrollbar-hide pb-3">
-                  {authorBlogs.map((authorBlog) => {
-                    return (
-                      <SmallSubscribeBlogCard
-                        key={authorBlog.id}
-                        subBlog={authorBlog}
-                        user={user}
-                      />
-                    );
-                  })}
-                </div>
+                authorBlogs.map((authorBlog) => (
+                  <SmallSubscribeBlogCard
+                    key={authorBlog.id}
+                    subBlog={authorBlog}
+                    user={user}
+                  />
+                ))
               ) : (
                 <div className="w-full min-h-full flex justify-center items-center text-white/50 text-sm text-center">
                   {t("no_more")}
                 </div>
               )}
-            </>
+            </motion.div>
           )}
-        </div>
-      </section>
+        </AnimatePresence>
+      </motion.section>
 
       {showDeletePanel && (
         <DeleteSubscribeBlogPanel
