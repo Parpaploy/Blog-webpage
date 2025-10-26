@@ -123,11 +123,13 @@ export default function BlogDetailPage({
       } px-3 md:px-0 transition-all md:pb-0 pb-15`}
     >
       {/* Detail */}
-      <section className="overflow-x-hidden lg:w-[70%] md:w-full w-full lg:h-full md:h-[70%] h-[60%] overflow-y-auto lg:pr-8 md:pl-0 lg:mb-0 mb-3 scrollbar-hide">
+      <section className="overflow-x-hidden lg:w-[70%] md:w-full w-full lg:h-full md:h-[70%] h-[60%] overflow-y-auto md:pl-0 lg:mb-0 mb-3 scrollbar-hide">
         <div className="before:block 2xl:before:h-[7svh] xl:before:h-[9svh] lg:before:h-[8svh] md:before:h-[6svh] before:h-[2svh] before:content-['']" />
         <div className="w-full flex justify-between items-start mb-5">
-          <div className="w-full text-start">
-            <h1 className="text-4xl font-bold">{blog?.title}</h1>
+          <div className="2xl:w-[97%] xl:w-[96%] lg:w-[95%] md:w-[95%] w-[93%] text-start">
+            <h1 className="whitespace-normal text-4xl font-bold">
+              {blog?.title}
+            </h1>
             <p className="text-[#cfcfcf]">{blog?.description}</p>
           </div>
 
@@ -139,10 +141,10 @@ export default function BlogDetailPage({
                 isToggle
                   ? "bg-black/70 text-white/90"
                   : "bg-black/50 hover:bg-black/70 text-white/80 hover:text-white/90"
-              } rounded-full border border-white/30 md:p-1 p-0.5 backdrop-blur-sm backdrop-brightness-200 transition-all 
+              } rounded-full border border-white/30 md:p-1 p-0.5 md:text-2xl md:mt-0 mt-1.5 text-md backdrop-blur-sm backdrop-brightness-200 transition-all 
           cursor-pointer`}
             >
-              <FiMoreHorizontal size={24} />
+              <FiMoreHorizontal />
 
               <DetailPanel
                 blog={blog}
@@ -193,7 +195,7 @@ export default function BlogDetailPage({
         {FormatRichText(blog?.detail)}
       </section>
 
-      <div className="lg:w-[1px] w-full bg-white/30 lg:h-[95%] h-[1px] lg:mb-0 mb-3" />
+      <div className="lg:w-[1px] w-full bg-white/30 lg:h-[95%] h-[1px] lg:mb-0 mb-3 lg:ml-8.5" />
 
       {/* Other blogs */}
       <section className="lg:w-[30%] w-full lg:h-full md:h-[30%] h-[40%] flex flex-col lg:pl-8 md:pl-0 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] pt-0">

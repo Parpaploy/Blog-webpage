@@ -126,17 +126,23 @@ export default function SubscribeBlogDetailPage({
       } px-3 md:px-0 transition-all md:pb-0 pb-15`}
     >
       {/* Detail */}
-      <section className="overflow-x-hidden lg:w-[70%] md:w-full w-full lg:h-full md:h-[70%] h-[60%] overflow-y-auto lg:pr-8 md:pl-0 lg:mb-0 mb-3 scrollbar-hide">
+      <section className="overflow-x-hidden lg:w-[70%] md:w-full w-full lg:h-full md:h-[70%] h-[60%] overflow-y-auto md:pl-0 lg:mb-0 mb-3 scrollbar-hide">
         <div className="before:block 2xl:before:h-[7svh] xl:before:h-[9svh] lg:before:h-[8svh] md:before:h-[6svh] before:h-[2svh] before:content-['']" />
         <div className="w-full flex justify-between items-start mb-5">
           <div className="w-fit flex gap-5 justify-start items-center">
-            <div className="w-full text-start">
-              <div className=" flex justify-start items-center gap-3">
-                <h1 className="text-4xl font-bold">{subBlog?.title}</h1>
+            <div className="w-full max-w-[99%] text-start">
+              <div className="flex justify-start items-start gap-3">
+                <h1 className="text-4xl font-bold">
+                  {subBlog?.title} Lorem ipsum dolor sit amet consectetur,
+                  adipisicing elit. Consectetur ut eaque officia omnis quasi!
+                  Mollitia perferendis, eos soluta commodi fugit inventore qui
+                  error repellendus fuga accusamus tempore provident
+                  perspiciatis eveniet.
+                </h1>
 
-                <div className="rounded-full bg-amber-300/50 border-1 border-white/30 md:p-4 p-3 backdrop-blur-sm shadow-md">
-                  <FaStar className="md:w-5 w-4 md:h-5 h-4 text-[#424EDD]/50 absolute top-[calc(50%-1px)] -translate-y-1/2 left-1/2 -translate-x-1/2 z-20" />
-                  <FaStar className="md:w-6 w-5 md:h-6 h-5 text-white/30 absolute top-[calc(50%-1px)] -translate-y-1/2 left-1/2 -translate-x-1/2 z-10" />
+                <div className="rounded-full bg-amber-300/50 border-1 border-white/30 md:p-4 p-2.5 md:mt-0 mt-1.5 backdrop-blur-sm shadow-md">
+                  <FaStar className="md:w-5 w-3 md:h-5 h-3 text-[#424EDD]/50 absolute top-[calc(50%-1px)] -translate-y-1/2 left-1/2 -translate-x-1/2 z-20" />
+                  <FaStar className="md:w-6 w-4 md:h-6 h-4 text-white/30 absolute top-[calc(50%-1px)] -translate-y-1/2 left-1/2 -translate-x-1/2 z-10" />
                 </div>
               </div>
               <p className="text-[#cfcfcf]">{subBlog?.description}</p>
@@ -151,10 +157,10 @@ export default function SubscribeBlogDetailPage({
                 isToggle
                   ? "bg-black/70 text-white/90"
                   : "bg-black/50 hover:bg-black/70 text-white/80 hover:text-white/90"
-              } rounded-full border border-white/30 md:p-1 p-0.5 backdrop-blur-sm backdrop-brightness-200 transition-all 
+              } rounded-full border border-white/30 md:p-1 p-0.5 md:text-2xl md:mt-0 mt-1.5 text-md backdrop-blur-sm backdrop-brightness-200 transition-all 
           cursor-pointer`}
             >
-              <FiMoreHorizontal size={24} />
+              <FiMoreHorizontal />
 
               <DetailPanel
                 blog={subBlog}
@@ -205,7 +211,7 @@ export default function SubscribeBlogDetailPage({
         {FormatRichText(subBlog?.detail)}
       </section>
 
-      <div className="lg:w-[1px] w-full bg-white/30 lg:h-[95%] h-[1px] lg:mb-0 mb-3" />
+      <div className="lg:w-[1px] w-full bg-white/30 lg:h-[95%] h-[1px] lg:mb-0 mb-3 lg:ml-8.5" />
 
       {/* Other blogs */}
       <section className="lg:w-[30%] w-full lg:h-full md:h-[30%] h-[40%] flex flex-col lg:pl-8 md:pl-0 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] pt-0">
