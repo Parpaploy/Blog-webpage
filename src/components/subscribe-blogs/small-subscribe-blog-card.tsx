@@ -118,7 +118,7 @@ export default function SmallSubscribeBlogCard({
               className={`transition-all duration-300 ${
                 isSidebar
                   ? "2xl:h-13 xl:h-4.5 lg:h-4.5 md:h-5.5 h-5.5 2xl:mb-8 xl:mb-7.5 lg:mb-6.5 md:mb-8.5 mb-6"
-                  : "2xl:h-16.5 xl:h-5.5 lg:h-7.5 md:h-5 h-5.5 2xl:mb-7.5 xl:mb-7 lg:mb-6 md:mb-7.5 mb-6"
+                  : "2xl:h-16.5 xl:h-5.5 lg:h-7.5 md:h-5 h-5.5 2xl:mb-7.5 xl:mb-7 lg:mb-6 md:mb-7 mb-6"
               } flex flex-wrap justify-start items-end gap-1 overflow-y-auto scrollbar-hide`}
             >
               {subBlog.categories.map((cat: ICategory, index: number) => {
