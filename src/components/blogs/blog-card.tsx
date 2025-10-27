@@ -79,7 +79,7 @@ export default function BlogCard({
           <h2 className="font-bold xl:text-2xl md:text-xl text-md line-clamp-1">
             <HighlightText text={blog.title} highlight={query} />
           </h2>
-          <p className="font-medium xl:text-md md:text-sm text-xs text-black/20 line-clamp-1">
+          <p className="font-medium xl:text-md md:text-sm text-xs text-[#cfcfcf] line-clamp-1">
             <HighlightText text={blog.description} highlight={query} />
           </p>
 

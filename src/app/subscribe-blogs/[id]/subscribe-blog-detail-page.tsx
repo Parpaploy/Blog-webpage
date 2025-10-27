@@ -241,7 +241,9 @@ export default function SubscribeBlogDetailPage({
                       isOpen
                         ? "lg:h-full md:h-[30%] h-[40%]"
                         : "lg:h-full md:h-[4rem] h-[4rem]"
-                    } transition-all duration-500`}
+                    } transition-all duration-500 ${
+          isOpen ? "md:mb-0 mb-2" : "md:mb-0"
+        }`}
       >
         <div className="whitespace-nowrap py-1 flex justify-start items-center gap-2 md:text-3xl text-xl font-bold text-start mb-3 cursor-pointer w-fit">
           <div

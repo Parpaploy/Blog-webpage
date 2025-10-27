@@ -82,7 +82,7 @@ export default function SmallBlogCard({
           <h2 className="font-bold md:text-xl text-md line-clamp-1">
             {blog.title}
           </h2>
-          <p className="font-medium md:text-md text-sm text-black/20 line-clamp-1">
+          <p className="font-medium md:text-md text-sm text-[#cfcfcf] line-clamp-1">
             {blog.description}
           </p>
 

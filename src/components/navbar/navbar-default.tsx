@@ -169,6 +169,7 @@ export default function NavbarDefault({
                   toggle={openNavbar}
                   setToggle={setOpenNavbar}
                   buttonRef={profileButtonRef}
+                  setMobileMenuToggle={setIsMobileMenuOpen}
                 />
               </div>
             </>

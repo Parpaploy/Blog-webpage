@@ -32,7 +32,7 @@ export default function DetailButton({
           isSmall
             ? "xl:text-[11px] lg:text-[8px] text-[10px] mt-1"
             : "xl:text-xs lg:text-[10px] md:text-[14px] text-[10px]"
-        } text-black/20`}
+        } text-[#cfcfcf]`}
       >
         {FormatDate(blog.updatedAt)}
       </p>

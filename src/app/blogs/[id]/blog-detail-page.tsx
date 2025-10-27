@@ -221,12 +221,20 @@ export default function BlogDetailPage({
         layout
         transition={{ duration: 0.4, ease: "easeInOut" }}
         className={`overflow-hidden flex flex-col lg:pl-8 md:pl-0 
-    2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] pt-0 
-    ${isOpen ? "xl:w-[30%] lg:w-[40%] md:w-full w-full" : "lg:w-[3rem] w-full"} 
-    ${
-      isOpen ? "lg:h-full md:h-[30%] h-[40%]" : "lg:h-full md:h-[4rem] h-[4rem]"
-    } 
-    transition-all duration-500`}
+                    2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] pt-0 
+                    ${
+                      isOpen
+                        ? "xl:w-[30%] lg:w-[40%] md:w-full w-full"
+                        : "lg:w-[3rem] w-full"
+                    } 
+                    ${
+                      isOpen
+                        ? "lg:h-full md:h-[30%] h-[40%]"
+                        : "lg:h-full md:h-[4rem] h-[4rem]"
+                    } 
+                    transition-all duration-500 ${
+                      isOpen ? "md:mb-0 mb-17" : "md:mb-0 mb-16"
+                    }`}
       >
         <div className="whitespace-nowrap py-1 overflow-hidden flex justify-start items-center gap-2 md:text-3xl text-xl font-bold text-start mb-3 cursor-pointer w-fit">
           <div
