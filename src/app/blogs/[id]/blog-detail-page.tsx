@@ -129,19 +129,19 @@ export default function BlogDetailPage({
     <main
       className={`md:w-full w-screen h-full flex lg:flex-row flex-col text-white ${
         isSidebar ? "md:pl-65" : "md:pl-25"
-      } px-3 md:px-0 transition-all duration-300 md:pb-0 pb-15`}
+      } px-3 md:px-0 transition-all duration-300 md:pb-0`}
     >
       {/* Detail */}
       <section
         className={`${
           isOpen
-            ? "lg:w-[70%] md:w-full w-full lg:h-full md:h-[70%] h-[60%]"
+            ? "lg:w-[70%] md:w-full w-full lg:h-[99.5%] md:h-[70%] h-[60%]"
             : "w-full h-full"
         } overflow-x-hidden overflow-y-auto md:pl-0 lg:mb-0 mb-3 scrollbar-hide transition-all duration-300`}
       >
         <div className="before:block 2xl:before:h-[7svh] xl:before:h-[9svh] lg:before:h-[8svh] md:before:h-[6svh] before:h-[2svh] before:content-['']" />
         <div className="w-full flex justify-between items-start mb-5">
-          <div className="2xl:w-[97%] xl:w-[96%] lg:w-[95%] md:w-[95%] w-[93%] text-start">
+          <div className="2xl:w-[97%] xl:w-[95%] lg:w-[93%] 2xl:max-w-[97%] xl:max-w-[95%] lg:max-w-[93%] w-[93%] max-w-[93%] text-start">
             <h1 className="whitespace-normal md:text-4xl text-xl font-bold">
               {blog?.title}
             </h1>
@@ -177,7 +177,7 @@ export default function BlogDetailPage({
         </div>
         <div
           className={`w-full ${
-            isSidebar ? "md:h-80" : "md:h-110"
+            isSidebar ? "2xl:h-140 md:h-80" : "2xl:h-160 md:h-110"
           } h-60 rounded-2xl overflow-hidden transition-all duration-300`}
         >
           <img
@@ -207,14 +207,14 @@ export default function BlogDetailPage({
 
           <div className="w-full text-end">
             <p className="text-sm text-white/50">
-              {FormatDate(blog?.publishedAt)}
+              {FormatDate(blog?.updatedAt)}
             </p>
           </div>
         </div>
         {FormatRichText(blog?.detail)}
       </section>
 
-      <div className="lg:w-[1px] w-full bg-white/30 lg:h-[95%] h-[1px] lg:mb-0 mb-3 lg:ml-8.5 self-center" />
+      <div className="lg:w-[1px] w-full bg-white/30 lg:h-[85%] h-[1px] lg:mb-0 mb-3 lg:ml-8.5 self-center" />
 
       {/* Other blogs */}
       <motion.section
@@ -222,7 +222,7 @@ export default function BlogDetailPage({
         transition={{ duration: 0.4, ease: "easeInOut" }}
         className={`overflow-hidden flex flex-col lg:pl-8 md:pl-0 
     2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] pt-0 
-    ${isOpen ? "lg:w-[30%] md:w-full w-full" : "lg:w-[3rem] w-full"} 
+    ${isOpen ? "xl:w-[30%] lg:w-[40%] md:w-full w-full" : "lg:w-[3rem] w-full"} 
     ${
       isOpen ? "lg:h-full md:h-[30%] h-[40%]" : "lg:h-full md:h-[4rem] h-[4rem]"
     } 

@@ -138,15 +138,15 @@ export default function SubscribeBlogDetailPage({
       <section
         className={`${
           isOpen
-            ? "lg:w-[70%] md:w-full w-full lg:h-full md:h-[70%] h-[60%]"
+            ? "lg:w-[70%] md:w-full w-full lg:h-[99.5%] md:h-[70%] h-[60%]"
             : "w-full h-full"
         } overflow-x-hidden overflow-y-auto md:pl-0 lg:mb-0 mb-3 scrollbar-hide transition-all duration-300`}
       >
         <div className="before:block 2xl:before:h-[7svh] xl:before:h-[9svh] lg:before:h-[8svh] md:before:h-[6svh] before:h-[2svh] before:content-['']" />
         <div className="w-full flex justify-between items-start mb-5">
-          <div className="w-fit flex gap-5 justify-start items-center">
+          <div className="w-full flex gap-5 justify-start items-center">
             <div className="w-full max-w-[99%] text-start">
-              <div className="flex justify-start items-start gap-3">
+              <div className="w-full flex justify-between items-start gap-3">
                 <h1 className="whitespace-normal md:text-4xl text-xl font-bold">
                   {subBlog?.title}
                 </h1>
@@ -189,7 +189,7 @@ export default function SubscribeBlogDetailPage({
         </div>
         <div
           className={`w-full ${
-            isSidebar ? "md:h-80" : "md:h-110"
+            isSidebar ? "2xl:h-140 md:h-80" : "2xl:h-160 md:h-110"
           } h-60 rounded-2xl overflow-hidden transition-all duration-300`}
         >
           <img
@@ -219,21 +219,23 @@ export default function SubscribeBlogDetailPage({
 
           <div className="w-full text-end">
             <p className="text-sm text-white/50">
-              {FormatDate(subBlog?.publishedAt)}
+              {FormatDate(subBlog?.updatedAt)}
             </p>
           </div>
         </div>
         {FormatRichText(subBlog?.detail)}
       </section>
 
-      <div className="lg:w-[1px] w-full bg-white/30 lg:h-[95%] h-[1px] lg:mb-0 mb-3 lg:ml-8.5 self-center" />
+      <div className="lg:w-[1px] w-full bg-white/30 lg:h-[85%] h-[1px] lg:mb-0 mb-3 lg:ml-8.5 self-center" />
 
       {/* Other blogs */}
       <motion.section
         layout
         transition={{ duration: 0.4, ease: "easeInOut" }}
         className={`overflow-hidden flex flex-col lg:pl-8 md:pl-0 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] pt-0 ${
-          isOpen ? "lg:w-[30%] md:w-full w-full" : "lg:w-[3rem] w-full"
+          isOpen
+            ? "xl:w-[30%] lg:w-[40%] md:w-full w-full"
+            : "lg:w-[3rem] w-full"
         } 
                     ${
                       isOpen

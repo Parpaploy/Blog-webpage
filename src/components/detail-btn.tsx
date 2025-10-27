@@ -34,7 +34,7 @@ export default function DetailButton({
             : "xl:text-xs lg:text-[10px] md:text-[14px] text-[10px]"
         } text-black/20`}
       >
-        {FormatDate(blog.createdAt)}
+        {FormatDate(blog.updatedAt)}
       </p>
 
       <button
