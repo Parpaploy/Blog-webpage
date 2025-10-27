@@ -7,6 +7,7 @@ import LanguageSwitcher from "./language-switcher";
 import { IUser } from "../../../../interfaces/strapi.interface";
 import ProfilePanel from "./profile-panel";
 import ProfileButton from "./profile-button";
+import AddButton from "@/components/add-btn";
 
 export default function MobileMenuPanel({
   isToggle,
@@ -112,32 +113,41 @@ export default function MobileMenuPanel({
             />
           </div>
 
-          <div className="h-11 flex gap-2 justify-end items-center px-2">
-            <LanguageSwitcher
-              openNavbar={openNavbar}
-              setOpenNavbar={setOpenNavbar}
-              onCloseSearch={onCloseSearch}
-              onPanelToggle={setLangPanelOpen}
-              setMobileMenuToggle={setIsToggle}
-            />
-            {user !== null && (
-              <>
-                <ProfileButton
-                  ref={mobileProfileButtonRef}
-                  user={user}
-                  handleToggleProfile={handleToggleProfile}
-                  defaultProfileUrl={defaultProfileUrl}
-                  handleImageError={handleImageError}
-                  isProfile={isProfile}
-                />
-                <ProfilePanel
-                  toggle={openNavbar}
-                  setToggle={setOpenNavbar}
-                  buttonRef={mobileProfileButtonRef}
-                  setMobileMenuToggle={setIsToggle}
-                />
-              </>
+          <div className="w-full flex justify-between items-center px-2">
+            {user !== null ? (
+              <AddButton isSmall={true} setMenuPanel={setIsToggle} />
+            ) : (
+              <div />
             )}
+
+            <div className="h-11 flex gap-2 justify-end items-center">
+              {user !== null && (
+                <>
+                  <ProfileButton
+                    ref={mobileProfileButtonRef}
+                    user={user}
+                    handleToggleProfile={handleToggleProfile}
+                    defaultProfileUrl={defaultProfileUrl}
+                    handleImageError={handleImageError}
+                    isProfile={isProfile}
+                  />
+                  <ProfilePanel
+                    toggle={openNavbar}
+                    setToggle={setOpenNavbar}
+                    buttonRef={mobileProfileButtonRef}
+                    setMobileMenuToggle={setIsToggle}
+                  />
+                </>
+              )}
+
+              <LanguageSwitcher
+                openNavbar={openNavbar}
+                setOpenNavbar={setOpenNavbar}
+                onCloseSearch={onCloseSearch}
+                onPanelToggle={setLangPanelOpen}
+                setMobileMenuToggle={setIsToggle}
+              />
+            </div>
           </div>
         </motion.div>
       )}

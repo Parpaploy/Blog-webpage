@@ -151,7 +151,7 @@ export default function EditSubscribeBlogDefaultPage({
       <main
         className={`w-screen h-full 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] overflow-y-auto scrollbar-hide ${
           isSidebar ? "md:pl-65" : "md:pl-25"
-        } transition-all duration-300 md:pb-0 pb-18 md:px-auto px-3`}
+        } transition-all duration-300 md:pb-0 pb-17 md:px-auto px-3`}
       >
         <div className="w-full md:pr-25">
           <section className="w-full md:max-w-3xl mx-auto h-full">

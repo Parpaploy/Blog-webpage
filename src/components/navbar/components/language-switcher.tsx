@@ -79,7 +79,7 @@ export default function LanguageSwitcher({
       } else {
         setPosition({
           bottom: window.innerHeight - rect.bottom - 7,
-          right: window.innerWidth - rect.left + 120,
+          right: window.innerWidth - rect.left + 165,
         });
       }
     }

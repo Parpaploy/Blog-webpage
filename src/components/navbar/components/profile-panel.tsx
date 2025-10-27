@@ -46,7 +46,7 @@ const ProfilePanel = ({
       } else {
         setPosition({
           bottom: window.innerHeight - rect.bottom - 6,
-          right: window.innerWidth - rect.left + 160,
+          right: window.innerWidth - rect.left + 123,
         });
       }
     }

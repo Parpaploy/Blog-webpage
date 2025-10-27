@@ -147,7 +147,7 @@ export default function HomepageDefault({
           isPending ? "w-full" : "w-screen"
         } h-full overflow-y-auto scrollbar-hide text-white/80 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] pt-[2svh] ${
           isSidebar ? "md:pl-65 pl-3" : "md:pl-25 pl-3"
-        } transition-all relative md:pb-0 pb-18`}
+        } transition-all relative md:pb-0 pb-17`}
       >
         {isPending ? (
           <GlobalLoading />

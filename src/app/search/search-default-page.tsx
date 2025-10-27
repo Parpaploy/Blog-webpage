@@ -188,7 +188,7 @@ export default function SearchDefaultPage({
           isPending ? "m:w-full" : "w-screen"
         } h-full overflow-y-auto 2xl:pt-[7svh] xl:pt-[9svh] lg:pt-[8svh] md:pt-[6svh] pt-[2svh] text-white/80 ${
           isSidebar ? "md:pl-65" : "md:pl-25"
-        } transition-all duration-300 scrollbar-hide relative md:pb-0 pb-18`}
+        } transition-all duration-300 scrollbar-hide relative md:pb-0 pb-17`}
       >
         {isPending ? (
           <GlobalLoading />
