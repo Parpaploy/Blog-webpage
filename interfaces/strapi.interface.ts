@@ -119,8 +119,9 @@ export interface IBlogSetting {
 export interface IMessage {
   id: string | number;
   text: string;
-  author: {
-    username: string;
-  };
+  author: IUser;
   createdAt: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  recipient: IUser | null;
 }
