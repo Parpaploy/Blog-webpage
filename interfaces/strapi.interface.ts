@@ -115,3 +115,12 @@ export interface IHighlight {
 export interface IBlogSetting {
   descriptionMaxLength: number;
 }
+
+export interface IMessage {
+  id: string | number;
+  text: string;
+  author: {
+    username: string;
+  };
+  createdAt: string;
+}

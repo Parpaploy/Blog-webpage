@@ -126,7 +126,7 @@ export async function Login(formData: FormData) {
 
     const cookieStore = await cookies();
     cookieStore.set("token", jwt, {
-      httpOnly: true,
+      httpOnly: false,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
       path: "/",
