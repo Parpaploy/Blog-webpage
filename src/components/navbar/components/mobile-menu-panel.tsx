@@ -8,6 +8,11 @@ import { IUser } from "../../../../interfaces/strapi.interface";
 import ProfilePanel from "./profile-panel";
 import ProfileButton from "./profile-button";
 import AddButton from "@/components/add-btn";
+import { IoChatbubblesOutline } from "react-icons/io5";
+import { RiHomeLine } from "react-icons/ri";
+import { TbBrandBlogger } from "react-icons/tb";
+import { FaRegStar } from "react-icons/fa";
+import { GoSearch } from "react-icons/go";
 
 export default function MobileMenuPanel({
   isToggle,
@@ -91,18 +96,25 @@ export default function MobileMenuPanel({
           className="absolute bottom-16 right-0 w-50 h-fit bg-white/20 backdrop-blur-sm border border-white/30 shadow-md rounded-lg z-50 overflow-hidden"
         >
           <div className="w-full">
-            <ProfileMenu path="/" title={t("home")} setToggle={setIsToggle} />
+            <ProfileMenu
+              path="/"
+              title={t("home")}
+              setToggle={setIsToggle}
+              icon={<RiHomeLine />}
+            />
             <ProfileMenu
               path="/search"
               title={t("search")}
               setToggle={setIsToggle}
               onClose={handleMenuClick}
+              icon={<GoSearch />}
             />
             <ProfileMenu
               path="/blogs"
               title={t("blogs")}
               setToggle={setIsToggle}
               onClose={handleMenuClick}
+              icon={<TbBrandBlogger />}
             />
 
             <ProfileMenu
@@ -110,6 +122,16 @@ export default function MobileMenuPanel({
               title={t("subscribe-blogs")}
               setToggle={setIsToggle}
               onClose={handleMenuClick}
+              icon={<FaRegStar />}
+              isLong={true}
+            />
+
+            <ProfileMenu
+              path="/global-chat"
+              title={t("global-chat")}
+              setToggle={setIsToggle}
+              onClose={handleMenuClick}
+              icon={<IoChatbubblesOutline />}
             />
           </div>
 

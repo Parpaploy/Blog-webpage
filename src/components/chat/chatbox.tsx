@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { IMessage } from "../../../interfaces/strapi.interface";
 
 export default function Chatbox({
@@ -13,6 +14,7 @@ export default function Chatbox({
   profilePic: string;
   isPrivate?: boolean;
 }) {
+  const router = useRouter();
   return (
     <div
       className={`flex items-end gap-2 my-1 ${
@@ -20,7 +22,12 @@ export default function Chatbox({
       }`}
     >
       {!isMyMessage && (
-        <div className="w-10 h-10 rounded-full overflow-hidden">
+        <div
+          className="w-10 h-10 rounded-full overflow-hidden cursor-pointer"
+          onClick={() => {
+            router.push(`/user-blogs/${msg.author.id}`);
+          }}
+        >
           <img
             src={profilePic}
             alt={msg.author?.username || "User"}

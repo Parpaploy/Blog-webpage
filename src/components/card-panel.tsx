@@ -11,6 +11,7 @@ import {
   IUser,
 } from "../../interfaces/strapi.interface";
 import { useSidebar } from "../../hooks/sidebar";
+import { IoChatbubblesOutline } from "react-icons/io5";
 
 export default function CardPanel({
   blog,
@@ -71,7 +72,11 @@ export default function CardPanel({
                           : "2xl:w-65 xl:w-46.5 lg:w-45 md:w-[70%] w-[60%] 2xl:h-37.5 xl:h-27.5 lg:h-24 md:h-22.5 h-20.5"
                       }`
                 }`
-              : "md:bottom-10 bottom-7 right-2 2xl:w-55 xl:w-45 md:w-40 w-[70%] 2xl:h-40 xl:h-35 md:h-28 h-22"
+              : `md:bottom-10 bottom-7 right-2 ${
+                  !isAuthor
+                    ? "h-fit 2xl:w-55 xl:w-45 md:w-40 w-[70%]"
+                    : "2xl:w-55 xl:w-45 md:w-40 w-[70%] 2xl:h-40 xl:h-35 md:h-28 h-22"
+                }`
           } bg-black/50 backdrop-blur-sm backdrop-brightness-200 border border-white/30 shadow-md rounded-lg overflow-hidden z-50 flex flex-col`}
           onClick={(e) => e.stopPropagation()}
         >
@@ -116,6 +121,7 @@ export default function CardPanel({
           {isAuthor && (
             <>
               {divider}
+
               <div
                 onClick={(e) => {
                   e.stopPropagation();
@@ -194,6 +200,47 @@ export default function CardPanel({
                     }`}
                   >
                     {t("delete")}
+                  </p>
+                </div>
+              </div>
+            </>
+          )}
+
+          {!isAuthor && (
+            <>
+              {divider}
+              <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  router.push(`/private-chat/${blog.author.documentId}`);
+                  setOpenBlogId(null);
+                }}
+                className={`${buttonBaseClasses} py-2.5 flex items-center`}
+              >
+                <div className={innerFlexClasses}>
+                  <IoChatbubblesOutline
+                    className={`${
+                      isSmall
+                        ? `${
+                            isSidebar
+                              ? "2xl:text-[22px] xl:text-[19px] lg:text-[19px] md:text-[20px] text-[17px]"
+                              : "2xl:text-[24px] xl:text-[20px] md:text-[19px] text-[17px]"
+                          }`
+                        : "2xl:text-[22px] xl:text-[20px] lg:text-[17px] md:text-[18px] text-[12px]"
+                    } mb-0.5`}
+                  />
+                  <p
+                    className={`${
+                      isSmall
+                        ? `${
+                            isSidebar
+                              ? "2xl:text-[16px] xl:text-[14px] md:text-[14px] text-[12px]"
+                              : "2xl:text-[18px] xl:text-[15px] md:text-[14px] text-[12px]"
+                          }`
+                        : "md:text-[16px] text-xs"
+                    } mt-0.5`}
+                  >
+                    {t("chat")}
                   </p>
                 </div>
               </div>

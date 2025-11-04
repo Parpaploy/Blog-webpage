@@ -46,6 +46,9 @@ import blogsTh from "../public/locales/th/blogs.json";
 import subscribeBlogsEn from "../public/locales/en/subscribeBlogs.json";
 import subscribeBlogsTh from "../public/locales/th/subscribeBlogs.json";
 
+import chatEn from "../public/locales/en/chat.json";
+import chatTh from "../public/locales/th/chat.json";
+
 import addBlogEn from "../public/locales/en/addBlog.json";
 import addBlogTh from "../public/locales/th/addBlog.json";
 
@@ -73,6 +76,7 @@ i18n.use(initReactI18next).init({
       search: searchTh,
       blogs: blogsTh,
       subscribeBlogs: subscribeBlogsTh,
+      chat: chatTh,
       addBlog: addBlogTh,
       editBlog: editBlogTh,
       deleteBlog: deleteBlogTh,
@@ -93,6 +97,7 @@ i18n.use(initReactI18next).init({
       search: searchEn,
       blogs: blogsEn,
       subscribeBlogs: subscribeBlogsEn,
+      chat: chatEn,
       addBlog: addBlogEn,
       editBlog: editBlogEn,
       deleteBlog: deleteBlogEn,

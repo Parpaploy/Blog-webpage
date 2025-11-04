@@ -9,12 +9,16 @@ export default function ProfileMenu({
   setToggle,
   onClose,
   setMenuToggle,
+  icon,
+  isLong = false,
 }: {
   path: string;
   title: string;
   setToggle: (toggle: boolean) => void;
   onClose?: () => void;
   setMenuToggle?: () => void;
+  icon: React.ReactNode;
+  isLong?: boolean;
 }) {
   const router = useRouter();
 
@@ -39,7 +43,14 @@ export default function ProfileMenu({
           : "text-white/80 md:hover:bg-white/30 md:hover:text-white/90 cursor-pointer"
       } text-md transition-all px-3 pt-2`}
     >
-      {title}
+      <div
+        className={`flex items-center gap-3 ${
+          isLong ? "items-start" : "items-center"
+        }`}
+      >
+        {icon && <span className="text-xl">{icon}</span>}
+        <span>{title}</span>
+      </div>
 
       <div className="w-full h-[1px] bg-white/30 mt-2" />
     </div>

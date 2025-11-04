@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { IUser } from "../../../interfaces/strapi.interface";
 import { useTranslation } from "react-i18next";
 import { useSidebar } from "../../../hooks/sidebar";
@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { GoSearch } from "react-icons/go";
 import { IoAdd } from "react-icons/io5";
 import { Logo, LogoIcon } from "./components/logo";
+import { IoChatbubblesOutline } from "react-icons/io5";
 
 export default function SidebarDefault({
   isLoggedIn,
@@ -101,6 +102,12 @@ export default function SidebarDefault({
                 icon={<FaRegStar size={24} />}
                 label={t("subscribe-blogs")}
                 isLongLabel={true}
+              />
+
+              <SidebarMenu
+                path="/global-chat"
+                icon={<IoChatbubblesOutline size={24} />}
+                label={t("global-chat")}
               />
             </div>
 
