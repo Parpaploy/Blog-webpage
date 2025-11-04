@@ -2,7 +2,6 @@ import axios from "axios";
 import qs from "qs";
 import { IMessage, IUser } from "../interfaces/strapi.interface";
 
-// This function is fine
 export const fetchGlobalMessages = async (
   token: string | undefined
 ): Promise<IMessage[]> => {
@@ -18,7 +17,11 @@ export const fetchGlobalMessages = async (
             $null: true,
           },
         },
-        populate: "author",
+        populate: {
+          author: {
+            populate: ["profile"],
+          },
+        },
         sort: "createdAt:asc",
       },
       {
@@ -48,7 +51,6 @@ export const fetchGlobalMessages = async (
   }
 };
 
-// This function is correct (uses documentId)
 export const fetchPrivateMessages = async (
   token: string | undefined,
   myDocumentId: string,
@@ -78,7 +80,15 @@ export const fetchPrivateMessages = async (
             },
           ],
         },
-        populate: ["author", "recipient"],
+        populate: {
+          author: {
+            populate: ["profile"],
+          },
+          recipient: {
+            populate: ["profile"],
+          },
+        },
+
         sort: "createdAt:asc",
       },
       { encodeValuesOnly: true }
@@ -96,7 +106,6 @@ export const fetchPrivateMessages = async (
   }
 };
 
-// This function is correct (uses documentId)
 export const fetchRecipientByDocumentId = async (
   documentId: string,
   token: string | undefined
