@@ -8,15 +8,22 @@ import { useMediaQuery } from "../../../../hooks/media-query";
 export default function SignupButton({
   isLoggedIn,
   title,
+  isSmall = false,
+  onClick,
 }: {
   isLoggedIn: boolean;
   title: ReactNode;
+  isSmall?: boolean;
+  onClick?: () => void;
 }) {
   const currentPath = usePathname();
-
   const router = useRouter();
-
   const isLargeScreen = useMediaQuery("(min-width: 1024px)");
+
+  const handleClick = () => {
+    router.push("/signup");
+    onClick?.();
+  };
 
   return (
     <>
@@ -28,7 +35,7 @@ export default function SignupButton({
                 router.push("/signup");
               }}
               type="submit"
-              className={`w-30 border border-white/30 border-l-0 backdrop-blur-sm shadow-md rounded-full px-2 py-1.75 transition-all ${
+              className={`w-30 border border-white/30 border-l-0 backdrop-blur-sm shadow-md rounded-full px-2 py-1.75 ${
                 currentPath === "/signup"
                   ? "text-white bg-white/40 cursor-default"
                   : "bg-white/10 hover:bg-white/20 text-white/50 hover:text-white/70 cursor-pointer"
@@ -39,10 +46,16 @@ export default function SignupButton({
           ) : (
             <button
               onClick={() => {
-                router.push("/signup");
+                if (handleClick) {
+                  handleClick();
+                } else {
+                  router.push("/signup");
+                }
               }}
               type="submit"
-              className={`w-fit border md:border-white/30 border-transparent md:backdrop-blur-sm md:shadow-md rounded-full p-2.25 transition-all ${
+              className={`w-fit border md:border-white/30 border-transparent md:backdrop-blur-sm md:shadow-md rounded-full ${
+                isSmall ? "p-[4px]" : "p-2.25"
+              } transition-all ${
                 currentPath === "/signup"
                   ? "text-white bg-white/40 cursor-default"
                   : "md:bg-white/10 hover:bg-white/20 text-white/50 hover:text-white/70 cursor-pointer"

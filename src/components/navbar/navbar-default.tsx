@@ -51,6 +51,8 @@ export default function NavbarDefault({
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
+  const currentPath = usePathname();
+
   const handleCloseSearch = () => {
     setIsSearchOpen(false);
     setIsOpenCat(false);
@@ -194,8 +196,12 @@ export default function NavbarDefault({
           )}
 
           <div className="md:hidden flex gap-1">
-            <LoginButton isLoggedIn={isLoggedIn} title={t("login")} />
-            <SignupButton isLoggedIn={isLoggedIn} title={t("signup")} />
+            {currentPath !== "/search" && (
+              <>
+                <LoginButton isLoggedIn={isLoggedIn} title={t("login")} />
+                <SignupButton isLoggedIn={isLoggedIn} title={t("signup")} />
+              </>
+            )}
 
             <MobileMenu
               ref={mobileMenuButtonRef}

@@ -1,4 +1,5 @@
 "use client";
+import { usePathname } from "next/navigation";
 import React from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 
@@ -9,6 +10,8 @@ const MobileMenu = React.forwardRef<
     setIsToggle: (isToggle: boolean) => void;
   }
 >(({ isToggle, setIsToggle }, ref) => {
+  const currentPath = usePathname();
+
   return (
     <>
       <button
@@ -17,7 +20,9 @@ const MobileMenu = React.forwardRef<
           setIsToggle(!isToggle);
         }}
         type="button"
-        className={`relative w-fit rounded-full p-2.25 border border-white/30 transition-all shadow-md underline cursor-pointer ${
+        className={`${
+          currentPath === "/search" ? "md:ml-0 ml-0.5" : "ml-0"
+        } relative w-fit rounded-full p-2.25 border border-white/30 transition-all shadow-md underline cursor-pointer ${
           isToggle
             ? "text-white bg-white/40"
             : "bg-white/10 hover:bg-white/20 text-white/50 hover:text-white/70"

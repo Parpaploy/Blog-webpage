@@ -13,6 +13,9 @@ import { RiHomeLine } from "react-icons/ri";
 import { TbBrandBlogger } from "react-icons/tb";
 import { FaRegStar } from "react-icons/fa";
 import { GoSearch } from "react-icons/go";
+import { usePathname } from "next/navigation";
+import LoginButton from "./login-btn";
+import SignupButton from "./signup-btn";
 
 export default function MobileMenuPanel({
   isToggle,
@@ -43,6 +46,8 @@ export default function MobileMenuPanel({
   const mobileProfileButtonRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
+  const currentPath = usePathname();
+
   const [isLangPanelOpen, setLangPanelOpen] = useState(false);
 
   const handleMenuClick = () => {
@@ -70,6 +75,8 @@ export default function MobileMenuPanel({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isToggle, setIsToggle, buttonRef, openNavbar, isLangPanelOpen]);
+
+  const isLoggedIn: boolean = !!user;
 
   return (
     <AnimatePresence>
@@ -139,7 +146,26 @@ export default function MobileMenuPanel({
             {user !== null ? (
               <AddButton isSmall={true} setMenuPanel={setIsToggle} />
             ) : (
-              <div />
+              <>
+                {currentPath === "/search" ? (
+                  <div className="flex gap-1">
+                    <LoginButton
+                      isSmall={true}
+                      isLoggedIn={isLoggedIn}
+                      title={t("login")}
+                      onClick={handleMenuClick}
+                    />
+                    <SignupButton
+                      isSmall={true}
+                      isLoggedIn={isLoggedIn}
+                      title={t("signup")}
+                      onClick={handleMenuClick}
+                    />
+                  </div>
+                ) : (
+                  <div />
+                )}
+              </>
             )}
 
             <div className="h-11 flex gap-2 justify-end items-center">

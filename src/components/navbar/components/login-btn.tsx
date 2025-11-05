@@ -8,15 +8,24 @@ import { useMediaQuery } from "../../../../hooks/media-query";
 export default function LoginButton({
   isLoggedIn,
   title,
+  isSmall = false,
+  onClick,
 }: {
   isLoggedIn: boolean;
   title: ReactNode;
+  isSmall?: boolean;
+  onClick?: () => void;
 }) {
   const currentPath = usePathname();
 
   const router = useRouter();
 
   const isLargeScreen = useMediaQuery("(min-width: 1024px)");
+
+  const handleClick = () => {
+    router.push("/login");
+    onClick?.();
+  };
 
   return (
     <>
@@ -39,10 +48,16 @@ export default function LoginButton({
           ) : (
             <button
               onClick={() => {
-                router.push("/login");
+                if (handleClick) {
+                  handleClick();
+                } else {
+                  router.push("/login");
+                }
               }}
               type="submit"
-              className={`w-fit border md:border-white/30 border-transparent md:backdrop-blur-sm md:shadow-md rounded-full p-2.25 transition-all underline ${
+              className={`w-fit border md:border-white/30 border-transparent md:backdrop-blur-sm md:shadow-md rounded-full ${
+                isSmall ? "p-[4px]" : "p-2.25"
+              } transition-all underline ${
                 currentPath === "/login"
                   ? "text-white bg-white/40 cursor-default"
                   : "md:bg-white/10 hover:bg-white/20 text-white/50 hover:text-white/70 cursor-pointer"
