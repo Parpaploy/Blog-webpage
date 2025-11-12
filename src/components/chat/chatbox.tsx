@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { IMessage } from "../../../interfaces/strapi.interface";
+import { FormatDate } from "../../../utils/format-date";
 
 export default function Chatbox({
   isMyMessage,
@@ -36,6 +37,8 @@ export default function Chatbox({
         </div>
       )}
 
+      {isMyMessage && <p>{FormatDate(msg.publishedAt as string)}</p>}
+
       <div
         className={`max-w-[70%] py-2 px-3 rounded-2xl whitespace-normal break-words backdrop-blur-sm border border-white/30 shadow-md ${
           isMyMessage
@@ -50,6 +53,8 @@ export default function Chatbox({
         </strong>
         {msg.text}
       </div>
+
+      {!isMyMessage && <p>{FormatDate(msg.publishedAt as string)}</p>}
     </div>
   );
 }

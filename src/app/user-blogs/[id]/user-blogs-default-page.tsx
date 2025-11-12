@@ -52,7 +52,7 @@ export default function UserBlogsDefaultPage({
       </div>
 
       {userBlogs && userBlogs.length > 0 ? (
-        <section className="w-full h-auto overflow-y-auto py-3 scrollbar-hide">
+        <section className="w-full h-auto overflow-y-auto py-3">
           <div className="inline-flex min-w-full md:gap-5 gap-3 items-center justify-start overflow-x-auto pb-3">
             {userBlogs.map((blog, index: number) => (
               <BlogCard key={blog.id} blog={blog} user={user} />
@@ -83,7 +83,7 @@ export default function UserBlogsDefaultPage({
       </div>
 
       {userSubscribeBlogs && userSubscribeBlogs.length > 0 ? (
-        <section className="w-full h-auto overflow-y-auto pt-3 scrollbar-hide">
+        <section className="w-full h-auto overflow-y-auto pt-3">
           <div className="inline-flex min-w-full md:gap-5 gap-3 items-center justify-start overflow-x-auto pb-3">
             {userSubscribeBlogs.map((subBlog, index: number) => (
               <SubscribeBlogCard

@@ -164,7 +164,7 @@ export default function HomepageDefault({
               </div>
 
               {highlight?.blogs && highlight?.blogs?.length > 0 ? (
-                <section className="w-full h-auto overflow-x-auto py-3 scrollbar-hide md:pr-5 pr-3">
+                <section className="w-full h-auto overflow-x-auto py-3 md:pr-5 pr-3">
                   <div className="inline-flex min-w-full md:gap-5 gap-3 items-center justify-start overflow-x-auto pb-3">
                     {highlight.blogs.map((blog, index: number) => (
                       <BlogCard
@@ -201,7 +201,7 @@ export default function HomepageDefault({
 
               {highlight?.subscribe_blogs &&
               highlight?.subscribe_blogs?.length > 0 ? (
-                <section className="w-full h-auto overflow-x-auto py-3 scrollbar-hide md:pr-5 pr-3">
+                <section className="w-full h-auto overflow-x-auto py-3 md:pr-5 pr-3">
                   <div className="inline-flex min-w-full md:gap-5 gap-3 items-center justify-start pb-3">
                     {highlight.subscribe_blogs.map((subBlog, index: number) => (
                       <SubscribeBlogCard
@@ -235,7 +235,7 @@ export default function HomepageDefault({
               </div>
 
               {blogs && blogs.length > 0 ? (
-                <section className="w-full h-auto overflow-x-auto py-3 scrollbar-hide md:pr-5 pr-3">
+                <section className="w-full h-auto overflow-x-auto py-3 md:pr-5 pr-3">
                   <div className="inline-flex min-w-full md:gap-5 gap-3 items-center justify-start overflow-x-auto pb-3">
                     {blogs.map((blog, index: number) => (
                       <BlogCard
@@ -271,7 +271,7 @@ export default function HomepageDefault({
               </div>
 
               {subscribeBlogs && subscribeBlogs.length > 0 ? (
-                <section className="w-full h-auto py-3 scrollbar-hide overflow-x-auto md:pr-5 pr-3">
+                <section className="w-full h-auto py-3 overflow-x-auto md:pr-5 pr-3">
                   <div className="inline-flex min-w-full md:gap-5 gap-3 items-center justify-start">
                     {subscribeBlogs.map((subBlog, index: number) => (
                       <SubscribeBlogCard

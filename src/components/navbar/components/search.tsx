@@ -197,7 +197,7 @@ function Search({
         !searchContainerRef.current.contains(event.target as Node)
       ) {
         setIsOpenCat(false);
-        setIsOpenFilter(false); // <-- FilterPanel จะถูกปิดโดย logic นี้
+        setIsOpenFilter(false);
       }
     };
 
