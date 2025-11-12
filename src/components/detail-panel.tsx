@@ -49,7 +49,7 @@ export default function DetailPanel({
               goToUserBlogs(e);
               setOpenBlogId(null);
             }}
-            className={`text-white/80 hover:bg-white/30 hover:text-white/90 backdrop-blur-3xl cursor-pointer text-md transition-all px-3 pt-2`}
+            className={`text-white/80 hover:bg-white/30 hover:text-white/90 backdrop-blur-3xl cursor-pointer text-[18px] transition-all px-3 pt-2`}
           >
             <div
               className={`flex items-center justify-start gap-3 ${
@@ -72,7 +72,7 @@ export default function DetailPanel({
                   router.push(`/edit-free-blog/${blog.documentId}`);
                   setOpenBlogId(null);
                 }}
-                className={`text-white/80 hover:bg-white/30 hover:text-white/90 backdrop-blur-3xl cursor-pointer text-md transition-all px-3 pt-2`}
+                className={`text-white/80 hover:bg-white/30 hover:text-white/90 backdrop-blur-3xl cursor-pointer text-[18px] transition-all px-3 pt-2`}
               >
                 <div className="flex items-center justify-start gap-3 py-1">
                   <FiEdit3 /> <p>{t("edit")}</p>
@@ -90,7 +90,7 @@ export default function DetailPanel({
                   }
                   setOpenBlogId(null);
                 }}
-                className={`text-white/80 hover:bg-white/30 hover:text-white/90 backdrop-blur-3xl cursor-pointer text-md transition-all px-3 py-2`}
+                className={`text-white/80 hover:bg-white/30 hover:text-white/90 backdrop-blur-3xl cursor-pointer text-[18px] transition-all px-3 py-2`}
               >
                 <div className="flex items-center justify-start gap-3 pb-1">
                   <AiOutlineDelete /> <p className="mt-1">{t("delete")}</p>
